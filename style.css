@@ -226,3 +226,28 @@ footer {
 .participants input {
     margin-top: 6px;
 }
+/* item-block + participants */
+.item-block {
+  background: #f7fbfe;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  border: 1px solid #e0e7ef;
+}
+
+.item-block label { display:block; margin-top:6px; }
+.item-block select { width:100%; padding:8px; margin-top:6px; }
+.participants input { width:100%; padding:8px; margin-top:6px; }
+
+/* buttons inside form */
+#addItemBtn, #clearItemsBtn {
+  padding:10px 14px;
+  background:#0b3c5d;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+#clearItemsBtn { background:#6b7280; }
+#addItemBtn:hover, #clearItemsBtn:hover{ opacity:0.95; }
+
