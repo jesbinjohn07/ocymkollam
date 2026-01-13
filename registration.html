@@ -164,6 +164,63 @@ function clearItems(){
 function onSubmit(e){
   e.preventDefault();
 
+  const fullName = document.getElementById('fullName').value.trim();
+  const parish = document.getElementById('parish').value.trim();
+  const position = document.getElementById('position').value;
+
+  const itemBlocks = Array.from(document.querySelectorAll('#itemsContainer .item-block'));
+  if(itemBlocks.length === 0){
+    alert("Please add at least one item.");
+    return;
+  }
+
+  const items = [];
+  for(const b of itemBlocks){
+    const sel = b.querySelector('select');
+    const idx = sel.value;
+    if(!idx){ alert("Please select program for all items."); return; }
+
+    const program = programs[idx];
+    const names = Array.from(b.querySelectorAll('.participants input'))
+                      .map(i=>i.value.trim());
+    if(names.some(n=>n==="")){ alert("Fill all participant names."); return; }
+
+    items.push({
+      program: program.name,
+      participants: names.join(" | ")
+    });
+  }
+
+  /* Build CSV rows */
+  let csv = "Full Name,Parish,Position,Program,Participants\n";
+  items.forEach(it=>{
+    csv += `"${fullName}","${parish}","${position}","${it.program}","${it.participants}"\n`;
+  });
+
+  /* Confirmation preview */
+  let preview = `Name: ${fullName}\nParish: ${parish}\nPosition: ${position}\n\nItems:\n`;
+  items.forEach((it,i)=>{
+    preview += `${i+1}. ${it.program} → ${it.participants}\n`;
+  });
+
+  if(!confirm("Please confirm submission:\n\n" + preview)) return;
+
+  /* Download CSV */
+  const blob = new Blob([csv], {type: "text/csv"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "kalamela_registration.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+
+  alert("Registration exported successfully!");
+
+  document.getElementById('regForm').reset();
+  clearItems();
+}
+
+
   // basic details
   const fullName = document.getElementById('fullName').value.trim();
   const parish = document.getElementById('parish').value.trim();
