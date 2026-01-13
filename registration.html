@@ -92,7 +92,14 @@ const programs = [
 /* Add a new item block */
 function addItem(){
   const container = document.getElementById('itemsContainer');
-
+ 
+  function removeItem(btn){
+  const itemBlock = btn.closest('.item-block');
+  if(itemBlock){
+    itemBlock.remove();
+  }
+ }
+  
   // build options
   let options = '<option value="">Select Program</option>';
   programs.forEach((p,idx)=> {
