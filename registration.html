@@ -1,73 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Kalamele Registration - OCYM Kollam</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>Kalamela Registration - OCYM Kollam</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- HEADER -->
 <header>
-    <div class="header-box">
-        <img src="images/logo.png" class="logo">
-        <h1>OCYM Kollam</h1>
-        <p class="subtitle">Orthodox Christian Youth Movement</p>
-        <p class="diocese">Kollam Diocese</p>
-    </div>
+  <div class="header-box">
+    <img src="images/logo.png" class="logo" alt="logo">
+    <h1>OCYM Kollam</h1>
+    <p class="subtitle">Orthodox Christian Youth Movement</p>
+    <p class="diocese">Kollam Diocese</p>
+  </div>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="registration.html">Registration</a>
-    </nav>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="registration.html">Registration</a>
+  </nav>
 </header>
 
 <!-- FORM -->
 <section class="form-section">
-    <h2>🎭 Kalamela Registration</h2>
+  <h2>🎭 Kalamela Registration</h2>
 
-    <form class="registration-form" id="regForm">
+  <form class="registration-form" id="regForm" onsubmit="onSubmit(event)">
 
-        <!-- Basic Details -->
-        <label>Full Name</label>
-        <input type="text" required>
+    <!-- Basic Details -->
+    <label>Full Name</label>
+    <input id="fullName" type="text" placeholder="Enter your name" required>
 
-        <label>Parish</label>
-        <input type="text" required>
+    <label>Parish</label>
+    <input id="parish" type="text" placeholder="Enter parish" required>
 
-        <label>Position</label>
-        <select required>
-            <option value="">Select Position</option>
-            <option>Secretary</option>
-            <option>Vice President</option>
-            <option>President</option>
-            <option>Member</option>
-        </select>
+    <label>Position</label>
+    <select id="position" required>
+      <option value="">Select Position</option>
+      <option>Secretary</option>
+      <option>Vice President</option>
+      <option>President</option>
+      <option>Member</option>
+    </select>
 
-        <hr>
+    <hr>
 
-        <!-- Item Registration -->
-        <h3>🎯 Item Registration</h3>
+    <!-- Item Registration -->
+    <h3>🎯 Item Registration</h3>
+    <div id="itemsContainer"></div>
 
-        <div id="itemsContainer"></div>
+    <div style="display:flex; gap:10px; margin-top:12px;">
+      <button type="button" id="addItemBtn" onclick="addItem()">➕ Add Item</button>
+      <button type="button" id="clearItemsBtn" onclick="clearItems()">🧹 Clear Items</button>
+    </div>
 
-        <button type="button" onclick="addItem()">➕ Add Item</button>
-
-        <button type="submit">Submit Registration</button>
-
-    </form>
+    <button type="submit" style="margin-top:18px;">Submit Registration</button>
+  </form>
 </section>
 
 <footer>
-    <p>© 2026 OCYM Kollam</p>
+  <p>© 2026 OCYM Kollam</p>
 </footer>
 
-<!-- Script must be LAST -->
-<script src="script.js"></script>
+<!-- Inline script (keeps deployment/cache problems away) -->
+<script>
+/* ====== Programs list (name + allowed participants) ====== */
+const programs = [
+  { name: "ലളിതഗാനം", count: 1 },
+  { name: "സമൂഹഗാനം", count: 3 },
+  { name: "സോപോകരണ സമൂഹഗാനം", count: 7 },
+  { name: "പ്രസംഗം", count: 1 },
+  { name: "കഥാപ്രസംഗം", count: 1 },
+  { name: "സ്ടിറിംഗ് ഇൻസ്ട്രമെൻ്റ്", count: 1 },
+  { name: "കീബോർഡ്", count: 1 },
+  { name: "തബല", count: 1 },
+  { name: "ഉപന്യാസം", count: 1 },
+  { name: "ചിത്രരചന", count: 1 },
+  { name: "കഥാരചന", count: 1 },
+  { name: "കവിതാരചന", count: 1 },
+  { name: "മാർഗംകളി", count: 8 },
+  { name: "പരിചമുട്ട് കളി", count: 8 },
+  { name: "തെരുവ് നാടകം", count: 10 },
+  { name: "ക്വിസ്", count: 3 },
+  { name: "മൈം", count: 7 }
+];
+
+/* Add a new item block */
+function addItem(){
+  const container = document.getElementById('itemsContainer');
+
+  // build options
+  let options = '<option value="">Select Program</option>';
+  programs.forEach((p,idx)=> {
+    options += `<option value="${idx}">${p.name} (${p.count})</option>`;
+  });
+
+  // item block
+  const div = document.createElement('div');
+  div.className = 'item-block';
+  div.innerHTML = `
+    <label>Item Program</label>
+    <select onchange="onProgramChange(this)" required>
+      ${options}
+    </select>
+
+    <div class="participants"></div>
+
+    <div style="margin-top:8px;">
+      <button type="button" onclick="this.parentElement.remove()">❌ Remove</button>
+    </div>
+  `;
+
+  container.appendChild(div);
+}
+
+/* When a program is selected: generate participant name inputs */
+function onProgramChange(selectEl){
+  const idx = selectEl.value;
+  const partsDiv = selectEl.parentElement.querySelector('.participants');
+  partsDiv.innerHTML = '';
+
+  if(!idx) return;
+
+  // check duplicate selection
+  const selected = Array.from(document.querySelectorAll('#itemsContainer select'))
+    .map(s=>s.value).filter(v=>v!=='');
+  const countSame = selected.filter(v=>v===idx).length;
+  if(countSame>1){
+    alert('This item is already selected once. Choose another program.');
+    selectEl.value='';
+    return;
+  }
+
+  const n = programs[idx].count;
+  for(let i=1;i<=n;i++){
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = `Participant ${i} Name`;
+    inp.required = true;
+    partsDiv.appendChild(inp);
+  }
+}
+
+/* clear item blocks */
+function clearItems(){
+  document.getElementById('itemsContainer').innerHTML='';
+}
+
+/* form submit handler — placeholder: show JSON in alert (you will replace with storage) */
+function onSubmit(e){
+  e.preventDefault();
+
+  // basic details
+  const fullName = document.getElementById('fullName').value.trim();
+  const parish = document.getElementById('parish').value.trim();
+  const position = document.getElementById('position').value;
+
+  // items
+  const itemBlocks = Array.from(document.querySelectorAll('#itemsContainer .item-block'));
+  if(itemBlocks.length === 0){
+    if(!confirm('No items added. Do you want to submit without items?')) return;
+  }
+
+  const items = [];
+  for(const b of itemBlocks){
+    const sel = b.querySelector('select');
+    const selVal = sel.value;
+    if(!selVal) { alert('Please select a program for all item blocks.'); return; }
+    const program = programs[selVal];
+    const participantInputs = Array.from(b.querySelectorAll('.participants input'));
+    const names = participantInputs.map(i=>i.value.trim());
+    if(names.some(n=>n==='')) { alert('Please fill all participant names.'); return; }
+    items.push({ program: program.name, allowed: program.count, participants: names });
+  }
+
+  // Build submission object
+  const submission = {
+    timestamp: new Date().toISOString(),
+    fullName, parish, position, items
+  };
+
+  // For now show summary — later we'll save it (Google Sheets / Formspree / Firebase)
+  const summary = JSON.stringify(submission, null, 2);
+  alert('Registration JSON (preview):\\n\\n' + summary);
+
+  // Clear form after submit
+  document.getElementById('regForm').reset();
+  clearItems();
+}
+</script>
 
 </body>
 </html>
+
 
