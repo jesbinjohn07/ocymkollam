@@ -46,7 +46,6 @@ function generateParticipants(select) {
   const participantBox = select.parentElement.querySelector(".participants");
   participantBox.innerHTML = "";
 
-  // Prevent duplicate selection
   const selectedValues = Array.from(
     document.querySelectorAll("#itemsContainer select")
   ).map(s => s.value);
@@ -67,4 +66,3 @@ function generateParticipants(select) {
     `;
   }
 }
-
