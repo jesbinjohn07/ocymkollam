@@ -107,3 +107,18 @@ footer {
         width: 130px;
     }
     }
+/* Bishop Name */
+.bishop-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0b3c5d;
+    margin: 5px 0 2px 0;
+}
+
+/* Bishop Designation */
+.bishop-designation {
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+}
