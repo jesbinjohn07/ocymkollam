@@ -59,16 +59,23 @@ nav a:hover {
 
 .bishop {
     background: white;
-    padding: 10px;
-    border-radius: 10px;
-    width: 160px;
+    padding: 15px;
+    border-radius: 15px;
+    width: 180px;
     text-align: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
 }
 
 .bishop img {
-    width: 100%;
-    border-radius: 8px;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+    border: 4px solid #0b3c5d;
+    margin-bottom: 10px;
 }
+
 
 /* About Section */
 .about-home {
