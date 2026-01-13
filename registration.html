@@ -103,16 +103,18 @@ function addItem(){
   const div = document.createElement('div');
   div.className = 'item-block';
   div.innerHTML = `
-    <label>Item Program</label>
-    <select onchange="onProgramChange(this)" required>
-      ${options}
-    </select>
+  <label>Item Program</label>
+  <select onchange="onProgramChange(this)" required>
+    ${options}
+  </select>
 
-    <div class="participants"></div>
+  <div class="participants"></div>
 
-    <div style="margin-top:8px;">
-      <button type="button" onclick="this.parentElement.remove()">❌ Remove</button>
-    </div>
+  <div style="margin-top:8px;">
+    <button type="button" onclick="removeItem(this)">❌ Remove</button>
+  </div>
+`;
+
   `;
 
   container.appendChild(div);
