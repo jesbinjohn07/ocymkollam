@@ -1,90 +1,109 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: #f2f5f9;
 }
 
+/* Header */
 header {
-    text-align: center;
-    background: #003366;
+    background: #0b3c5d;
     color: white;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.header-box {
     padding: 15px;
 }
 
 .logo {
-    width: 90px;
+    width: 80px;
 }
 
+/* Menu */
 nav {
-    background: #222;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #062f4f;
 }
 
-nav ul li {
-    position: relative;
-}
-
-nav ul li a {
+nav a {
     color: white;
-    padding: 14px 20px;
-    display: block;
+    padding: 12px 18px;
     text-decoration: none;
+    font-weight: bold;
 }
 
-nav ul li a:hover {
-    background: #444;
+nav a:hover {
+    background: #145374;
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background: #333;
-    min-width: 160px;
+/* Announcement */
+.announcement {
+    background: #fff3cd;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 8px;
+    text-align: center;
 }
 
-.dropdown-content a {
-    display: block;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
+/* Bishops */
 .bishops {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    padding: 20px;
+    gap: 20px;
+    padding: 15px;
+    flex-wrap: wrap;
 }
 
 .bishop {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 160px;
     text-align: center;
 }
 
 .bishop img {
-    width: 180px;
-    height: 200px;
-    object-fit: cover;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* About Section */
+.about-home {
+    background: white;
+    margin: 15px;
+    padding: 20px;
     border-radius: 10px;
 }
 
-.announcement {
-    background: #fff3cd;
-    padding: 15px;
-    margin: 20px;
+.about-home h2 {
     text-align: center;
+    color: #0b3c5d;
 }
 
+/* Footer */
 footer {
-    background: #003366;
+    background: #0b3c5d;
     color: white;
     text-align: center;
     padding: 10px;
+    font-size: 14px;
 }
 
+/* Mobile Optimization */
+@media (max-width: 600px) {
+    .logo {
+        width: 60px;
+    }
+
+    nav a {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .bishop {
+        width: 130px;
+    }
+}
