@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Kalamele Registration</title>
+    <title>Kalamele Registration - OCYM Kollam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-    <h1>Kalamele Registration</h1>
+    <div class="header-box">
+        <img src="images/logo.png" class="logo">
+        <h1>OCYM Kollam</h1>
+        <p class="subtitle">Orthodox Christian Youth Movement</p>
+        <p class="diocese">Kollam Diocese</p>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="registration.html">Registration</a>
+    </nav>
 </header>
 
-<form class="form">
-    <input type="text" placeholder="Full Name" required>
-    <input type="text" placeholder="Parish Name" required>
-    <input type="number" placeholder="Age" required>
-    <input type="tel" placeholder="Phone Number" required>
+<!-- FORM -->
+<section class="form-section">
+    <h2>🎭 Kalamele Registration</h2>
 
-    <select>
-        <option>Select Item</option>
-        <option>Song</option>
-        <option>Dance</option>
-        <option>Speech</option>
-    </select>
+    <form class="registration-form">
+        <label>Full Name</label>
+        <input type="text" placeholder="Enter your name" required>
 
-    <button type="submit">Submit</button>
-</form>
+        <label>Parish Name</label>
+        <input type="text" placeholder="Enter parish" required>
+
+        <label>Age</label>
+        <input type="number" placeholder="Enter age" required>
+
+        <label>Phone Number</label>
+        <input type="tel" placeholder="Enter phone number" required>
+
+        <label>Item Category</label>
+        <select required>
+            <option value="">Select item</option>
+            <option>Song</option>
+            <option>Dance</option>
+            <option>Speech</option>
+            <option>Instrument</option>
+        </select>
+
+        <button type="submit">Submit Registration</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 OCYM Kollam</p>
+</footer>
 
 </body>
 </html>
-
