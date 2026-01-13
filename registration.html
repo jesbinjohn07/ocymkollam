@@ -24,35 +24,43 @@
     </nav>
 </header>
 
-<!-- FORM -->
 <section class="form-section">
-    <h2>🎭 Kalamele Registration</h2>
+    <h2>🎭 Kalamela Registration</h2>
 
-    <form class="registration-form">
+    <form class="registration-form" id="regForm">
+
+        <!-- Basic Details -->
         <label>Full Name</label>
-        <input type="text" placeholder="Enter your name" required>
+        <input type="text" required>
 
-        <label>Parish Name</label>
-        <input type="text" placeholder="Enter parish" required>
+        <label>Parish</label>
+        <input type="text" required>
 
-        <label>Age</label>
-        <input type="number" placeholder="Enter age" required>
-
-        <label>Phone Number</label>
-        <input type="tel" placeholder="Enter phone number" required>
-
-        <label>Item Category</label>
+        <label>Position</label>
         <select required>
-            <option value="">Select item</option>
-            <option>Song</option>
-            <option>Dance</option>
-            <option>Speech</option>
-            <option>Instrument</option>
+            <option value="">Select Position</option>
+            <option>Secretary</option>
+            <option>Vice President</option>
+            <option>President</option>
+            <option>Member</option>
         </select>
 
+        <hr>
+
+        <!-- Item Registration -->
+        <h3>🎯 Item Registration</h3>
+
+        <div id="itemsContainer"></div>
+
+        <button type="button" onclick="addItem()">➕ Add Item</button>
+
         <button type="submit">Submit Registration</button>
+
     </form>
 </section>
+
+<script src="script.js"></script>
+
 
 <footer>
     <p>© 2026 OCYM Kollam</p>
