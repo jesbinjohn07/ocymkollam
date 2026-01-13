@@ -1,1 +1,90 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+header {
+    text-align: center;
+    background: #003366;
+    color: white;
+    padding: 15px;
+}
+
+.logo {
+    width: 90px;
+}
+
+nav {
+    background: #222;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav ul li a {
+    color: white;
+    padding: 14px 20px;
+    display: block;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background: #444;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: #333;
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.bishops {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.bishop {
+    text-align: center;
+}
+
+.bishop img {
+    width: 180px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.announcement {
+    background: #fff3cd;
+    padding: 15px;
+    margin: 20px;
+    text-align: center;
+}
+
+footer {
+    background: #003366;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
 
