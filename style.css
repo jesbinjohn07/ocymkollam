@@ -202,3 +202,27 @@ footer {
 .registration-form button:hover {
     background: #145374;
 }
+.item-block {
+    background: #f2f5f9;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 12px;
+}
+
+.item-block button {
+    background: #b02a2a;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    margin-top: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.item-block button:hover {
+    background: #8a1f1f;
+}
+
+.participants input {
+    margin-top: 6px;
+}
