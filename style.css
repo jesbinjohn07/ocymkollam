@@ -608,3 +608,16 @@ footer {
 body > section {
   flex: 1;
 }
+/* ===== Notice Board Mobile Width Fix ===== */
+
+.notice-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notice-card {
+  width: 92%;
+  max-width: 520px;
+  margin: 15px auto;
+}
