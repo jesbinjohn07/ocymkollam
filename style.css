@@ -578,22 +578,29 @@ footer {
   margin-bottom: 8px;
 }
 .notice-page{
-  padding:30px 15px;
+  padding:30px 12px;
   max-width:900px;
   margin:auto;
 }
 
 .notice-card{
   background:#fff;
-  padding:18px;
-  border-radius:14px;
+  padding:20px;
+  border-radius:16px;
   margin-bottom:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.12);
-  border-left:6px solid #ffd700;
+  box-shadow:0 8px 18px rgba(0,0,0,0.12);
+  border-left:8px solid #ffd700;
+  width:100%;
 }
 
-.notice-card h3{margin-bottom:6px;}
-.notice-card .date{font-size:13px;color:#666;}
+.notice-card h3{
+  margin-bottom:6px;
+}
+
+.notice-card .date{
+  font-size:13px;
+  color:#666;
+}
 
 .notice-btn{
   display:inline-block;
@@ -604,20 +611,9 @@ footer {
   border-radius:8px;
   text-decoration:none;
 }
+
 /* push footer to bottom when content is short */
 body > section {
   flex: 1;
 }
-/* ===== Notice Board Mobile Width Fix ===== */
 
-.notice-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notice-card {
-  width: 92%;
-  max-width: 520px;
-  margin: 15px auto;
-  }
