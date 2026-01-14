@@ -251,3 +251,11 @@ footer {
 #clearItemsBtn { background:#6b7280; }
 #addItemBtn:hover, #clearItemsBtn:hover{ opacity:0.95; }
 
+/* Active menu highlight */
+nav a.active {
+    background: #ffd700;
+    color: #0b3c5d;
+    border-radius: 6px;
+}
+
+
