@@ -258,4 +258,9 @@ nav a.active {
     border-radius: 6px;
 }
 
+nav a.active {
+    color: #ffd700;
+    border-bottom: 3px solid #ffd700;
+    padding-bottom: 6px;
+}
 
