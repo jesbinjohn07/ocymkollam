@@ -290,11 +290,14 @@ nav a.active {
 
 .notice-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 1fr;   /* single wide column */
   gap: 18px;
-  max-width: 900px;
-  margin: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 10px;
 }
+
 
 .notice-card {
   background: #fff8dc;
@@ -303,6 +306,7 @@ nav a.active {
   border-left: 6px solid #ffd700;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   text-align: left;
+  width:100%;
 }
 
 .notice-card h3 {
@@ -617,3 +621,21 @@ body > section {
   flex: 1;
 }
 
+/* ===== FORCE NOTICE FULL WIDTH ===== */
+
+.notice-page{
+  padding: 25px 10px;
+  width: 100%;
+  max-width: 100%;
+}
+
+#noticeList{
+  width: 100%;
+  max-width: 100%;
+}
+
+.notice-card{
+  width: 100%;
+  max-width: 100%;
+  margin: 14px 0;
+}
