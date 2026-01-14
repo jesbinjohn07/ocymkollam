@@ -135,45 +135,54 @@ nav a.active {
   color: #0b3c5d;
 }
 
-/* ===== OFFICE BEARERS ===== */
+/* ===== OFFICE BEARERS PROFESSIONAL LAYOUT ===== */
 
-.office-bearers {
+.office-section {
   padding: 40px 15px;
-  display: flex;
-  justify-content: center;
+  text-align: center;
 }
 
-.office-bearers h2 {
-  width: 100%;
-  text-align: center;
+.office-section h2 {
   color: #0b3c5d;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .office-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 18px;
   max-width: 900px;
   margin: auto;
 }
 
 .office-card {
-  background: #f5f8fc;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  text-align: center;
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.office-card:hover {
+  transform: translateY(-4px);
 }
 
 .office-card h3 {
   color: #0b3c5d;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.office-card p {
+.office-card .name {
+  font-weight: 500;
   margin: 4px 0;
 }
+
+.office-card .phone a {
+  text-decoration: none;
+  color: #0b3c5d;
+  font-weight: 600;
+}
+
 
 /* ===== REGISTRATION FORM ===== */
 
