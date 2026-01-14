@@ -263,4 +263,38 @@ nav a.active {
     border-bottom: 3px solid #ffd700;
     padding-bottom: 6px;
 }
+/* ----- Animated underline menu ----- */
+
+nav a {
+    position: relative;
+}
+
+/* underline element */
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 4px;
+    width: 0%;
+    height: 3px;
+    background: #ffd700;
+    transition: width 0.3s ease-in-out;
+    border-radius: 2px;
+}
+
+/* hover animation */
+nav a:hover::after {
+    width: 100%;
+}
+
+/* active page underline */
+nav a.active::after {
+    width: 100%;
+}
+
+/* active text color */
+nav a.active {
+    color: #ffd700;
+}
+
 
