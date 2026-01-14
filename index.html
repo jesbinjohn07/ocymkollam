@@ -18,7 +18,7 @@
   </div>
 
   <nav>
-    <a href="home.html" class="active">Home</a>
+    <a href="index.html" class="active">Home</a>
     <a href="about.html">About</a>
     <a href="notice.html">Notice</a>
     <a href="registration.html">Registration</a>
@@ -29,14 +29,12 @@
 <!-- BISHOPS SECTION -->
 <section class="bishops-section">
 
-  <!-- MAIN BISHOP -->
   <div class="bishop-main">
     <img src="images/bishop1.jpg" alt="Main Bishop">
     <h3>H.H Baselios Marthoma Mathews III</h3>
     <p>Catholicos of the East & Malankara Metropolitan</p>
   </div>
 
-  <!-- OTHER BISHOPS -->
   <div class="bishops-row">
 
     <div class="bishop-small">
@@ -55,15 +53,13 @@
 
 </section>
 
-<!-- ANNOUNCEMENTS (FROM GOOGLE SHEETS) -->
+<!-- ANNOUNCEMENTS -->
 <section class="announcement-section">
-
   <h2>📢 Latest Announcements</h2>
 
   <div class="announcement-grid" id="noticeBox">
     <p>Loading announcements...</p>
   </div>
-
 </section>
 
 <!-- ABOUT SHORT -->
@@ -80,7 +76,7 @@
   <p>© 2026 OCYM Kollam | All Rights Reserved</p>
 </footer>
 
-<!-- FETCH ANNOUNCEMENTS SCRIPT -->
+<!-- FETCH ANNOUNCEMENTS SCRIPT (MUST BE HERE) -->
 <script>
 fetch("https://script.google.com/macros/s/AKfycbwQ7auUVM2anVJHVQBHnyBAcuMs-OTp2Y_U1_q-v-5eyFufp5mxtXeXKcdT66Nokwjc/exec")
   .then(res => res.json())
