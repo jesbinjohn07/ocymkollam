@@ -1,599 +1,164 @@
-html, body {
-  height: 100%;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f2f5f9;
-  display: flex;
-  flex-direction: column;
+html, body{
+  height:100%;
 }
 
-
-/* ===== HEADER ===== */
-
-header {
-  background: #0b3c5d;
-  color: white;
-  text-align: center;
-}
-
-.header-box {
-  padding: 15px 10px 5px;
-}
-
-.logo {
-  width: 70px;
-}
-
-.subtitle {
-  font-size: 14px;
-  margin: 2px 0;
-  opacity: 0.9;
-}
-
-.diocese {
-  font-size: 13px;
-  font-weight: bold;
-  color: #ffd700;
-  margin-top: 2px;
-}
-
-/* ===== NAV MENU ===== */
-
-nav {
-  background: #062f4f;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 6px;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-nav::-webkit-scrollbar {
-  display: none;
-}
-
-
-nav a {
-  color: white;
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  transition: background 0.25s ease, color 0.25s ease;
-}
-
-nav a:hover {
-  background: rgba(255, 215, 0, 0.25);
-}
-
-nav a.active {
-  background: #ffd700;
-  color: #0b3c5d;
-  font-weight: 600;
-}
-
-/* ===== ANNOUNCEMENT ===== */
-
-.announcement {
-  background: #fff3cd;
-  margin: 15px;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-/* ===== BISHOPS ===== */
-
-.bishops {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 15px;
-  flex-wrap: wrap;
-}
-
-.bishop {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  width: 180px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-.bishop img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 50%;
-  border: 4px solid #0b3c5d;
-  margin-bottom: 10px;
-}
-
-.bishop-name {
-  font-size: 15px;
-  font-weight: bold;
-  color: #0b3c5d;
-  margin: 5px 0 2px;
-}
-
-.bishop-designation {
-  font-size: 13px;
-  color: #555;
-  font-style: italic;
-  margin: 0;
-}
-
-/* ===== ABOUT SECTION ===== */
-
-.about-home {
-  background: white;
-  margin: 15px;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.about-home h2 {
-  text-align: center;
-  color: #0b3c5d;
-}
-
-/* ===== OFFICE BEARERS PROFESSIONAL LAYOUT ===== */
-
-.office-section {
-  padding: 40px 15px;
-  text-align: center;
-}
-
-.office-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 25px;
-}
-
-.office-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.office-card {
-  background: white;
-  padding: 18px;
-  border-radius: 14px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-}
-
-.office-card:hover {
-  transform: translateY(-4px);
-}
-
-.office-card h3 {
-  color: #0b3c5d;
-  margin-bottom: 8px;
-}
-
-.office-card .name {
-  font-weight: 500;
-  margin: 4px 0;
-}
-
-.office-card .phone a {
-  text-decoration: none;
-  color: #0b3c5d;
-  font-weight: 600;
-}
-
-
-/* ===== REGISTRATION FORM ===== */
-
-.form-section {
-  padding: 30px 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.form-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 15px;
-}
-
-.registration-form {
-  background: white;
-  padding: 25px;
-  width: 100%;
-  max-width: 420px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-}
-
-.registration-form label {
-  display: block;
-  font-weight: bold;
-  margin-top: 12px;
-  font-size: 14px;
-}
-
-.registration-form input,
-.registration-form select,
-.registration-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.registration-form button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 12px;
-  background: #0b3c5d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.registration-form button:hover {
-  background: #145374;
-}
-
-/* item blocks */
-
-.item-block {
-  background: #f7fbfe;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 12px;
-  border: 1px solid #e0e7ef;
-}
-
-.item-block label {
-  margin-top: 6px;
-  display: block;
-}
-
-.participants input {
-  margin-top: 6px;
-}
-
-.item-block button {
-  background: #b02a2a;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  margin-top: 8px;
-  border-radius: 6px;
-}
-
-/* ===== NOTICE BOARD ===== */
-
-.notice-section {
-  padding: 30px 15px;
-  text-align: center;
-}
-
-.notice-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 20px;
-}
-
-.notice-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.notice-card {
-  background: #fff8dc;
-  padding: 18px;
-  border-radius: 14px;
-  border-left: 6px solid #ffd700;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  text-align: left;
-}
-
-.notice-card h3 {
-  margin-bottom: 6px;
-  color: #0b3c5d;
-}
-
-.notice-card p {
-  margin: 6px 0;
-}
-
-/* ===== CONTACT PAGE ===== */
-
-.contact-section {
-  padding: 30px 15px;
-  text-align: center;
-}
-
-.contact-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 20px;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 18px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.contact-card {
-  background: #f5f8fc;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.contact-card h3 {
-  color: #0b3c5d;
-  margin-bottom: 8px;
-}
-
-.contact-card a {
-  color: #0b3c5d;
-  text-decoration: none;
-}
-
-.contact-card a:hover {
-  text-decoration: underline;
-}
-
-
-
-/* ===== FOOTER ===== */
-
-footer {
-  background: #0b3c5d;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  font-size: 14px;
+body{
+  display:flex;
+  flex-direction:column;
+  background:#f4f7fb;
+  color:#222;
 }
 
-/* ===== MOBILE ===== */
+/* ================= HEADER ================= */
 
-@media (max-width: 600px) {
-  .logo { width: 60px; }
-  nav a { font-size: 14px; }
-  .bishop { width: 150px; }
+.header{
+  background:#0b3c5d;
+  color:white;
+  text-align:center;
+  padding:20px 10px 10px;
 }
-/* ===== EXTRA MOBILE FIXES ===== */
-
-@media (max-width: 600px) {
-
-  header h1 {
-    font-size: 20px;
-  }
-
-  .subtitle {
-    font-size: 12px;
-  }
-
-  .diocese {
-    font-size: 11px;
-  }
-
-  nav {
-    gap: 6px;
-    padding: 6px;
-  }
 
-  nav a {
-    padding: 6px 10px;
-    font-size: 13px;
-  }
-
-  .bishops {
-    padding: 10px;
-    gap: 15px;
-  }
-
-  .bishop {
-    width: 140px;
-    padding: 10px;
-  }
-
-  .bishop img {
-    width: 110px;
-    height: 110px;
-  }
-
-  .about-home,
-  .notice-card,
-  .office-card,
-  .contact-card {
-    padding: 14px;
-  }
-
-  .office-grid,
-  .notice-grid,
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .registration-form {
-    padding: 18px;
-  }
-
-  .item-block {
-    padding: 10px;
-  }
-
-  footer {
-    font-size: 12px;
-  }
+.header img{
+  width:70px;
+  margin-bottom:10px;
 }
-
-/* ===== BISHOP LAYOUT NEW ===== */
 
-.bishops-section {
-  padding: 35px 15px;
-  text-align: center;
+.header h1{
+  font-size:28px;
 }
 
-/* main bishop */
-
-.bishop-main {
-  background: white;
-  padding: 20px;
-  border-radius: 18px;
-  max-width: 320px;
-  margin: auto;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+.header p{
+  margin-top:4px;
 }
 
-.bishop-main img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top;
-  border: 5px solid #0b3c5d;
+.header span{
+  color:#ffd700;
+  font-weight:600;
 }
 
-.bishop-main h3 {
-  margin: 12px 0 4px;
-  color: #0b3c5d;
-}
+/* ================= NAV ================= */
 
-.bishop-main p {
-  font-style: italic;
-  color: #555;
-  margin: 0;
+.navbar{
+  background:#08314f;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:10px;
+  flex-wrap:wrap;
 }
 
-/* lower bishops */
-
-.bishops-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;   /* always 2 in a row */
-  gap: 14px;
-  max-width: 500px;
-  margin: 25px auto 0;
+.navbar a{
+  color:white;
+  text-decoration:none;
+  padding:8px 14px;
+  border-radius:20px;
+  transition:0.3s;
 }
 
-.bishop-small {
-  background: white;
-  padding: 15px;
-  border-radius: 16px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+.navbar a:hover{
+  background:#0e4a73;
 }
 
-.bishop-small img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top;
-  border: 4px solid #0b3c5d;
+.navbar .active{
+  background:#ffd700;
+  color:#08314f;
+  font-weight:600;
 }
 
-.bishop-small h4 {
-  margin: 10px 0 4px;
-  color: #0b3c5d;
-}
+/* ================= MAIN ================= */
 
-.bishop-small p {
-  font-size: 13px;
-  color: #555;
-  margin: 0;
+section{
+  flex:1;
+  padding:30px 16px;
 }
-@media (max-width: 600px) {
 
-  .bishop-small img {
-    width: 110px;
-    height: 110px;
-  }
+/* ================= BISHOPS ================= */
 
-  .bishop-small h4 {
-    font-size: 14px;
-  }
-
-  .bishop-small p {
-    font-size: 12px;
-  }
-
+.bishop-main{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  max-width:420px;
+  margin:0 auto 25px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* ===== BEAUTIFUL ANNOUNCEMENT SECTION ===== */
-
-.announcement-section {
-  padding: 35px 15px;
-  text-align: center;
+.bishop-main img{
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  object-fit:cover;
+  border:6px solid #0b3c5d;
 }
 
-.announcement-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 22px;
+.bishop-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  gap:20px;
+  max-width:700px;
+  margin:0 auto;
 }
 
-.announcement-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  max-width: 900px;
-  margin: auto;
+.bishop-card{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-.announcement-card {
-  background: linear-gradient(135deg, #fff8dc, #fff3b0);
-  padding: 18px;
-  border-radius: 14px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-  border-left: 6px solid #ffd700;
-  text-align: left;
-  transition: transform 0.2s ease;
+.bishop-card img{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+  border:5px solid #0b3c5d;
 }
 
-.announcement-card:hover {
-  transform: translateY(-4px);
-}
+/* ================= ANNOUNCEMENTS ================= */
 
-.announcement-card h3 {
-  margin-bottom: 6px;
-  color: #0b3c5d;
+.announce-title{
+  text-align:center;
+  font-size:24px;
+  margin:35px 0 15px;
+  color:#0b3c5d;
 }
 
-.announcement-card .date {
-  font-size: 13px;
-  font-weight: bold;
-  color: #8a6d00;
-  margin-bottom: 8px;
-}
-.notice-page{
-  padding:30px 15px;
-  max-width:900px;
-  margin:auto;
+.notice-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 .notice-card{
   background:#fff;
   padding:18px;
   border-radius:14px;
-  margin-bottom:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.12);
+  margin:18px auto;
+  box-shadow:0 6px 16px rgba(0,0,0,0.08);
   border-left:6px solid #ffd700;
+  width:92%;
+  max-width:520px;
 }
 
-.notice-card h3{margin-bottom:6px;}
-.notice-card .date{font-size:13px;color:#666;}
+.notice-card h3{
+  color:#0b3c5d;
+  margin-bottom:6px;
+}
+
+.notice-card .date{
+  font-size:13px;
+  color:#777;
+  margin-bottom:10px;
+}
 
 .notice-btn{
   display:inline-block;
@@ -604,20 +169,88 @@ footer {
   border-radius:8px;
   text-decoration:none;
 }
-/* push footer to bottom when content is short */
-body > section {
-  flex: 1;
-}
-/* ===== Notice Board Mobile Width Fix ===== */
 
-.notice-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ================= ABOUT ================= */
+
+.about-box{
+  background:white;
+  border-radius:18px;
+  padding:22px;
+  max-width:750px;
+  margin:30px auto;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-.notice-card {
-  width: 92%;
-  max-width: 520px;
-  margin: 15px auto;
+.about-box h2{
+  text-align:center;
+  margin-bottom:12px;
+  color:#0b3c5d;
 }
+
+/* ================= OFFICE BEARERS ================= */
+
+.office-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  gap:18px;
+  max-width:800px;
+  margin:20px auto;
+}
+
+.office-card{
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  text-align:center;
+  box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+
+.office-card h3{
+  color:#0b3c5d;
+  margin-bottom:6px;
+}
+
+/* ================= FORMS ================= */
+
+.form-box{
+  background:white;
+  border-radius:18px;
+  padding:22px;
+  max-width:520px;
+  margin:20px auto;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.form-box label{
+  display:block;
+  margin-top:14px;
+  font-weight:600;
+}
+
+.form-box input, .form-box select{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.form-box button{
+  margin-top:20px;
+  width:100%;
+  background:#0b3c5d;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  font-size:16px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  background:#08314f;
+  color:white;
+  text-align:center;
+  padding:12px;
+  }
