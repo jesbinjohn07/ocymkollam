@@ -54,12 +54,9 @@
 </section>
 
 <!-- ANNOUNCEMENTS -->
-<section class="announcement-section">
+<section class="announcement-section" id="announceSection" style="display:none;">
   <h2>📢 Latest Announcements</h2>
-
-  <div class="announcement-grid" id="noticeBox">
-    <p>Loading announcements...</p>
-  </div>
+  <div class="announcement-grid" id="noticeBox"></div>
 </section>
 
 <!-- ABOUT SHORT -->
@@ -76,29 +73,45 @@
   <p>© 2026 OCYM Kollam | All Rights Reserved</p>
 </footer>
 
-<!-- FETCH ANNOUNCEMENTS SCRIPT (MUST BE HERE) -->
+<!-- FETCH ANNOUNCEMENTS SCRIPT -->
 <script>
+function formatDate(d){
+  const date = new Date(d);
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
 fetch("https://script.google.com/macros/s/AKfycbwQ7auUVM2anVJHVQBHnyBAcuMs-OTp2Y_U1_q-v-5eyFufp5mxtXeXKcdT66Nokwjc/exec")
   .then(res => res.json())
   .then(data => {
+
+    if(data.length === 0){
+      return; // hide section if no announcements
+    }
+
+    document.getElementById("announceSection").style.display = "block";
+
     const box = document.getElementById("noticeBox");
-    box.innerHTML = "";
 
     data.slice(0,3).forEach(n => {
       box.innerHTML += `
         <div class="announcement-card">
           <h3>${n.title}</h3>
-          <p class="date">${n.date}</p>
+          <p class="date">${formatDate(n.date)}</p>
           <p>${n.message}</p>
         </div>
       `;
     });
+
   })
   .catch(()=>{
-    document.getElementById("noticeBox").innerHTML =
-      "<p>Unable to load announcements.</p>";
+    console.log("Announcement load failed");
   });
 </script>
 
 </body>
-</html>
+  </html>
+  
