@@ -269,32 +269,61 @@ nav a {
     position: relative;
 }
 
-/* underline element */
-nav a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 4px;
-    width: 0%;
-    height: 3px;
-    background: #ffd700;
-    transition: width 0.3s ease-in-out;
-    border-radius: 2px;
+/* Active menu background highlight */
+
+nav a {
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* hover animation */
-nav a:hover::after {
-    width: 100%;
+nav a:hover {
+  background: rgba(255, 215, 0, 0.2);
 }
 
-/* active page underline */
-nav a.active::after {
-    width: 100%;
+nav a.active {
+  background: #ffd700;
+  color: #0b3c5d;
+  font-weight: bold;
 }
+
 
 /* active text color */
 nav a.active {
     color: #ffd700;
 }
 
+/* Office Bearers Section */
+
+.office-bearers {
+  padding: 30px 15px;
+  text-align: center;
+}
+
+.office-bearers h2 {
+  margin-bottom: 20px;
+  color: #0b3c5d;
+}
+
+.office-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.office-card {
+  background: #f5f8fc;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.office-card h3 {
+  color: #0b3c5d;
+  margin-bottom: 6px;
+}
+
+.office-card p {
+  margin: 4px 0;
+}
 
