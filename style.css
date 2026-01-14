@@ -415,4 +415,41 @@ nav a.active {
   border-radius: 8px;
   font-size: 16px;
 }
+/* NOTICE BOARD */
+
+.notice-section {
+  padding: 30px 15px;
+  text-align: center;
+}
+
+.notice-section h2 {
+  color: #0b3c5d;
+  margin-bottom: 20px;
+}
+
+.notice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.notice-card {
+  background: #fff8dc;
+  padding: 18px;
+  border-radius: 14px;
+  border-left: 6px solid #ffd700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+.notice-card h3 {
+  margin-bottom: 6px;
+  color: #0b3c5d;
+}
+
+.notice-card p {
+  margin: 6px 0;
+}
 
