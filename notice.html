@@ -27,46 +27,56 @@
 </header>
 
 <!-- NOTICE BOARD -->
-<section class="notice-section">
-
-  <h2>📢 Notice Board</h2>
-
-  <div class="notice-grid">
-
-    <div class="notice-card">
-      <h3>Kalamela Registration Open</h3>
-      <p>Date: 20 Feb 2026</p>
-      <p>
-        All parish units are requested to complete Kalamela
-        registrations before the deadline.
-      </p>
-    </div>
-
-    <div class="notice-card">
-      <h3>Leadership Camp</h3>
-      <p>Date: 05 March 2026</p>
-      <p>
-        One day leadership training camp will be conducted
-        for all area committee members.
-      </p>
-    </div>
-
-    <div class="notice-card">
-      <h3>Monthly Prayer Meeting</h3>
-      <p>Date: 28 Feb 2026</p>
-      <p>
-        District level prayer meeting at Kollam Orthodox Church Hall.
-      </p>
-    </div>
-
+<section class="notice-page">
+  <h2>📌 Notice Board</h2>
+  <div id="noticeList">
+    <p>Loading notices...</p>
   </div>
-
 </section>
 
 <footer>
-  <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+  <p>© 2026 OCYM Kollam</p>
 </footer>
+
+<!-- FETCH NOTICES -->
+<script>
+function formatDate(d){
+  const date = new Date(d);
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+fetch("https://script.google.com/macros/s/AKfycbwov2uYpuDq-ljlf1Fv6MnV4s5Xl1bb4pVHrbS1T3JktmAEqWhvPLNDrVn6V-KVjt4cFQ/exec")
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("noticeList");
+    box.innerHTML = ""; // clear loading text
+
+    if (!data || data.length === 0) {
+      box.innerHTML = "<p>No notices available.</p>";
+      return;
+    }
+
+    // Reverse order so newest shows first
+    data.reverse().forEach(n => {
+      box.innerHTML += `
+        <div class="notice-card">
+          <h3>${n.title}</h3>
+          <p class="date">${formatDate(n.date)}</p>
+          <p>${n.message}</p>
+          ${n.link ? `<a href="${n.link}" target="_blank" class="notice-btn">${n.button || "Open"}</a>` : ""}
+        </div>
+      `;
+    });
+  })
+  .catch(err => {
+    document.getElementById("noticeList").innerHTML = "<p>Unable to load notices.</p>";
+    console.error(err);
+  });
+</script>
 
 </body>
 </html>
-
