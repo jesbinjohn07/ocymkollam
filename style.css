@@ -1,8 +1,15 @@
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f2f5f9;
+  display: flex;
+  flex-direction: column;
 }
+
 
 /* ===== HEADER ===== */
 
@@ -596,4 +603,8 @@ footer {
   color:#fff;
   border-radius:8px;
   text-decoration:none;
+}
+/* push footer to bottom when content is short */
+body > section {
+  flex: 1;
 }
