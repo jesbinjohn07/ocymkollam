@@ -62,24 +62,11 @@
 
   <h2>📢 Latest Announcements</h2>
 
-  <div class="announcement-grid">
-
-    <div class="announcement-card">
-      <h3>Kalamela Registration Open</h3>
-      <p class="date">20 Feb 2026</p>
-      <p>Please complete all parish registrations before the deadline.</p>
-    </div>
-
-    <div class="announcement-card">
-      <h3>Leadership Camp</h3>
-      <p class="date">05 March 2026</p>
-      <p>All area committee members must attend the leadership training camp.</p>
-    </div>
-
+  <div class="announcement-grid" id="noticeBox">
+    <p>Loading announcements...</p>
   </div>
 
 </section>
-    
 
 
 <section class="about-home">
@@ -100,6 +87,30 @@
 <footer>
     <p>© 2026 OCYM Kollam | All Rights Reserved</p>
 </footer>
+
+<script>
+fetch("https://script.google.com/macros/s/AKfycbwQ7auUVM2anVJHVQBHnyBAcuMs-OTp2Y_U1_q-v-5eyFufp5mxtXeXKcdT66Nokwjc/exec")
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("noticeBox");
+    box.innerHTML = "";
+
+    data.slice(0,3).forEach(n => {
+      box.innerHTML += `
+        <div class="announcement-card">
+          <h3>${n.title}</h3>
+          <p class="date">${n.date}</p>
+          <p>${n.message}</p>
+        </div>
+      `;
+    });
+  })
+  .catch(()=>{
+    document.getElementById("noticeBox").innerHTML =
+      "<p>Unable to load announcements.</p>";
+  });
+        </script>
+    
 
 </body>
     </html>
