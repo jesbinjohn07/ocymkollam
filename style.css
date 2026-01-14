@@ -4,8 +4,10 @@
 
 html, body {
   width: 100%;
-  overflow-x: hidden;   /* prevents right-side scroll */
+  max-width: 100%;
+  overflow-x: hidden;
 }
+
 
 html, body {
   height: 100%;
@@ -593,28 +595,33 @@ footer {
 /* ===== NOTICE PAGE ===== */
 
 .notice-page{
-  padding: 25px 10px;
+  padding: 20px 10px;
   width: 100%;
   max-width: 100%;
-  margin: auto;
+  margin: 0 auto;
 }
+
 
 #noticeList{
   width: 100%;
+  max-width: 100%;
 }
+
 
 /* single wide cards */
 
 .notice-card{
   background:#fff;
-  padding:16px;
+  padding:14px;
   border-radius:14px;
-  margin-bottom:16px;
+  margin: 0 0 16px 0;
   box-shadow:0 6px 14px rgba(0,0,0,0.12);
   border-left:6px solid #ffd700;
 
-  width:100%;
+  width: 100%;
+  max-width: 100%;
 }
+
 
 /* text */
 
@@ -640,4 +647,6 @@ footer {
   border-radius:8px;
   text-decoration:none;
 }
+
+
 
