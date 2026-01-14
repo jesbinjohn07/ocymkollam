@@ -48,6 +48,10 @@
       <option>Member</option>
     </select>
 
+    <!-- ✅ PHONE NUMBER ADDED PROPERLY -->
+    <label>Phone Number</label>
+    <input id="phone" type="tel" placeholder="Enter phone number" required pattern="[0-9]{10}">
+
     <hr>
 
     <!-- Item Registration -->
@@ -161,6 +165,7 @@ function onSubmit(e){
   const fullName = document.getElementById('fullName').value.trim();
   const parish = document.getElementById('parish').value.trim();
   const position = document.getElementById('position').value;
+  const phone = document.getElementById('phone').value.trim();   // ✅ NEW
 
   const blocks = Array.from(document.querySelectorAll('.item-block'));
   if(blocks.length===0){
@@ -195,6 +200,7 @@ function onSubmit(e){
       fullName,
       parish,
       position,
+      phone,     // ✅ SENT TO SHEET
       items
     })
   })
