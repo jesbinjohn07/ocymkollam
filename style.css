@@ -525,3 +525,48 @@ footer {
 
 }
 
+/* ===== BEAUTIFUL ANNOUNCEMENT SECTION ===== */
+
+.announcement-section {
+  padding: 35px 15px;
+  text-align: center;
+}
+
+.announcement-section h2 {
+  color: #0b3c5d;
+  margin-bottom: 22px;
+}
+
+.announcement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.announcement-card {
+  background: linear-gradient(135deg, #fff8dc, #fff3b0);
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  border-left: 6px solid #ffd700;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.announcement-card:hover {
+  transform: translateY(-4px);
+}
+
+.announcement-card h3 {
+  margin-bottom: 6px;
+  color: #0b3c5d;
+}
+
+.announcement-card .date {
+  font-size: 13px;
+  font-weight: bold;
+  color: #8a6d00;
+  margin-bottom: 8px;
+}
