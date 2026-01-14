@@ -434,3 +434,77 @@ footer {
   }
 }
 
+/* ===== BISHOP LAYOUT NEW ===== */
+
+.bishops-section {
+  padding: 35px 15px;
+  text-align: center;
+}
+
+/* main bishop */
+
+.bishop-main {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  max-width: 320px;
+  margin: auto;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.bishop-main img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 5px solid #0b3c5d;
+}
+
+.bishop-main h3 {
+  margin: 12px 0 4px;
+  color: #0b3c5d;
+}
+
+.bishop-main p {
+  font-style: italic;
+  color: #555;
+  margin: 0;
+}
+
+/* lower bishops */
+
+.bishops-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  max-width: 500px;
+  margin: 25px auto 0;
+}
+
+.bishop-small {
+  background: white;
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.bishop-small img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 4px solid #0b3c5d;
+}
+
+.bishop-small h4 {
+  margin: 10px 0 4px;
+  color: #0b3c5d;
+}
+
+.bishop-small p {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
