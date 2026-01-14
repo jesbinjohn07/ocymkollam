@@ -476,8 +476,8 @@ footer {
 
 .bishops-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 18px;
+  grid-template-columns: 1fr 1fr;   /* always 2 in a row */
+  gap: 14px;
   max-width: 500px;
   margin: 25px auto 0;
 }
@@ -508,3 +508,20 @@ footer {
   color: #555;
   margin: 0;
 }
+@media (max-width: 600px) {
+
+  .bishop-small img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .bishop-small h4 {
+    font-size: 14px;
+  }
+
+  .bishop-small p {
+    font-size: 12px;
+  }
+
+}
+
