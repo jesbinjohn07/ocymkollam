@@ -39,10 +39,16 @@ nav {
   background: #062f4f;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 8px 5px;
+  gap: 6px;
+  padding: 8px 6px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
+
+nav::-webkit-scrollbar {
+  display: none;
+}
+
 
 nav a {
   color: white;
