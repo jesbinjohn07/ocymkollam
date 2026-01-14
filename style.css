@@ -296,19 +296,30 @@ nav a.active {
 /* Office Bearers Section */
 
 .office-bearers {
-  padding: 30px 15px;
-  text-align: center;
+  padding: 40px 15px;
+  display: flex;
+  justify-content: center;
 }
+
+.office-bearers > div,
+.office-bearers h2 {
+  width: 100%;
+}
+
 
 .office-bearers h2 {
   margin-bottom: 20px;
   color: #0b3c5d;
 }
 
-.office-grid {
+..office-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  max-width: 900px;
+  margin: auto;
+}
+
 }
 
 .office-card {
@@ -316,6 +327,7 @@ nav a.active {
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
 .office-card h3 {
