@@ -338,4 +338,81 @@ nav a.active {
 .office-card p {
   margin: 4px 0;
 }
+/* CONTACT PAGE */
+
+.contact-section {
+  padding: 30px 15px;
+  text-align: center;
+}
+
+.contact-section h2 {
+  color: #0b3c5d;
+  margin-bottom: 20px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.contact-card {
+  background: #f5f8fc;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.contact-card h3 {
+  color: #0b3c5d;
+  margin-bottom: 8px;
+}
+
+.contact-card a {
+  color: #0b3c5d;
+  text-decoration: none;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+/* Contact form */
+
+.contact-form-box {
+  margin-top: 30px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.contact-form-box h3 {
+  margin-bottom: 12px;
+  color: #0b3c5d;
+}
+
+.contact-form-box input,
+.contact-form-box textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.contact-form-box button {
+  background: #0b3c5d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
 
