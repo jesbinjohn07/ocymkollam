@@ -639,3 +639,20 @@ body > section {
   max-width: 100%;
   margin: 14px 0;
 }
+/* ===== NOTICE MOBILE FULL WIDTH FIX ===== */
+@media (max-width: 600px) {
+
+  .notice-page {
+    padding: 20px 8px;
+  }
+
+  .notice-grid {
+    grid-template-columns: 1fr; /* only one column */
+    max-width: 100%;
+  }
+
+  .notice-card {
+    width: 100%;
+    margin: 0;
+  }
+}
