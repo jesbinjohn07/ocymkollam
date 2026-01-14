@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gallery - OCYM Kollam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-box">
+    <h1>OCYM Kollam</h1>
+    <p class="diocese">Kollam Diocese</p>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="notice.html">Notice</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="registration.html">Registration</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="gallery-page">
+
+  <h2>📸 Photo Gallery</h2>
+
+  <div class="gallery-grid" id="galleryBox">
+    <p>Loading photos...</p>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 OCYM Kollam
+</footer>
+
+<script>
+fetch("https://script.google.com/macros/s/AKfycbyC_QzAf54-tas0UZ08PGiYrNfQaWK3C4KoMwmjRE9vNCzh4H2zojGrma2hMuFvg8ET0Q/exec")
+  .then(res => res.json())
+  .then(data => {
+
+    const box = document.getElementById("galleryBox");
+    box.innerHTML = "";
+
+    if(data.length === 0){
+      box.innerHTML = "<p>No photos available.</p>";
+      return;
+    }
+
+    data.forEach(img => {
+      box.innerHTML += `
+        <div class="gallery-card">
+          <img src="${img.url}" alt="${img.name}">
+        </div>
+      `;
+    });
+
+  })
+  .catch(()=>{
+    document.getElementById("galleryBox").innerHTML =
+      "<p>Unable to load gallery.</p>";
+  });
+</script>
+
+</body>
+</html>
