@@ -1,299 +1,135 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f5f9;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f5f9;
 }
 
-/* Header */
+/* ===== HEADER ===== */
+
 header {
-    background: #0b3c5d;
-    color: white;
-    text-align: center;
-    padding-bottom: 10px;
+  background: #0b3c5d;
+  color: white;
+  text-align: center;
 }
 
 .header-box {
-    padding: 15px;
+  padding: 15px 10px 5px;
 }
 
 .logo {
-    width: 80px;
+  width: 70px;
 }
 
-/* Menu */
-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    background: #062f4f;
-}
-
-nav a {
-    color: white;
-    padding: 12px 18px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    background: #145374;
-}
-
-/* Announcement */
-.announcement {
-    background: #fff3cd;
-    padding: 15px;
-    margin: 15px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-/* Bishops */
-.bishops {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 15px;
-    flex-wrap: wrap;
-}
-
-.bishop {
-    background: white;
-    padding: 15px;
-    border-radius: 15px;
-    width: 180px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-}
-
-.bishop img {
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 50%;
-    border: 4px solid #0b3c5d;
-    margin-bottom: 10px;
-}
-
-
-/* About Section */
-.about-home {
-    background: white;
-    margin: 15px;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.about-home h2 {
-    text-align: center;
-    color: #0b3c5d;
-}
-
-/* Footer */
-footer {
-    background: #0b3c5d;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-}
-
-/* Mobile Optimization */
-@media (max-width: 600px) {
-    .logo {
-        width: 60px;
-    }
-
-    nav a {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .bishop {
-        width: 130px;
-    }
-    }
-/* Bishop Name */
-.bishop-name {
-    font-size: 16px;
-    font-weight: bold;
-    color: #0b3c5d;
-    margin: 5px 0 2px 0;
-}
-
-/* Bishop Designation */
-.bishop-designation {
-    font-size: 13px;
-    color: #555;
-    font-style: italic;
-    margin: 0;
-}
 .subtitle {
-    font-size: 15px;
-    opacity: 0.9;
-    margin-bottom: 2px;
+  font-size: 14px;
+  margin: 2px 0;
+  opacity: 0.9;
 }
 
 .diocese {
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #ffd700;
-    margin-top: 0;
-    }
-/* Registration Form */
-.form-section {
-    padding: 30px 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffd700;
+  margin-top: 2px;
 }
 
-.form-section h2 {
-    color: #0b3c5d;
-    margin-bottom: 15px;
-}
+/* ===== NAV MENU ===== */
 
-.registration-form {
-    background: white;
-    padding: 25px;
-    width: 100%;
-    max-width: 420px;
-    border-radius: 15px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+nav {
+  background: #062f4f;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px 5px;
 }
-
-.registration-form label {
-    font-weight: bold;
-    font-size: 14px;
-    display: block;
-    margin-top: 12px;
-}
-
-.registration-form input,
-.registration-form select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
-
-.registration-form input:focus,
-.registration-form select:focus {
-    outline: none;
-    border-color: #0b3c5d;
-}
-
-.registration-form button {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    background: #0b3c5d;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.registration-form button:hover {
-    background: #145374;
-}
-.item-block {
-    background: #f2f5f9;
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 12px;
-}
-
-.item-block button {
-    background: #b02a2a;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    margin-top: 8px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.item-block button:hover {
-    background: #8a1f1f;
-}
-
-.participants input {
-    margin-top: 6px;
-}
-/* item-block + participants */
-.item-block {
-  background: #f7fbfe;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 12px;
-  border: 1px solid #e0e7ef;
-}
-
-.item-block label { display:block; margin-top:6px; }
-.item-block select { width:100%; padding:8px; margin-top:6px; }
-.participants input { width:100%; padding:8px; margin-top:6px; }
-
-/* buttons inside form */
-#addItemBtn, #clearItemsBtn {
-  padding:10px 14px;
-  background:#0b3c5d;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
-#clearItemsBtn { background:#6b7280; }
-#addItemBtn:hover, #clearItemsBtn:hover{ opacity:0.95; }
-
-/* Active menu highlight */
-nav a.active {
-    background: #ffd700;
-    color: #0b3c5d;
-    border-radius: 6px;
-}
-
-nav a.active {
-    color: #ffd700;
-    border-bottom: 3px solid #ffd700;
-    padding-bottom: 6px;
-}
-/* ----- Animated underline menu ----- */
 
 nav a {
-    position: relative;
-}
-
-/* Active menu background highlight */
-
-nav a {
-  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  padding: 8px 14px;
   border-radius: 8px;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 nav a:hover {
-  background: rgba(255, 215, 0, 0.2);
+  background: rgba(255, 215, 0, 0.25);
 }
 
 nav a.active {
   background: #ffd700;
   color: #0b3c5d;
+  font-weight: 600;
+}
+
+/* ===== ANNOUNCEMENT ===== */
+
+.announcement {
+  background: #fff3cd;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ===== BISHOPS ===== */
+
+.bishops {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+
+.bishop {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.bishop img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+  border: 4px solid #0b3c5d;
+  margin-bottom: 10px;
+}
+
+.bishop-name {
+  font-size: 15px;
   font-weight: bold;
+  color: #0b3c5d;
+  margin: 5px 0 2px;
 }
 
-
-/* active text color */
-nav a.active {
-    color: #ffd700;
+.bishop-designation {
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  margin: 0;
 }
 
-/* Office Bearers Section */
+/* ===== ABOUT SECTION ===== */
+
+.about-home {
+  background: white;
+  margin: 15px;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.about-home h2 {
+  text-align: center;
+  color: #0b3c5d;
+}
+
+/* ===== OFFICE BEARERS ===== */
 
 .office-bearers {
   padding: 40px 15px;
@@ -301,25 +137,19 @@ nav a.active {
   justify-content: center;
 }
 
-.office-bearers > div,
 .office-bearers h2 {
   width: 100%;
-}
-
-
-.office-bearers h2 {
-  margin-bottom: 20px;
+  text-align: center;
   color: #0b3c5d;
+  margin-bottom: 20px;
 }
 
-..office-grid {
+.office-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 18px;
   max-width: 900px;
   margin: auto;
-}
-
 }
 
 .office-card {
@@ -338,7 +168,131 @@ nav a.active {
 .office-card p {
   margin: 4px 0;
 }
-/* CONTACT PAGE */
+
+/* ===== REGISTRATION FORM ===== */
+
+.form-section {
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-section h2 {
+  color: #0b3c5d;
+  margin-bottom: 15px;
+}
+
+.registration-form {
+  background: white;
+  padding: 25px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.registration-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.registration-form button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  background: #0b3c5d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.registration-form button:hover {
+  background: #145374;
+}
+
+/* item blocks */
+
+.item-block {
+  background: #f7fbfe;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  border: 1px solid #e0e7ef;
+}
+
+.item-block label {
+  margin-top: 6px;
+  display: block;
+}
+
+.participants input {
+  margin-top: 6px;
+}
+
+.item-block button {
+  background: #b02a2a;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-top: 8px;
+  border-radius: 6px;
+}
+
+/* ===== NOTICE BOARD ===== */
+
+.notice-section {
+  padding: 30px 15px;
+  text-align: center;
+}
+
+.notice-section h2 {
+  color: #0b3c5d;
+  margin-bottom: 20px;
+}
+
+.notice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.notice-card {
+  background: #fff8dc;
+  padding: 18px;
+  border-radius: 14px;
+  border-left: 6px solid #ffd700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+.notice-card h3 {
+  margin-bottom: 6px;
+  color: #0b3c5d;
+}
+
+.notice-card p {
+  margin: 6px 0;
+}
+
+/* ===== CONTACT PAGE ===== */
 
 .contact-section {
   padding: 30px 15px;
@@ -379,8 +333,6 @@ nav a.active {
   text-decoration: underline;
 }
 
-/* Contact form */
-
 .contact-form-box {
   margin-top: 30px;
   max-width: 500px;
@@ -415,41 +367,21 @@ nav a.active {
   border-radius: 8px;
   font-size: 16px;
 }
-/* NOTICE BOARD */
 
-.notice-section {
-  padding: 30px 15px;
+/* ===== FOOTER ===== */
+
+footer {
+  background: #0b3c5d;
+  color: white;
   text-align: center;
+  padding: 10px;
+  font-size: 14px;
 }
 
-.notice-section h2 {
-  color: #0b3c5d;
-  margin-bottom: 20px;
-}
+/* ===== MOBILE ===== */
 
-.notice-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  max-width: 900px;
-  margin: auto;
+@media (max-width: 600px) {
+  .logo { width: 60px; }
+  nav a { font-size: 14px; }
+  .bishop { width: 150px; }
 }
-
-.notice-card {
-  background: #fff8dc;
-  padding: 18px;
-  border-radius: 14px;
-  border-left: 6px solid #ffd700;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  text-align: left;
-}
-
-.notice-card h3 {
-  margin-bottom: 6px;
-  color: #0b3c5d;
-}
-
-.notice-card p {
-  margin: 6px 0;
-}
-
