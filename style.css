@@ -64,11 +64,14 @@ header {
 nav {
   background: #062f4f;
   display: flex;
-  justify-content: center;
   gap: 6px;
-  padding: 8px 6px;
-  width: 100%;
+  padding: 8px 10px;
+
   overflow-x: auto;
+  white-space: nowrap;
+
+  justify-content: flex-start; /* 🔑 IMPORTANT */
+  -webkit-overflow-scrolling: touch;
 }
 
 nav::-webkit-scrollbar {
@@ -81,7 +84,7 @@ nav a {
   text-decoration: none;
   padding: 8px 14px;
   border-radius: 8px;
-  transition: background 0.25s ease, color 0.25s ease;
+  flex-shrink: 0; /* 🔑 prevents squeezing */
 }
 
 nav a:hover {
