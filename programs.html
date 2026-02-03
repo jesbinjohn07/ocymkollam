@@ -228,6 +228,17 @@ function toggleReadMore(btn) {
     ? "Read less"
     : "Read more";
   }
+  document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".program-desc").forEach(desc => {
+    if (desc.scrollHeight <= desc.clientHeight + 5) {
+      // text is short → hide Read more
+      const btn = desc.nextElementSibling;
+      if (btn && btn.classList.contains("read-more-btn")) {
+        btn.style.display = "none";
+      }
+    }
+  });
+});
 </script>
 
 </body>
