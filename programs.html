@@ -97,6 +97,32 @@
   color: #555;
   line-height: 1.6;
 }
+
+/* FIX DESKTOP MODE WEIRD EXPAND */
+
+.year-content {
+  max-width: 900px;
+  margin: 14px auto 0;
+  padding: 0 10px;
+}
+
+@media (min-width: 768px) {
+  .program-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .program-card img {
+    width: 40%;
+    max-height: 240px;
+  }
+
+  .program-card h4,
+  .program-card p {
+    width: 60%;
+  }
+}
 </style>
 </head>
 
