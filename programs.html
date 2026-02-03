@@ -55,26 +55,34 @@ fetch("https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2t
       return;
     }
 
-    let currentYear = "";
+    const grouped = {};
 
     data.forEach(item => {
+      if (!grouped[item.year]) grouped[item.year] = [];
+      grouped[item.year].push(item);
+    });
 
-      if (item.year !== currentYear) {
-        currentYear = item.year;
-        box.innerHTML += `
-          <h3 class="program-year">${currentYear}</h3>
-        `;
-      }
+    Object.keys(grouped).sort().reverse().forEach(year => {
+
+      const yearId = year.replace(/\s/g, "");
 
       box.innerHTML += `
-        <div class="program-card">
-          ${item.image && item.image.trim() !== "" ? `
-            <img src="${item.image}" alt="${item.title}" loading="lazy">
-            ` : ""}
-          <div class="program-text">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-          </div>
+        <div class="program-year" onclick="toggleYear('${yearId}')">
+          ${year}
+          <span>Tap to expand</span>
+        </div>
+        <div class="year-content" id="${yearId}">
+          ${grouped[year].map(item => `
+            <div class="program-card">
+              ${item.image && item.image.trim() !== "" ? `
+                <img src="${item.image}" alt="${item.title}" loading="lazy">
+              ` : ""}
+              <div class="program-text">
+                <h4>${item.title}</h4>
+                <p>${item.description}</p>
+              </div>
+            </div>
+          `).join("")}
         </div>
       `;
     });
@@ -83,6 +91,13 @@ fetch("https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2t
     document.getElementById("programsContainer")
       .innerHTML = "<p>Unable to load programs.</p>";
   });
+
+function toggleYear(id) {
+  document.querySelectorAll(".year-content").forEach(el => {
+    if (el.id !== id) el.classList.remove("active");
+  });
+  document.getElementById(id).classList.toggle("active");
+}
 </script>
 
 </body>
