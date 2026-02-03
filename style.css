@@ -760,3 +760,37 @@ main {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.year-content {
+  display: none;
+}
+.year-block.active .year-content {
+  display: block;
+    }
+.program-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: white;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  margin-bottom: 16px;
+}
+@media (max-width: 768px) {
+  .program-card {
+    flex-direction: column;
+  }
+
+  .program-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+}
+@media (min-width: 769px) {
+  .program-card img {
+    width: 260px;
+    height: auto;
+    border-radius: 12px;
+  }
+}
