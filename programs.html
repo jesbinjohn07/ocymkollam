@@ -193,7 +193,8 @@ fetch(API_URL)
           <div class="program-card">
             ${imageHTML}
             <h4>${p.title}</h4>
-            <p>${p.description}</p>
+            <p class="program-desc">${p.description}</p>
+<span class="read-more-btn" onclick="toggleReadMore(this)">Read more</span>
           </div>
         `;
       });
@@ -219,6 +220,14 @@ fetch(API_URL)
 function toggleYear(el) {
   el.parentElement.classList.toggle("open");
 }
+function toggleReadMore(btn) {
+  const para = btn.previousElementSibling;
+  para.classList.toggle("expanded");
+
+  btn.textContent = para.classList.contains("expanded")
+    ? "Read less"
+    : "Read more";
+  }
 </script>
 
 </body>
