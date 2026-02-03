@@ -794,3 +794,33 @@ main {
     border-radius: 12px;
   }
 }
+/* ===== PROGRAMS PAGE FIX (STACKED EVERYWHERE) ===== */
+
+.program-card {
+  display: flex;
+  flex-direction: column;   /* force stacked layout */
+  align-items: center;
+  gap: 12px;
+}
+
+.program-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.program-text {
+  width: 100%;
+  text-align: center;
+}
+
+/* ===== COLLAPSE FIX ===== */
+
+.year-content {
+  display: none;
+}
+
+.year-block.active .year-content {
+  display: block;
+      }
