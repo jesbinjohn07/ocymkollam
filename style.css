@@ -64,14 +64,11 @@ header {
 nav {
   background: #062f4f;
   display: flex;
-  gap: 8px;
-  padding: 8px 10px;
-
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 6px;
+  width: 100%;
   overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-
-  justify-content: center; /* CENTER */
 }
 
 nav::-webkit-scrollbar {
@@ -80,6 +77,15 @@ nav::-webkit-scrollbar {
 
 nav::-webkit-scrollbar {
   display: none;
+}
+
+nav::-webkit-scrollbar {
+  display: none;
+}
+@media (max-width: 600px) {
+  nav {
+    justify-content: flex-start; /* mobile stays scrollable */
+  }
 }
 
 
@@ -100,11 +106,7 @@ nav a.active {
   color: #0b3c5d;
   font-weight: 600;
 }
-@media (max-width: 600px) {
-  nav {
-    justify-content: flex-start; /* mobile stays scrollable */
-  }
-}
+
 
 /* ===== ANNOUNCEMENT ===== */
 
