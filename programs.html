@@ -7,6 +7,97 @@
 
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== PROGRAMS PAGE ONLY ===== */
+
+.programs-section {
+  padding: 30px 15px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.programs-section h2 {
+  text-align: center;
+  color: #0b3c5d;
+  margin-bottom: 20px;
+}
+
+/* YEAR BLOCK */
+
+.year-block {
+  margin-bottom: 18px;
+}
+
+.year-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 14px;
+  border-left: 6px solid #ffd700;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.year-header span {
+  font-weight: 600;
+  color: #0b3c5d;
+}
+
+.year-header .arrow {
+  transition: transform 0.3s ease;
+}
+
+/* COLLAPSE */
+
+.year-content {
+  display: none;
+  margin-top: 14px;
+}
+
+.year-block.open .year-content {
+  display: block;
+}
+
+.year-block.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* PROGRAM CARD */
+
+.program-card {
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 14px;
+}
+
+/* IMAGE (OPTIONAL) */
+
+.program-card img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* TEXT */
+
+.program-card h4 {
+  margin: 8px 0;
+  color: #0b3c5d;
+}
+
+.program-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+</style>
 </head>
 
 <body>
@@ -43,60 +134,64 @@
 </footer>
 
 <script>
-fetch("https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec")
+const API_URL = "https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
+
+fetch(API_URL)
   .then(res => res.json())
   .then(data => {
 
-    const box = document.getElementById("programsContainer");
-    box.innerHTML = "";
+    const container = document.getElementById("programsContainer");
+    container.innerHTML = "";
 
-    if (!data || data.length === 0) {
-      box.innerHTML = "<p>No programs available.</p>";
-      return;
-    }
+    let years = {};
 
-    const grouped = {};
-
+    // group by year
     data.forEach(item => {
-      if (!grouped[item.year]) grouped[item.year] = [];
-      grouped[item.year].push(item);
+      if (!years[item.year]) years[item.year] = [];
+      years[item.year].push(item);
     });
 
-    Object.keys(grouped).sort().reverse().forEach(year => {
+    // render years
+    Object.keys(years).sort().reverse().forEach(year => {
 
-      const yearId = year.replace(/\s/g, "");
+      let programsHTML = "";
 
-      box.innerHTML += `
-        <div class="program-year" onclick="toggleYear('${yearId}')">
-          ${year}
-          <span>Tap to expand</span>
-        </div>
-        <div class="year-content" id="${yearId}">
-          ${grouped[year].map(item => `
-            <div class="program-card">
-              ${item.image && item.image.trim() !== "" ? `
-                <img src="${item.image}" alt="${item.title}" loading="lazy">
-              ` : ""}
-              <div class="program-text">
-                <h4>${item.title}</h4>
-                <p>${item.description}</p>
-              </div>
-            </div>
-          `).join("")}
+      years[year].forEach(p => {
+
+        // image optional
+        const imageHTML = p.image
+          ? `<img src="${p.image}" alt="${p.title}" onerror="this.style.display='none'">`
+          : "";
+
+        programsHTML += `
+          <div class="program-card">
+            ${imageHTML}
+            <h4>${p.title}</h4>
+            <p>${p.description}</p>
+          </div>
+        `;
+      });
+
+      container.innerHTML += `
+        <div class="year-block">
+          <div class="year-header" onclick="toggleYear(this)">
+            <span>${year} Tap to expand</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="year-content">
+            ${programsHTML}
+          </div>
         </div>
       `;
     });
   })
   .catch(() => {
-    document.getElementById("programsContainer")
-      .innerHTML = "<p>Unable to load programs.</p>";
+    document.getElementById("programsContainer").innerHTML =
+      "<p>❌ Unable to load programs.</p>";
   });
 
-function toggleYear(id) {
-  document.querySelectorAll(".year-content").forEach(el => {
-    if (el.id !== id) el.classList.remove("active");
-  });
-  document.getElementById(id).classList.toggle("active");
+function toggleYear(el) {
+  el.parentElement.classList.toggle("open");
 }
 </script>
 
