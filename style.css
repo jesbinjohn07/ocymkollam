@@ -724,13 +724,3 @@ main {
     height: 160px;
   }
 }
-
-.program-image {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  display: block;
-  margin: 0 auto 15px;
-  border-radius: 14px;
-  object-fit: cover;
-  }
