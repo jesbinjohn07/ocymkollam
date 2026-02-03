@@ -68,7 +68,9 @@ fetch("https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2t
 
       box.innerHTML += `
         <div class="program-card">
-          <img src="${item.image}" alt="${item.title}">
+          ${item.image && item.image.trim() !== "" ? `
+            <img src="${item.image}" alt="${item.title}" loading="lazy">
+            ` : ""}
           <div class="program-text">
             <h4>${item.title}</h4>
             <p>${item.description}</p>
