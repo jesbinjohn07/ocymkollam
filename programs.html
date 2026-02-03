@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Programs - OCYM Kollam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <div class="header-box">
+    <img src="images/logo.png" class="logo">
+    <h1>OCYM Kollam</h1>
+    <p class="subtitle">Orthodox Christian Youth Movement</p>
+    <p class="diocese">Kollam Diocese</p>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="notice.html">Notice</a>
+    <a href="programs.html" class="active">Programs</a>
+    <a href="registration.html">Registration</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="programs-section">
+  <h2>✨ OCYM Programs</h2>
+  <div id="programsContainer">Loading programs...</div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 OCYM Kollam</p>
+</footer>
+
+<script>
+fetch("https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec")
+  .then(res => res.json())
+  .then(data => {
+
+    const box = document.getElementById("programsContainer");
+    box.innerHTML = "";
+
+    if (!data || data.length === 0) {
+      box.innerHTML = "<p>No programs available.</p>";
+      return;
+    }
+
+    let currentYear = "";
+
+    data.forEach(item => {
+
+      if (item.year !== currentYear) {
+        currentYear = item.year;
+        box.innerHTML += `
+          <h3 class="program-year">${currentYear}</h3>
+        `;
+      }
+
+      box.innerHTML += `
+        <div class="program-card">
+          <img src="${item.image}" alt="${item.title}">
+          <div class="program-text">
+            <h4>${item.title}</h4>
+            <p>${item.description}</p>
+          </div>
+        </div>
+      `;
+    });
+  })
+  .catch(() => {
+    document.getElementById("programsContainer")
+      .innerHTML = "<p>Unable to load programs.</p>";
+  });
+</script>
+
+</body>
+</html>
