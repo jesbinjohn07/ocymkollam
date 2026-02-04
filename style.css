@@ -773,3 +773,19 @@ main {
   color: #555;
   line-height: 1.6;
 }
+/* Animate cards only when year is opened */
+
+.year-block.active .program-card {
+  animation: slideUp 0.35s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
