@@ -208,7 +208,11 @@ function onSubmit(e){
   })
   .then(res=>res.text())
   .then(()=>{
-    alert("✅ Registration submitted successfully!");
+    document.getElementById("successPopup").style.display = "flex";
+
+setTimeout(() => {
+  document.getElementById("successPopup").style.display = "none";
+}, 2500);
     document.getElementById('regForm').reset();
     clearItems();
   })
@@ -217,6 +221,12 @@ function onSubmit(e){
   });
 }
 </script>
+
+  <div id="successPopup" class="success-popup">
+  <div class="success-box">
+    ✅ Registration Submitted Successfully!
+  </div>
+  </div>
 
 </body>
 </html>
