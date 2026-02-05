@@ -860,3 +860,24 @@ main {
   from { transform: scale(0.7); opacity: 0 }
   to   { transform: scale(1); opacity: 1 }
     }
+
+.social-links {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-links a {
+  background: #0b3c5d;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.social-links a:hover {
+  background: #ffd700;
+  color: #0b3c5d;
+}
