@@ -193,7 +193,7 @@ nav a.active {
   gap: 18px;
   max-width: 900px;
   margin: auto;
-  justify-contents: center;
+  justify-content: center;
 }
 
 .office-card {
