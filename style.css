@@ -189,10 +189,11 @@ nav a.active {
 
 .office-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
   gap: 18px;
   max-width: 900px;
   margin: auto;
+  justify-contents: center;
 }
 
 .office-card {
