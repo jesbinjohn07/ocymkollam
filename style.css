@@ -861,23 +861,46 @@ main {
   to   { transform: scale(1); opacity: 1 }
     }
 
+
+
+/* ===== SOCIAL CARD ===== */
+
 .social-links {
-  margin-top: 15px;
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 18px;
+  margin-top: 12px;
 }
 
-.social-links a {
-  background: #0b3c5d;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: white;
+  border-radius: 10px;
   text-decoration: none;
-  font-size: 14px;
+  color: #0b3c5d;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
 }
 
-.social-links a:hover {
-  background: #ffd700;
-  color: #0b3c5d;
+.social-btn:hover {
+  transform: translateY(-3px);
+}
+
+.social-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+/* optional brand colors */
+
+.facebook:hover {
+  background: #e7f0ff;
+}
+
+.instagram:hover {
+  background: #ffe7f3;
 }
