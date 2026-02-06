@@ -748,16 +748,10 @@ main {
 /* program image */
 .program-card img{
   width: 100%;
-  max-width: 420px;
   height: auto;
-
   object-fit: contain;
-  background: #f2f5f9;
   border-radius: 12px;
-
-  display: block;                  /* removes tiny spacing bug */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);  /* subtle polish */
-  margin: 0 auto;                  /* ensures perfect centering */
+  display: block;
 }
 
 /* program text */
