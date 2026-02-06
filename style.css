@@ -749,10 +749,12 @@ main {
 
 .program-card img{
   width: 100%;
-  max-width: 420px;            /* prevents huge desktop images */
+  max-width: 420px; /* prevents huge desktop images */
+  max-height:420px;
   height: auto;
 
-  object-fit: cover;
+  object-fit: contain;
+  background: #f2f5f9;
   border-radius: 12px;
 }
 
