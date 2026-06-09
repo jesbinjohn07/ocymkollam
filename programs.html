@@ -2,599 +2,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Programs - OCYM Kollam</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="description"
-content="OCYM Kollam Programs and Events">
-
-<link rel="icon"
-type="image/png"
-href="images/logo.png">
-
-<link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>OCYM Programs</title>
 
 <style>
 
-/* ===== PROGRAMS PAGE ===== */
+/* ---------- PAGE ---------- */
 
-.programs-section{
-  padding: 30px 15px;
-  max-width: 1100px;
-  margin: auto;
+body{
+    margin:0;
+    padding:20px;
+    font-family: 'Poppins', sans-serif;
+    background:#f4f6fa;
 }
 
-.programs-section h2{
-  text-align: center;
-  color: #0b3c5d;
-  margin-bottom: 25px;
-  font-size: 34px;
+/* ---------- SECTION TITLE ---------- */
+
+.section-title{
+    text-align:center;
+    font-size:32px;
+    color:#123456;
+    margin-bottom:30px;
 }
 
-/* ===== YEAR BLOCK ===== */
+/* ---------- YEAR TOGGLE ---------- */
 
-.year-block{
-  margin-bottom: 22px;
+.year-toggle{
+    margin-bottom:25px;
+    border-radius:16px;
+    overflow:hidden;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .year-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: #ffffff;
-
-  padding: 14px 18px;
-
-  border-left: 6px solid #ffd700;
-
-  border-radius: 14px;
-
-  cursor: pointer;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-  transition: 0.25s ease;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 22px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#0b3b63,#114d82);
+    color:white;
+    font-size:20px;
+    font-weight:600;
+    transition:0.3s;
 }
 
 .year-header:hover{
-  transform: translateY(-2px);
-}
-
-.year-header span{
-  font-size: 20px;
-  font-weight: 600;
-  color: #0b3c5d;
+    opacity:0.95;
 }
 
 .arrow{
-  transition: transform 0.3s ease;
+    transition:0.3s;
+    font-size:18px;
 }
 
-.year-block.open .arrow{
-  transform: rotate(180deg);
+.year-toggle.active .arrow{
+    transform:rotate(180deg);
 }
 
-/* ===== COLLAPSE ===== */
-
-.year-content{
-  display: none;
-  margin-top: 18px;
-}
-
-.year-block.open .year-content{
-  display: block;
-  animation: fadeIn 0.3s ease;
-}
-
-/* ===== GRID ===== */
+/* ---------- PROGRAM GRID ---------- */
 
 .program-grid{
-  display: grid;
+    display:none;
+    padding:22px;
+    gap:22px;
 
-  grid-template-columns:
-  repeat(auto-fit, minmax(260px, 1fr));
-
-  gap: 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,320px));
+    justify-content:center;
 }
 
-/* ===== PROGRAM CARD ===== */
+/* ---------- PROGRAM CARD ---------- */
 
 .program-card{
-  background: #ffffff;
-
-  border-radius: 18px;
-
-  overflow: hidden;
-
-  cursor: pointer;
-
-  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-
-  transition: 0.25s ease;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transition:0.3s;
+    cursor:pointer;
 }
 
 .program-card:hover{
-  transform: translateY(-5px);
-
-  box-shadow: 0 12px 22px rgba(0,0,0,0.14);
+    transform:translateY(-5px);
 }
 
-/* ===== IMAGE ===== */
-
-.program-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
+.program-card img{
+    width:100%;
+    height:210px;
+    object-fit:cover;
 }
 
-/* ===== TEXT ===== */
+/* ---------- CARD CONTENT ---------- */
 
-.program-text{
-  padding: 16px;
+.card-content{
+    padding:18px;
+    text-align:center;
 }
 
-.program-text h4{
-  margin-bottom: 10px;
-  color: #0b3c5d;
-  font-size: 20px;
+.card-content h3{
+    margin:0;
+    color:#123456;
+    font-size:22px;
 }
 
-.program-text p{
-  color: #666;
-  line-height: 1.6;
-  font-size: 14px;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-
-  overflow: hidden;
+.tap-text{
+    margin-top:8px;
+    font-size:13px;
+    color:#777;
+    font-weight:500;
 }
 
-/* ===== MODAL ===== */
+/* ---------- DESCRIPTION ---------- */
 
-.modal{
-  display: none;
-
-  position: fixed;
-
-  z-index: 999;
-
-  left: 0;
-  top: 0;
-
-  width: 100%;
-  height: 100%;
-
-  overflow-y: auto;
-
-  background: rgba(0,0,0,0.65);
-
-  padding: 20px;
+.program-description{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.4s ease, padding 0.3s ease;
+    padding:0 18px;
+    color:#555;
+    line-height:1.6;
+    font-size:14px;
 }
 
-.modal-content{
-  background: white;
-
-  max-width: 750px;
-
-  margin: auto;
-
-  border-radius: 20px;
-
-  overflow: hidden;
-
-  animation: popup 0.3s ease;
+.program-card.active .program-description{
+    max-height:250px;
+    padding:0 18px 18px;
 }
 
-.modal-content img{
-  width: 100%;
-  max-height: 450px;
-  object-fit: cover;
-}
+/* ---------- MOBILE ---------- */
 
-.modal-text{
-  padding: 22px;
-}
+@media(max-width:600px){
 
-.modal-text h2{
-  color: #0b3c5d;
-  margin-bottom: 14px;
-}
+    body{
+        padding:12px;
+    }
 
-.modal-text p{
-  line-height: 1.8;
-  color: #555;
-}
+    .section-title{
+        font-size:26px;
+    }
 
-/* ===== CLOSE BUTTON ===== */
+    .year-header{
+        font-size:18px;
+        padding:16px;
+    }
 
-.close-btn{
-  position: fixed;
+    .program-card img{
+        height:190px;
+    }
 
-  top: 18px;
-  right: 24px;
-
-  font-size: 36px;
-
-  color: white;
-
-  cursor: pointer;
-
-  z-index: 1000;
-}
-
-/* ===== LOADER ===== */
-
-.loader{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 60px 0;
-}
-
-.dots{
-  display: flex;
-  gap: 10px;
-}
-
-.dots span{
-  width: 12px;
-  height: 12px;
-
-  background: #ffd700;
-
-  border-radius: 50%;
-
-  animation: bounce 1.4s infinite ease-in-out both;
-}
-
-.dots span:nth-child(1){
-  animation-delay: -0.32s;
-}
-
-.dots span:nth-child(2){
-  animation-delay: -0.16s;
-}
-
-.loader p{
-  color: #666;
-}
-
-/* ===== ANIMATIONS ===== */
-
-@keyframes bounce{
-  0%, 80%, 100%{
-    transform: scale(0);
-  }
-
-  40%{
-    transform: scale(1);
-  }
-}
-
-@keyframes popup{
-  from{
-    transform: scale(0.9);
-    opacity: 0;
-  }
-
-  to{
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn{
-  from{
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-
-  to{
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== MOBILE ===== */
-
-@media (max-width: 600px){
-
-  .programs-section h2{
-    font-size: 28px;
-  }
-
-  .program-card img{
-    height: 190px;
-  }
-
-  .year-header span{
-    font-size: 18px;
-  }
 }
 
 </style>
 </head>
-
 <body>
 
-<header>
+<h1 class="section-title">✨ OCYM Programs</h1>
 
-  <div class="header-box">
-    <img src="images/logo.png" class="logo">
+<!-- YEAR SECTION -->
 
-    <h1>OCYM Kollam</h1>
+<div class="year-toggle active">
 
-    <p class="subtitle">
-      Orthodox Christian Youth Movement
-    </p>
-
-    <p class="diocese">
-      Kollam Diocese
-    </p>
-  </div>
-
-  <nav>
-    <a href="index.html">Home</a>
-
-    <a href="about.html">About</a>
-
-    <a href="notice.html">Notice</a>
-
-    <a href="registration.html">
-      Registration
-    </a>
-
-    <a href="programs.html"
-       class="active">
-      Programs
-    </a>
-
-    <a href="contact.html">Contact</a>
-  </nav>
-
-</header>
-
-<main>
-
-<section class="programs-section">
-
-  <h2>✨ OCYM Programs</h2>
-
-  <div id="programsContainer">
-
-    <div class="loader">
-
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <p>Loading Programs...</p>
-
+    <div class="year-header" onclick="toggleYear(this)">
+        <span>2025 - 26</span>
+        <span class="arrow">▼</span>
     </div>
 
-  </div>
+    <div class="program-grid">
 
-</section>
+        <!-- CARD 1 -->
 
-</main>
+        <div class="program-card" onclick="toggleCard(this)">
 
-<footer>
-  <p>© 2026 OCYM Kollam</p>
-</footer>
+            <img src="images/program1.jpg" alt="Saint George">
 
-<!-- ===== MODAL ===== -->
+            <div class="card-content">
+                <h3>Saint George</h3>
+                <div class="tap-text">Tap to view</div>
+            </div>
 
-<div id="programModal" class="modal">
+            <div class="program-description">
+                Saint George is honored as a Christian martyr and military saint.
+                This program focuses on faith, courage, leadership, and youth activities.
+            </div>
 
-  <span class="close-btn"
-        onclick="closeModal()">
-    &times;
-  </span>
+        </div>
 
-  <div class="modal-content">
+        <!-- CARD 2 -->
 
-    <img id="modalImage">
+        <div class="program-card" onclick="toggleCard(this)">
 
-    <div class="modal-text">
+            <img src="images/program2.jpg" alt="Youth Meet">
 
-      <h2 id="modalTitle"></h2>
+            <div class="card-content">
+                <h3>Youth Meet</h3>
+                <div class="tap-text">Tap to view</div>
+            </div>
 
-      <p id="modalDesc"></p>
+            <div class="program-description">
+                A gathering for youth members including games, prayer,
+                workshops, and fellowship activities.
+            </div>
+
+        </div>
 
     </div>
-
-  </div>
 
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
+/* ---------- YEAR TOGGLE ---------- */
 
-fetch(API_URL)
+function toggleYear(header){
 
-.then(res => res.json())
+    const parent = header.parentElement;
 
-.then(data => {
+    parent.classList.toggle("active");
 
-  const container =
-  document.getElementById("programsContainer");
+    const grid = parent.querySelector(".program-grid");
 
-  container.innerHTML = "";
-
-  let years = {};
-
-  // ===== GROUP BY YEAR =====
-
-  data.forEach(item => {
-
-    if(!years[item.year]){
-      years[item.year] = [];
+    if(grid.style.display === "grid"){
+        grid.style.display = "none";
+    }else{
+        grid.style.display = "grid";
     }
 
-    years[item.year].push(item);
-
-  });
-
-  // ===== RENDER YEARS =====
-
-  Object.keys(years)
-
-  .sort()
-
-  .reverse()
-
-  .forEach(year => {
-
-    let cards = "";
-
-    years[year].forEach(p => {
-
-      const image =
-      p.image || "images/logo.png";
-
-      cards += `
-
-      <div class="program-card"
-
-      onclick="openModal(
-      '${p.title.replace(/'/g, "\\'")}',
-      '${image}',
-      '${p.description.replace(/'/g, "\\'")}'
-      )">
-
-        <img src="${image}"
-        alt="${p.title}"
-
-        onerror="
-        this.src='images/logo.png'
-        ">
-
-        <div class="program-text">
-
-          <h4>${p.title}</h4>
-
-          <p>${p.description}</p>
-
-        </div>
-
-      </div>
-
-      `;
-
-    });
-
-    container.innerHTML += `
-
-    <div class="year-block">
-
-      <div class="year-header"
-           onclick="toggleYear(this)">
-
-        <span>${year}</span>
-
-        <span class="arrow">▼</span>
-
-      </div>
-
-      <div class="year-content">
-
-        <div class="program-grid">
-
-          ${cards}
-
-        </div>
-
-      </div>
-
-    </div>
-
-    `;
-
-  });
-
-})
-
-.catch(() => {
-
-  document.getElementById(
-  "programsContainer")
-
-  .innerHTML =
-
-  `
-  <p style="text-align:center;">
-    ❌ Unable to load programs.
-  </p>
-  `;
-
-});
-
-// ===== TOGGLE =====
-
-function toggleYear(el){
-
-  el.parentElement
-    .classList.toggle("open");
 }
 
-// ===== MODAL =====
+/* ---------- CARD DESCRIPTION ---------- */
 
-function openModal(title, image, desc){
+function toggleCard(card){
 
-  document.getElementById(
-  "programModal")
+    card.classList.toggle("active");
 
-  .style.display = "block";
-
-  document.getElementById(
-  "modalTitle")
-
-  .innerText = title;
-
-  document.getElementById(
-  "modalImage")
-
-  .src = image;
-
-  document.getElementById(
-  "modalDesc")
-
-  .innerText = desc;
-}
-
-function closeModal(){
-
-  document.getElementById(
-  "programModal")
-
-  .style.display = "none";
-}
-
-// ===== CLOSE OUTSIDE =====
-
-window.onclick = function(e){
-
-  const modal =
-  document.getElementById(
-  "programModal");
-
-  if(e.target == modal){
-    closeModal();
-  }
 }
 
 </script>
