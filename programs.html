@@ -3,164 +3,391 @@
 <head>
 <meta charset="UTF-8">
 <title>Programs - OCYM Kollam</title>
-<link rel="icon" type="image/png" href="images/logo.png">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<meta name="description"
+content="OCYM Kollam Programs and Events">
+
+<link rel="icon"
+type="image/png"
+href="images/logo.png">
+
 <link rel="stylesheet" href="style.css">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ===== PROGRAMS PAGE ONLY ===== */
 
-.programs-section {
+/* ===== PROGRAMS PAGE ===== */
+
+.programs-section{
   padding: 30px 15px;
-  max-width: 900px;
+  max-width: 1100px;
   margin: auto;
 }
 
-.programs-section h2 {
+.programs-section h2{
   text-align: center;
   color: #0b3c5d;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 34px;
 }
 
-/* YEAR BLOCK */
+/* ===== YEAR BLOCK ===== */
 
-.year-block {
-  margin-bottom: 18px;
+.year-block{
+  margin-bottom: 22px;
 }
 
-.year-header {
+.year-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   background: #ffffff;
-  padding: 12px 14px;
+
+  padding: 14px 18px;
+
   border-left: 6px solid #ffd700;
-  border-radius: 12px;
+
+  border-radius: 14px;
+
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  transition: 0.25s ease;
 }
 
-.year-header span {
+.year-header:hover{
+  transform: translateY(-2px);
+}
+
+.year-header span{
+  font-size: 20px;
   font-weight: 600;
   color: #0b3c5d;
 }
 
-.year-header .arrow {
+.arrow{
   transition: transform 0.3s ease;
 }
 
-/* COLLAPSE */
-
-.year-content {
-  display: none;
-  margin-top: 14px;
-}
-
-.year-block.open .year-content {
-  display: block;
-}
-
-.year-block.open .arrow {
+.year-block.open .arrow{
   transform: rotate(180deg);
 }
 
-/* PROGRAM CARD */
+/* ===== COLLAPSE ===== */
 
-.program-card {
+.year-content{
+  display: none;
+  margin-top: 18px;
+}
+
+.year-block.open .year-content{
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===== GRID ===== */
+
+.program-grid{
+  display: grid;
+
+  grid-template-columns:
+  repeat(auto-fit, minmax(260px, 1fr));
+
+  gap: 20px;
+}
+
+/* ===== PROGRAM CARD ===== */
+
+.program-card{
   background: #ffffff;
-  padding: 14px;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+
+  transition: 0.25s ease;
+}
+
+.program-card:hover{
+  transform: translateY(-5px);
+
+  box-shadow: 0 12px 22px rgba(0,0,0,0.14);
+}
+
+/* ===== IMAGE ===== */
+
+.program-card img{
+  width: 100%;
+  height: 220px;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+/* ===== TEXT ===== */
+
+.program-text{
+  padding: 16px;
+}
+
+.program-text h4{
+  margin-bottom: 10px;
+  color: #0b3c5d;
+  font-size: 20px;
+}
+
+.program-text p{
+  color: #666;
+  line-height: 1.6;
+  font-size: 14px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+/* ===== MODAL ===== */
+
+.modal{
+  display: none;
+
+  position: fixed;
+
+  z-index: 999;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow-y: auto;
+
+  background: rgba(0,0,0,0.65);
+
+  padding: 20px;
+}
+
+.modal-content{
+  background: white;
+
+  max-width: 750px;
+
+  margin: auto;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  animation: popup 0.3s ease;
+}
+
+.modal-content img{
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+}
+
+.modal-text{
+  padding: 22px;
+}
+
+.modal-text h2{
+  color: #0b3c5d;
   margin-bottom: 14px;
 }
 
-/* IMAGE (OPTIONAL) */
-
-.program-card img {
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-/* TEXT */
-
-.program-card h4 {
-  margin: 8px 0;
-  color: #0b3c5d;
-}
-
-.program-card p {
-  font-size: 14px;
+.modal-text p{
+  line-height: 1.8;
   color: #555;
-  line-height: 1.6;
 }
 
-/* FIX DESKTOP MODE WEIRD EXPAND */
+/* ===== CLOSE BUTTON ===== */
 
-.year-content {
-  max-width: 900px;
-  margin: 14px auto 0;
-  padding: 0 10px;
+.close-btn{
+  position: fixed;
+
+  top: 18px;
+  right: 24px;
+
+  font-size: 36px;
+
+  color: white;
+
+  cursor: pointer;
+
+  z-index: 1000;
 }
 
-@media (min-width: 768px) {
-  .program-card {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
+/* ===== LOADER ===== */
+
+.loader{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 60px 0;
+}
+
+.dots{
+  display: flex;
+  gap: 10px;
+}
+
+.dots span{
+  width: 12px;
+  height: 12px;
+
+  background: #ffd700;
+
+  border-radius: 50%;
+
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dots span:nth-child(1){
+  animation-delay: -0.32s;
+}
+
+.dots span:nth-child(2){
+  animation-delay: -0.16s;
+}
+
+.loader p{
+  color: #666;
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes bounce{
+  0%, 80%, 100%{
+    transform: scale(0);
   }
 
-  .program-card img {
-    width: 40%;
-    max-height: 240px;
-  }
-
-  .program-card h4,
-  .program-card p {
-    width: 60%;
+  40%{
+    transform: scale(1);
   }
 }
+
+@keyframes popup{
+  from{
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn{
+  from{
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px){
+
+  .programs-section h2{
+    font-size: 28px;
+  }
+
+  .program-card img{
+    height: 190px;
+  }
+
+  .year-header span{
+    font-size: 18px;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
+
   <div class="header-box">
     <img src="images/logo.png" class="logo">
+
     <h1>OCYM Kollam</h1>
-    <p class="subtitle">Orthodox Christian Youth Movement</p>
-    <p class="diocese">Kollam Diocese</p>
+
+    <p class="subtitle">
+      Orthodox Christian Youth Movement
+    </p>
+
+    <p class="diocese">
+      Kollam Diocese
+    </p>
   </div>
 
   <nav>
     <a href="index.html">Home</a>
+
     <a href="about.html">About</a>
-    <a href="notice.html">Notice</a> 
-    <a href="registration.html">Registration</a>
-    <a href="programs.html" class="active">Programs</a>
+
+    <a href="notice.html">Notice</a>
+
+    <a href="registration.html">
+      Registration
+    </a>
+
+    <a href="programs.html"
+       class="active">
+      Programs
+    </a>
+
     <a href="contact.html">Contact</a>
   </nav>
+
 </header>
 
 <main>
 
 <section class="programs-section">
+
   <h2>✨ OCYM Programs</h2>
+
   <div id="programsContainer">
-  <div class="loader">
-  <div class="dots">
-    <span></span>
-    <span></span>
-    <span></span>
+
+    <div class="loader">
+
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <p>Loading Programs...</p>
+
+    </div>
+
   </div>
-  <p>Loading…</p>
-  </div>
-  </div>
+
 </section>
 
 </main>
@@ -169,66 +396,209 @@
   <p>© 2026 OCYM Kollam</p>
 </footer>
 
+<!-- ===== MODAL ===== -->
+
+<div id="programModal" class="modal">
+
+  <span class="close-btn"
+        onclick="closeModal()">
+    &times;
+  </span>
+
+  <div class="modal-content">
+
+    <img id="modalImage">
+
+    <div class="modal-text">
+
+      <h2 id="modalTitle"></h2>
+
+      <p id="modalDesc"></p>
+
+    </div>
+
+  </div>
+
+</div>
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
 
 fetch(API_URL)
-  .then(res => res.json())
-  .then(data => {
 
-    const container = document.getElementById("programsContainer");
-    container.innerHTML = "";
+.then(res => res.json())
 
-    let years = {};
+.then(data => {
 
-    // group by year
-    data.forEach(item => {
-      if (!years[item.year]) years[item.year] = [];
-      years[item.year].push(item);
-    });
+  const container =
+  document.getElementById("programsContainer");
 
-    // render years
-    Object.keys(years).sort().reverse().forEach(year => {
+  container.innerHTML = "";
 
-      let programsHTML = "";
+  let years = {};
 
-      years[year].forEach(p => {
+  // ===== GROUP BY YEAR =====
 
-        // image optional
-        const imageHTML = p.image
-          ? `<img src="${p.image}" alt="${p.title}" onerror="this.style.display='none'">`
-          : "";
+  data.forEach(item => {
 
-        programsHTML += `
-          <div class="program-card">
-            ${imageHTML}
-            <h4>${p.title}</h4>
-            <p>${p.description}</p>
-          </div>
-        `;
-      });
+    if(!years[item.year]){
+      years[item.year] = [];
+    }
 
-      container.innerHTML += `
-        <div class="year-block">
-          <div class="year-header" onclick="toggleYear(this)">
-            <span>${year} </span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="year-content">
-            ${programsHTML}
-          </div>
-        </div>
-      `;
-    });
-  })
-  .catch(() => {
-    document.getElementById("programsContainer").innerHTML =
-      "<p>❌ Unable to load programs.</p>";
+    years[item.year].push(item);
+
   });
 
-function toggleYear(el) {
-  el.parentElement.classList.toggle("open");
+  // ===== RENDER YEARS =====
+
+  Object.keys(years)
+
+  .sort()
+
+  .reverse()
+
+  .forEach(year => {
+
+    let cards = "";
+
+    years[year].forEach(p => {
+
+      const image =
+      p.image || "images/logo.png";
+
+      cards += `
+
+      <div class="program-card"
+
+      onclick="openModal(
+      '${p.title.replace(/'/g, "\\'")}',
+      '${image}',
+      '${p.description.replace(/'/g, "\\'")}'
+      )">
+
+        <img src="${image}"
+        alt="${p.title}"
+
+        onerror="
+        this.src='images/logo.png'
+        ">
+
+        <div class="program-text">
+
+          <h4>${p.title}</h4>
+
+          <p>${p.description}</p>
+
+        </div>
+
+      </div>
+
+      `;
+
+    });
+
+    container.innerHTML += `
+
+    <div class="year-block">
+
+      <div class="year-header"
+           onclick="toggleYear(this)">
+
+        <span>${year}</span>
+
+        <span class="arrow">▼</span>
+
+      </div>
+
+      <div class="year-content">
+
+        <div class="program-grid">
+
+          ${cards}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    `;
+
+  });
+
+})
+
+.catch(() => {
+
+  document.getElementById(
+  "programsContainer")
+
+  .innerHTML =
+
+  `
+  <p style="text-align:center;">
+    ❌ Unable to load programs.
+  </p>
+  `;
+
+});
+
+// ===== TOGGLE =====
+
+function toggleYear(el){
+
+  el.parentElement
+    .classList.toggle("open");
 }
+
+// ===== MODAL =====
+
+function openModal(title, image, desc){
+
+  document.getElementById(
+  "programModal")
+
+  .style.display = "block";
+
+  document.getElementById(
+  "modalTitle")
+
+  .innerText = title;
+
+  document.getElementById(
+  "modalImage")
+
+  .src = image;
+
+  document.getElementById(
+  "modalDesc")
+
+  .innerText = desc;
+}
+
+function closeModal(){
+
+  document.getElementById(
+  "programModal")
+
+  .style.display = "none";
+}
+
+// ===== CLOSE OUTSIDE =====
+
+window.onclick = function(e){
+
+  const modal =
+  document.getElementById(
+  "programModal");
+
+  if(e.target == modal){
+    closeModal();
+  }
+}
+
 </script>
 
 </body>
