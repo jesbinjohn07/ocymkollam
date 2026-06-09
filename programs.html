@@ -2,107 +2,237 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Programs - OCYM Kollam</title>
+<link rel="icon" type="image/png" href="images/logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OCYM Programs</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+/* ===== PROGRAMS PAGE ONLY ===== */
 
-/* ---------- PAGE ---------- */
-
-body{
-    margin:0;
-    padding:20px;
-    font-family: 'Poppins', sans-serif;
-    background:#f4f6fa;
+.programs-section {
+  padding: 30px 15px;
+  max-width: 900px;
+  margin: auto;
 }
 
-/* ---------- SECTION TITLE ---------- */
-
-.section-title{
-    text-align:center;
-    font-size:32px;
-    color:#123456;
-    margin-bottom:30px;
+.programs-section h2 {
+  text-align: center;
+  color: #0b3c5d;
+  margin-bottom: 20px;
 }
 
-/* ---------- YEAR TOGGLE ---------- */
+/* YEAR BLOCK */
 
-.year-toggle{
-    margin-bottom:25px;
-    border-radius:16px;
-    overflow:hidden;
-    background:white;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+.year-block {
+  margin-bottom: 18px;
 }
 
-.year-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 22px;
-    cursor:pointer;
-    background:linear-gradient(135deg,#0b3b63,#114d82);
-    color:white;
-    font-size:20px;
-    font-weight:600;
-    transition:0.3s;
+.year-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 14px;
+  border-left: 6px solid #ffd700;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.year-header:hover{
-    opacity:0.95;
+.year-header span {
+  font-weight: 600;
+  color: #0b3c5d;
 }
 
-.arrow{
-    transition:0.3s;
-    font-size:18px;
+.year-header .arrow {
+  transition: transform 0.3s ease;
 }
 
-.year-toggle.active .arrow{
-    transform:rotate(180deg);
+/* COLLAPSE */
+
+.year-content {
+  display: none;
+  margin-top: 14px;
 }
 
-/* ---------- PROGRAM GRID ---------- */
-
-.program-grid{
-    display:none;
-    padding:22px;
-    gap:22px;
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,320px));
-    justify-content:center;
+.year-block.open .year-content {
+  display: block;
 }
 
-/* ---------- PROGRAM CARD ---------- */
-
-.program-card{
-    background:white;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    transition:0.3s;
-    cursor:pointer;
+.year-block.open .arrow {
+  transform: rotate(180deg);
 }
 
-.program-card:hover{
-    transform:translateY(-5px);
+/* PROGRAM CARD */
+
+.program-card {
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 14px;
 }
 
-.program-card img{
-    width:100%;
-    height:210px;
-    object-fit:cover;
+/* IMAGE (OPTIONAL) */
+
+.program-card img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
-/* ---------- CARD CONTENT ---------- */
+/* TEXT */
 
-.card-content{
-    padding:18px;
-    text-align:center;
+.program-card h4 {
+  margin: 8px 0;
+  color: #0b3c5d;
 }
 
-.card-content h3{
+.program-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* FIX DESKTOP MODE WEIRD EXPAND */
+
+.year-content {
+  max-width: 900px;
+  margin: 14px auto 0;
+  padding: 0 10px;
+}
+
+@media (min-width: 768px) {
+  .program-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .program-card img {
+    width: 40%;
+    max-height: 240px;
+  }
+
+  .program-card h4,
+  .program-card p {
+    width: 60%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-box">
+    <img src="images/logo.png" class="logo">
+    <h1>OCYM Kollam</h1>
+    <p class="subtitle">Orthodox Christian Youth Movement</p>
+    <p class="diocese">Kollam Diocese</p>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="notice.html">Notice</a> 
+    <a href="registration.html">Registration</a>
+    <a href="programs.html" class="active">Programs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="programs-section">
+  <h2>✨ OCYM Programs</h2>
+  <div id="programsContainer">
+  <div class="loader">
+  <div class="dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <p>Loading…</p>
+  </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 OCYM Kollam</p>
+</footer>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
+
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => {
+
+    const container = document.getElementById("programsContainer");
+    container.innerHTML = "";
+
+    let years = {};
+
+    // group by year
+    data.forEach(item => {
+      if (!years[item.year]) years[item.year] = [];
+      years[item.year].push(item);
+    });
+
+    // render years
+    Object.keys(years).sort().reverse().forEach(year => {
+
+      let programsHTML = "";
+
+      years[year].forEach(p => {
+
+        // image optional
+        const imageHTML = p.image
+          ? `<img src="${p.image}" alt="${p.title}" onerror="this.style.display='none'">`
+          : "";
+
+        programsHTML += `
+          <div class="program-card">
+            ${imageHTML}
+            <h4>${p.title}</h4>
+            <p>${p.description}</p>
+          </div>
+        `;
+      });
+
+      container.innerHTML += `
+        <div class="year-block">
+          <div class="year-header" onclick="toggleYear(this)">
+            <span>${year} </span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="year-content">
+            ${programsHTML}
+          </div>
+        </div>
+      `;
+    });
+  })
+  .catch(() => {
+    document.getElementById("programsContainer").innerHTML =
+      "<p>❌ Unable to load programs.</p>";
+  });
+
+function toggleYear(el) {
+  el.parentElement.classList.toggle("open");
+}
+</script>
+
+</body>
+</html>.card-content h3{
     margin:0;
     color:#123456;
     font-size:22px;
