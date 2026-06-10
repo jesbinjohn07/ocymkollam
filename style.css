@@ -174,7 +174,6 @@ nav a.active {
   text-align: center;
   color: #0b3c5d;
 }
-
 /* ===== OFFICE BEARERS PROFESSIONAL LAYOUT ===== */
 
 .office-section {
@@ -184,46 +183,97 @@ nav a.active {
 
 .office-section h2 {
   color: #0b3c5d;
-  margin-bottom: 25px;
+  margin-bottom: 28px;
 }
+
+/* GRID */
 
 .office-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
-  gap: 18px;
-  max-width: 900px;
+
+  /* 4 equal cards in desktop */
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 16px;
+
+  max-width: 1200px;
   margin: auto;
-  justify-content: center;
 }
+
+/* CARD */
 
 .office-card {
   background: white;
-  padding: 18px;
-  border-radius: 14px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
+
+  padding: 18px 14px;
+
+  border-radius: 16px;
+
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+
+  transition: 0.25s ease;
 }
 
 .office-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.12);
 }
 
 .office-card h3 {
   color: #0b3c5d;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+
+  font-size: 18px;
 }
 
 .office-card .name {
-  font-weight: 500;
-  margin: 4px 0;
+  font-size: 15px;
+  margin: 5px 0;
 }
 
 .office-card .phone a {
   text-decoration: none;
   color: #0b3c5d;
   font-weight: 600;
+  font-size: 14px;
 }
 
+/* TABLET */
+
+@media (max-width: 900px) {
+
+  .office-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .office-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .office-card {
+    padding: 14px 10px;
+  }
+
+  .office-card h3 {
+    font-size: 15px;
+  }
+
+  .office-card .name {
+    font-size: 13px;
+  }
+
+  .office-card .phone a {
+    font-size: 12px;
+  }
+
+}
 
 /* ===== REGISTRATION FORM ===== */
 
