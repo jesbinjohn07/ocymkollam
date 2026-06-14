@@ -909,5 +909,92 @@ main {
   from { transform: scale(0.7); opacity: 0 }
   to   { transform: scale(1); opacity: 1 }
     }
+/* =========================
+   SOCIAL MEDIA SECTION
+========================= */
 
+.social-section{
+  padding: 35px 15px;
+  text-align: center;
+}
+
+.social-section h2{
+  color: #0b3c5d;
+  margin-bottom: 22px;
+}
+
+/* LINKS */
+
+.social-links{
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* CARD */
+
+.social-card{
+  background: white;
+
+  width: 160px;
+
+  padding: 18px 15px;
+
+  border-radius: 18px;
+
+  text-decoration: none;
+
+  color: #0b3c5d;
+
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+
+  transition: 0.3s ease;
+}
+
+.social-card:hover{
+  transform: translateY(-5px);
+}
+
+/* ICON */
+
+.social-card img{
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  margin-bottom: 10px;
+}
+
+/* TEXT */
+
+.social-card span{
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* FACEBOOK */
+
+.facebook:hover{
+  box-shadow: 0 8px 20px rgba(24,119,242,0.25);
+}
+
+/* INSTAGRAM */
+
+.instagram:hover{
+  box-shadow: 0 8px 20px rgba(225,48,108,0.25);
+}
+
+/* MOBILE */
+
+@media (max-width:600px){
+
+  .social-card{
+    width: 140px;
+    padding: 16px 12px;
+  }
+
+}
 
