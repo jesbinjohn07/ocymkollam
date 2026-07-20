@@ -1,98 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<title>About OCYM Kollam</title>
-<link rel="icon" type="image/png" href="images/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About OCYM Kollam</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-box">
-    <img src="images/logo.png" class="logo" alt="OCYM Logo">
-    <h1>OCYM Kollam</h1>
-    <p class="subtitle">Orthodox Christian Youth Movement</p>
-    <p class="diocese">Kollam Diocese</p>
-  </div>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html" class="active">About</a>
-    <a href="notice.html">Notice</a>
-    <a href="registration.html">Registration</a>
-    <a href="programs.html" >Programs</a>
-    <a href="contact.html">Contact</a>
-    
-  </nav>
-</header>
-
-<!-- ABOUT CONTENT -->
-<section class="about-home">
-  <h2>About OCYM Kollam</h2>
-
-  <p>
-    Orthodox Christian Youth Movement (OCYM) Kollam is a dynamic youth organization
-    functioning under the Malankara Orthodox Syrian Church. It aims to nurture young
-    minds with spiritual discipline, leadership qualities, and strong moral values.
-  </p>
-
-  <p>
-    OCYM Kollam actively engages in prayer meetings, leadership camps, cultural
-    programs, social service activities, charity initiatives, and youth gatherings
-    that strengthen unity and fellowship among young members.
-  </p>
-
-  <p>
-    Through faith, service, and commitment, OCYM Kollam strives to build responsible
-    citizens who live according to Christian values while contributing positively to
-    society.
-  </p>
-
-</section>
-
-<hr>
-
-<section class="office-section">
-  <h2>Office Bearers – OCYM Kollam Diocese</h2>
-
-  <div class="office-grid">
-
-    <div class="office-card">
-      <h3>Vice President</h3>
-      <p class="name">Fr. Mathew P. George</p>
-      <p class="phone">📞 <a href="tel:+918848963115">+91 88489 63115</a></p>
+  <!-- HEADER -->
+  <header>
+    <div class="header-box">
+      <!-- Logo Container with fallback -->
+      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
+        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display:none; width: 70px; height: 70px;">
+          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
+            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <h1>OCYM Kollam</h1>
+      <p class="subtitle">Orthodox Christian Youth Movement</p>
+      <p class="diocese">Kollam Diocese</p>
     </div>
 
-    <div class="office-card">
-      <h3>General Secretary</h3>
-      <p class="name">Liju Thomas</p>
-      <p class="phone">📞 <a href="tel:+919446227479">+91 94462 27479</a></p>
-    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="notice.html">Notice</a>
+      <a href="registration.html">Registration</a>
+      <a href="programs.html">Programs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-    <div class="office-card">
-      <h3>Treasurer</h3>
-      <p class="name">Santhosh Thomas</p>
-      <p class="phone">📞 <a href="tel:+918113868512">+91 81138 68512</a></p>
-    </div>
+  <main>
+    <!-- ABOUT CONTENT -->
+    <section class="about-home" style="margin-top: 40px;">
+      <h2>About OCYM Kollam</h2>
 
-    <div class="office-card">
-      <h3>Joint Secretary</h3>
-      <p class="name">Abel T Jose</p>
-      <p class="name">Jincy Babu</p>
-    </div>
+      <p>
+        Orthodox Christian Youth Movement (OCYM) Kollam is a dynamic youth organization
+        functioning under the Malankara Orthodox Syrian Church. It aims to nurture young
+        minds with spiritual discipline, leadership qualities, and strong moral values.
+      </p>
 
-  </div>
-</section>
+      <p>
+        OCYM Kollam actively engages in prayer meetings, leadership camps, cultural
+        programs, social service activities, charity initiatives, and youth gatherings
+        that strengthen unity and fellowship among young members.
+      </p>
 
-  
+      <p>
+        Through faith, service, and commitment, OCYM Kollam strives to build responsible
+        citizens who live according to Christian values while contributing positively to
+        society.
+      </p>
+    </section>
 
-<footer>
-  <p>© 2026 OCYM Kollam | All Rights Reserved</p>
-</footer>
+    <hr>
+
+    <!-- OFFICE BEARERS -->
+    <section class="office-section">
+      <h2>Office Bearers – OCYM Kollam Diocese</h2>
+
+      <div class="office-grid">
+        <!-- Card 1 -->
+        <div class="office-card">
+          <!-- Small Avatar Fallback Icon -->
+          <div style="width: 50px; height: 50px; margin: 0 auto 15px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 24px; height: 24px;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <h3>Vice President</h3>
+          <p class="name">Fr. Mathew P. George</p>
+          <p class="phone">
+            <a href="tel:+918848963115">📞 +91 88489 63115</a>
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="office-card">
+          <div style="width: 50px; height: 50px; margin: 0 auto 15px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 24px; height: 24px;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <h3>General Secretary</h3>
+          <p class="name">Liju Thomas</p>
+          <p class="phone">
+            <a href="tel:+919446227479">📞 +91 94462 27479</a>
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="office-card">
+          <div style="width: 50px; height: 50px; margin: 0 auto 15px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 24px; height: 24px;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <h3>Treasurer</h3>
+          <p class="name">Santhosh Thomas</p>
+          <p class="phone">
+            <a href="tel:+918113868512">📞 +91 81138 68512</a>
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="office-card">
+          <div style="width: 50px; height: 50px; margin: 0 auto 15px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 24px; height: 24px;">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <h3>Joint Secretaries</h3>
+          <p class="name" style="margin-bottom: 2px;">Abel T Jose</p>
+          <p class="name" style="margin-top: 2px;">Jincy Babu</p>
+          <p class="phone" style="visibility: hidden; margin-top: 15px; margin-bottom: 0;">
+            <span style="padding: 6px 14px; font-size: 14px;">Placeholder</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+  </footer>
 
 </body>
 </html>

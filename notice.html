@@ -1,92 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<title>Notice Board - OCYM Kollam</title>
-<link rel="icon" type="image/png" href="images/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notice Board - OCYM Kollam</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-box">
-    <img src="images/logo.png" class="logo" alt="OCYM Logo">
-    <h1>OCYM Kollam</h1>
-    <p class="subtitle">Orthodox Christian Youth Movement</p>
-    <p class="diocese">Kollam Diocese</p>
-  </div>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="notice.html" class="active">Notice</a>
-    <a href="registration.html">Registration</a>
-    <a href="programs.html" >Programs</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
-
-<!-- NOTICE BOARD -->
-<main class="notice-page">
-  <h2>📌 Notice Board</h2>
-  <div id="noticeList">
-  <div class="loader">
-    <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
+  <!-- HEADER -->
+  <header>
+    <div class="header-box">
+      <!-- Logo Container with fallback -->
+      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
+        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display:none; width: 70px; height: 70px;">
+          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
+            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <h1>OCYM Kollam</h1>
+      <p class="subtitle">Orthodox Christian Youth Movement</p>
+      <p class="diocese">Kollam Diocese</p>
     </div>
-    <p>Loading notices…</p>
-  </div>
-  </div>
-</main>
 
-<footer>
-  <p>© 2026 OCYM Kollam | All Rights Reserved</p>
-</footer>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="notice.html" class="active">Notice</a>
+      <a href="registration.html">Registration</a>
+      <a href="programs.html">Programs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-<!-- FETCH NOTICES -->
-<script>
-function formatDate(d){
-  const date = new Date(d);
-  return date.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
-}
+  <main class="notice-page">
+    <h2>📌 Notice Board</h2>
+    
+    <div id="noticeList">
+      <!-- Premium Bouncing Loader -->
+      <div class="loader">
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p>Loading notices from board…</p>
+      </div>
+    </div>
+  </main>
 
-fetch("https://script.google.com/macros/s/AKfycbwov2uYpuDq-ljlf1Fv6MnV4s5Xl1bb4pVHrbS1T3JktmAEqWhvPLNDrVn6V-KVjt4cFQ/exec")
-  .then(res => res.json())
-  .then(data => {
-    const box = document.getElementById("noticeList");
-    box.innerHTML = ""; // clear loading text
+  <footer>
+    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+  </footer>
 
-    if (!data || data.length === 0) {
-      box.innerHTML = "<p>No notices available.</p>";
-      return;
+  <!-- FETCH NOTICES -->
+  <script>
+    function formatDate(d){
+      const date = new Date(d);
+      return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
     }
 
-    // Reverse order so newest shows first
-    data.reverse().forEach(n => {
-      box.innerHTML += `
-        <div class="notice-card">
-          <h3>${n.title}</h3>
-          <p class="date">${formatDate(n.date)}</p>
-          <p>${n.message}</p>
-          ${n.link ? `<a href="${n.link}" target="_blank" class="notice-btn">${n.button || "Open"}</a>` : ""}
-        </div>
-      `;
-    });
-  })
-  .catch(err => {
-    document.getElementById("noticeList").innerHTML = "<p>Unable to load notices.</p>";
-    console.error(err);
-  });
-</script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwov2uYpuDq-ljlf1Fv6MnV4s5Xl1bb4pVHrbS1T3JktmAEqWhvPLNDrVn6V-KVjt4cFQ/exec";
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        const box = document.getElementById("noticeList");
+        box.innerHTML = ""; // clear loading loader
+
+        if (!data || data.length === 0) {
+          box.innerHTML = `
+            <div class="empty-state">
+              <p>📭 No notices currently posted on the board.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Reverse order so newest shows first
+        data.reverse().forEach(n => {
+          const buttonHtml = n.link 
+            ? `<a href="${n.link}" target="_blank" class="notice-btn">${n.button || "View Details"}</a>` 
+            : "";
+            
+          box.innerHTML += `
+            <div class="notice-card" style="animation: fadeIn 0.4s ease;">
+              <h3>${n.title}</h3>
+              <p class="date">${formatDate(n.date)}</p>
+              <p>${n.message}</p>
+              ${buttonHtml}
+            </div>
+          `;
+        });
+      })
+      .catch(err => {
+        document.getElementById("noticeList").innerHTML = `
+          <div class="empty-state" style="border-color: #ef4444;">
+            <p>❌ Unable to load notices. Please check your internet connection and try again.</p>
+          </div>
+        `;
+        console.error("Notice fetch error:", err);
+      });
+  </script>
 
 </body>
 </html>

@@ -1,233 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<title>Kalamela Registration - OCYM Kollam</title>
-<link rel="icon" type="image/png" href="images/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalamela Registration - OCYM Kollam</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-box">
-    <img src="images/logo.png" class="logo">
-    <h1>OCYM Kollam</h1>
-    <p class="subtitle">Orthodox Christian Youth Movement</p>
-    <p class="diocese">Kollam Diocese</p>
-  </div>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="notice.html">Notice</a>
-    <a href="registration.html" class="active">Registration</a>
-    <a href="programs.html" >Programs</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
-
-<!-- FORM -->
-<section class="form-section">
-  <h2>🎭 Kalamela Registration</h2>
-
-  <form class="registration-form" id="regForm" onsubmit="onSubmit(event)">
-
-    <!-- Basic Details -->
-    <label>Full Name</label>
-    <input id="fullName" type="text" placeholder="Enter your name" required>
-
-    <label>Parish</label>
-    <input id="parish" type="text" placeholder="Enter parish" required>
-
-    <label>Position</label>
-    <select id="position" required>
-      <option value="">Select Position</option>
-      <option>Secretary</option>
-      <option>Vice President</option>
-      <option>President</option>
-      <option>Member</option>
-    </select>
-
-    <!-- ✅ PHONE NUMBER ADDED PROPERLY -->
-    <label>Phone Number</label>
-    <input id="phone" type="tel" placeholder="Enter phone number" required pattern="[0-9]{10}">
-
-    <hr>
-
-    <!-- Item Registration -->
-    <h3>🎯 Item Registration</h3>
-    <div id="itemsContainer"></div>
-
-    <div style="display:flex; gap:10px; margin-top:12px;">
-      <button type="button" onclick="addItem()">➕ Add Item</button>
-      <button type="button" onclick="clearItems()">🧹 Clear</button>
+  <!-- HEADER -->
+  <header>
+    <div class="header-box">
+      <!-- Logo Container with fallback -->
+      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
+        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display:none; width: 70px; height: 70px;">
+          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
+            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <h1>OCYM Kollam</h1>
+      <p class="subtitle">Orthodox Christian Youth Movement</p>
+      <p class="diocese">Kollam Diocese</p>
     </div>
 
-    <button type="submit" style="margin-top:18px;">
-      Submit Registration
-    </button>
-  </form>
-</section>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="notice.html">Notice</a>
+      <a href="registration.html" class="active">Registration</a>
+      <a href="programs.html">Programs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-<footer>
-  <p>© 2026 OCYM Kollam | All Rights Reserved</p>
-</footer>
+  <main>
+    <!-- FORM -->
+    <section class="form-section" style="margin-top: 20px;">
+      <h2>🎭 Kalamela Registration</h2>
 
-<script>
-/* ===== PROGRAM LIST ===== */
-const programs = [
-  { name: "ലളിതഗാനം", count: 1 },
-  { name: "സമൂഹഗാനം", count: 3 },
-  { name: "സോപോകരണ സമൂഹഗാനം", count: 7 },
-  { name: "പ്രസംഗം", count: 1 },
-  { name: "കഥാപ്രസംഗം", count: 1 },
-  { name: "സ്ടിറിംഗ് ഇൻസ്ട്രമെൻ്റ്", count: 1 },
-  { name: "കീബോർഡ്", count: 1 },
-  { name: "തബല", count: 1 },
-  { name: "ഉപന്യാസം", count: 1 },
-  { name: "ചിത്രരചന", count: 1 },
-  { name: "കഥാരചന", count: 1 },
-  { name: "കവിതാരചന", count: 1 },
-  { name: "മാർഗംകളി", count: 8 },
-  { name: "പരിചമുട്ട് കളി", count: 8 },
-  { name: "തെരുവ് നാടകം", count: 10 },
-  { name: "ക്വിസ്", count: 3 },
-  { name: "മൈം", count: 7 }
-];
+      <form class="registration-form" id="regForm" onsubmit="onSubmit(event)">
 
-/* ADD ITEM */
-function addItem(){
-  const container = document.getElementById('itemsContainer');
+        <!-- Basic Details Header -->
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">📋</span> Primary Contact Details
+        </h3>
+        
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" placeholder="Enter your full name" required>
 
-  let options = '<option value="">Select Program</option>';
-  programs.forEach((p,idx)=>{
-    options += `<option value="${idx}">${p.name} (${p.count})</option>`;
-  });
+        <label for="parish">Parish</label>
+        <input id="parish" type="text" placeholder="Enter parish name" required>
 
-  const div = document.createElement('div');
-  div.className = 'item-block';
-  div.innerHTML = `
-    <label>Item Program</label>
-    <select onchange="onProgramChange(this)" required>
-      ${options}
-    </select>
+        <label for="position">Position</label>
+        <select id="position" required>
+          <option value="">Select Position</option>
+          <option value="Secretary">Secretary</option>
+          <option value="Vice President">Vice President</option>
+          <option value="President">President</option>
+          <option value="Member">Member</option>
+        </select>
 
-    <div class="participants"></div>
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="tel" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}">
 
-    <button type="button" onclick="removeItem(this)">❌ Remove</button>
-  `;
+        <hr>
 
-  container.appendChild(div);
-}
+        <!-- Item Registration Header -->
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">🎯</span> Item Registration
+        </h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: -10px; margin-bottom: 15px;">
+          Add one or more items that your parish youth will participate in.
+        </p>
+        
+        <div id="itemsContainer"></div>
 
-/* PROGRAM CHANGE */
-function onProgramChange(selectEl){
-  const idx = selectEl.value;
-  const partsDiv = selectEl.parentElement.querySelector('.participants');
-  partsDiv.innerHTML = "";
+        <div style="display:flex; gap:12px; margin-top:15px;">
+          <button type="button" onclick="addItem()">➕ Add Item</button>
+          <button type="button" onclick="clearItems()">🧹 Clear All</button>
+        </div>
 
-  if(!idx) return;
+        <button type="submit" id="submitBtn">
+          Submit Registration
+        </button>
+      </form>
+    </section>
+  </main>
 
-  // prevent duplicate selection
-  const selected = Array.from(document.querySelectorAll('#itemsContainer select'))
-    .map(s=>s.value);
-  if(selected.filter(v=>v===idx).length > 1){
-    alert("This item already selected!");
-    selectEl.value="";
-    return;
-  }
+  <footer>
+    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+  </footer>
 
-  const n = programs[idx].count;
-  for(let i=1;i<=n;i++){
-    const inp = document.createElement('input');
-    inp.type="text";
-    inp.placeholder = `Participant ${i} Name`;
-    inp.required = true;
-    partsDiv.appendChild(inp);
-  }
-}
+  <!-- SUCCESS POPUP -->
+  <div id="successPopup" class="success-popup">
+    <div class="success-box">
+      <span>Registration Submitted Successfully!</span>
+    </div>
+  </div>
 
-/* REMOVE ITEM */
-function removeItem(btn){
-  if(!confirm("Remove this item?")) return;
-  btn.closest('.item-block').remove();
-}
+  <script>
+    /* ===== PROGRAM LIST ===== */
+    const programs = [
+      { name: "ലളിതഗാനം", count: 1 },
+      { name: "സമൂഹഗാനം", count: 3 },
+      { name: "സോപോകരണ സമൂഹഗാനം", count: 7 },
+      { name: "പ്രസംഗം", count: 1 },
+      { name: "കഥാപ്രസംഗം", count: 1 },
+      { name: "സ്ടിറിംഗ് ഇൻസ്ട്രമെൻ്റ്", count: 1 },
+      { name: "കീബോർഡ്", count: 1 },
+      { name: "തബല", count: 1 },
+      { name: "ഉപന്യാസം", count: 1 },
+      { name: "ചിത്രരചന", count: 1 },
+      { name: "കഥാരചന", count: 1 },
+      { name: "കവിതാരചന", count: 1 },
+      { name: "മാർഗംകളി", count: 8 },
+      { name: "പരിചമുട്ട് കളി", count: 8 },
+      { name: "തെരുവ് നാടകം", count: 10 },
+      { name: "ക്വിസ്", count: 3 },
+      { name: "മൈം", count: 7 }
+    ];
 
-/* CLEAR */
-function clearItems(){
-  document.getElementById('itemsContainer').innerHTML="";
-}
+    /* ADD ITEM */
+    function addItem(){
+      const container = document.getElementById('itemsContainer');
 
-/* SUBMIT */
-function onSubmit(e){
-  e.preventDefault();
+      let options = '<option value="">Select Program</option>';
+      programs.forEach((p, idx) => {
+        options += `<option value="${idx}">${p.name} (${p.count} Participant${p.count > 1 ? 's' : ''})</option>`;
+      });
 
-  const fullName = document.getElementById('fullName').value.trim();
-  const parish = document.getElementById('parish').value.trim();
-  const position = document.getElementById('position').value;
-  const phone = document.getElementById('phone').value.trim();   // ✅ NEW
+      const div = document.createElement('div');
+      div.className = 'item-block';
+      div.innerHTML = `
+        <label style="margin-top: 0;">Item Program</label>
+        <select onchange="onProgramChange(this)" required>
+          ${options}
+        </select>
 
-  const blocks = Array.from(document.querySelectorAll('.item-block'));
-  if(blocks.length===0){
-    alert("Please add at least one item.");
-    return;
-  }
+        <div class="participants" style="margin-top: 5px;"></div>
 
-  const items = [];
-  for(const b of blocks){
-    const sel = b.querySelector('select');
-    const idx = sel.value;
-    if(!idx){ alert("Select program for all items"); return; }
+        <button type="button" onclick="removeItem(this)">❌ Remove Item</button>
+      `;
 
-    const names = Array.from(b.querySelectorAll('.participants input'))
-      .map(i=>i.value.trim());
-    if(names.some(n=>n==="")){
-      alert("Fill all participant names");
-      return;
+      container.appendChild(div);
     }
 
-    items.push({
-      program: programs[idx].name,
-      participants: names.join(" | ")
-    });
-  }
+    /* PROGRAM CHANGE */
+    function onProgramChange(selectEl){
+      const idx = selectEl.value;
+      const partsDiv = selectEl.parentElement.querySelector('.participants');
+      partsDiv.innerHTML = "";
 
-  if(!confirm("Submit registration now?")) return;
+      if(!idx) return;
 
-  fetch("https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      fullName,
-      parish,
-      position,
-      phone,     // ✅ SENT TO SHEET
-      items
-    })
-  })
-  .then(res=>res.text())
-  .then(()=>{
-    document.getElementById("successPopup").style.display = "flex";
+      // Prevent duplicate selections
+      const selected = Array.from(document.querySelectorAll('#itemsContainer select'))
+        .map(s => s.value);
+      if(selected.filter(v => v === idx).length > 1){
+        alert("This program has already been selected!");
+        selectEl.value = "";
+        return;
+      }
 
-setTimeout(() => {
-  document.getElementById("successPopup").style.display = "none";
-}, 2500);
-    document.getElementById('regForm').reset();
-    clearItems();
-  })
-  .catch(()=>{
-    alert("❌ Submission failed. Please check internet.");
-  });
-}
-</script>
+      const n = programs[idx].count;
+      for(let i = 1; i <= n; i++){
+        const inp = document.createElement('input');
+        inp.type = "text";
+        inp.placeholder = `Participant ${i} Full Name`;
+        inp.required = true;
+        partsDiv.appendChild(inp);
+      }
+    }
 
-  <div id="successPopup" class="success-popup">
-  <div class="success-box">
-    ✅ Registration Submitted Successfully!
-  </div>
-  </div>
+    /* REMOVE ITEM */
+    function removeItem(btn){
+      if(!confirm("Are you sure you want to remove this item?")) return;
+      btn.closest('.item-block').remove();
+    }
+
+    /* CLEAR */
+    function clearItems(){
+      if(document.getElementById('itemsContainer').children.length === 0) return;
+      if(!confirm("Clear all selected items?")) return;
+      document.getElementById('itemsContainer').innerHTML = "";
+    }
+
+    /* SUBMIT */
+    function onSubmit(e){
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const parish = document.getElementById('parish').value.trim();
+      const position = document.getElementById('position').value;
+      const phone = document.getElementById('phone').value.trim();
+
+      const blocks = Array.from(document.querySelectorAll('.item-block'));
+      if(blocks.length === 0){
+        alert("Please add at least one item to register.");
+        return;
+      }
+
+      const items = [];
+      for(const b of blocks){
+        const sel = b.querySelector('select');
+        const idx = sel.value;
+        if(!idx){ 
+          alert("Please select a program for all items."); 
+          return; 
+        }
+
+        const names = Array.from(b.querySelectorAll('.participants input'))
+          .map(i => i.value.trim());
+        if(names.some(n => n === "")){
+          alert("Please fill out all participant names.");
+          return;
+        }
+
+        items.push({
+          program: programs[idx].name,
+          participants: names.join(" | ")
+        });
+      }
+
+      if(!confirm("Are you ready to submit your registration?")) return;
+
+      const submitBtn = document.getElementById("submitBtn");
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = "Submitting registration...";
+      submitBtn.disabled = true;
+
+      const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
+
+      fetch(postUrl, {
+        method: "POST",
+        body: JSON.stringify({
+          fullName,
+          parish,
+          position,
+          phone,
+          items
+        })
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("HTTP error " + res.status);
+        }
+        return res.text();
+      })
+      .then(() => {
+        const popup = document.getElementById("successPopup");
+        popup.style.display = "flex";
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+
+        document.getElementById('regForm').reset();
+        document.getElementById('itemsContainer').innerHTML = "";
+      })
+      .catch(err => {
+        alert("❌ Submission failed. Please verify your internet connection or try again later.");
+        console.error("Submission error:", err);
+      })
+      .finally(() => {
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+      });
+    }
+  </script>
 
 </body>
 </html>
