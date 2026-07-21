@@ -5,215 +5,522 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OCYM Kollam Diocese | Orthodox Christian Youth Movement</title>
   
-  <meta name="description" content="Official website of OCYM Kollam Diocese. Programs, notices, registrations and youth activities.">
-  <meta name="keywords" content="OCYM Kollam, Orthodox Youth Movement, Kollam Diocese, Church Programs">
+  <meta name="description" content="Official website of OCYM Kollam Diocese. Nurturing faith, fellowship, and Christian youth leadership under the Malankara Orthodox Syrian Church.">
+  <meta name="keywords" content="OCYM Kollam, Orthodox Youth Movement, Kollam Diocese, MOSC, Malankara Orthodox Syrian Church">
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
-  
+  <!-- Main Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
-  <meta property="og:site_name" content="OCYM Kollam Diocese">
-  <meta property="og:title" content="OCYM Kollam Diocese">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="header-box">
-      <!-- Logo Container with fallback -->
-      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
-        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div style="display:none; width: 70px; height: 70px;">
-          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
-            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
-          </svg>
-        </div>
-      </div>
-      <h1>OCYM Kollam</h1>
-      <p class="subtitle">Orthodox Christian Youth Movement</p>
-      <p class="diocese">Kollam Diocese</p>
-    </div>
-
-    <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="about.html">About</a>
-      <a href="notice.html">Notice</a>
-      <a href="registration.html">Registration</a>
-      <a href="programs.html">Programs</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <!-- BISHOPS SECTION -->
-    <section class="bishops-section">
-      <h2>Hierarchs of the Church</h2>
-      
-      <div class="bishop-main">
-        <div style="width: 180px; height: 180px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-          <img src="images/bishop1.jpg" alt="Main Bishop" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div style="display:none; width: 180px; height: 180px;">
-            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; border-radius: 50%;">
-              <defs>
-                <linearGradient id="mitreGradMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#0b3c5d" />
-                  <stop offset="100%" stop-color="#145374" />
-                </linearGradient>
-              </defs>
-              <circle cx="50" cy="50" r="50" fill="url(#mitreGradMain)"/>
-              <path d="M50 18 L28 48 L33 75 L67 75 L72 48 Z" fill="none" stroke="#ffd700" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M50 18 v57" stroke="#ffd700" stroke-width="3"/>
-              <path d="M28 48 h44" stroke="#ffd700" stroke-width="1.5"/>
-              <circle cx="50" cy="18" r="4" fill="#ffd700"/>
+  <!-- ==========================================================================
+       SECTION 1 - HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="header-wrapper hero-header-active">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
+        <div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#0B3C5D" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4AF37" stroke-width="6" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
-        <h3>H.H. Baselios Marthoma Mathews III</h3>
-        <p>Catholicos of the East & Malankara Metropolitan</p>
-      </div>
+        <div class="brand-text">
+          <span class="brand-title">OCYM Kollam</span>
+          <span class="brand-sub">Kollam Diocese</span>
+        </div>
+      </a>
 
-      <div class="bishops-row">
-        <div class="bishop-small">
-          <div style="width: 130px; height: 130px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-            <img src="images/bishop2.jpg" alt="Bishop" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div style="display:none; width: 130px; height: 130px;">
-              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; border-radius: 50%;">
-                <defs>
-                  <linearGradient id="mitreGradSmall1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0b3c5d" />
-                    <stop offset="100%" stop-color="#145374" />
-                  </linearGradient>
-                </defs>
-                <circle cx="50" cy="50" r="50" fill="url(#mitreGradSmall1)"/>
-                <path d="M50 20 L30 48 L35 72 L65 72 L70 48 Z" fill="none" stroke="#ffd700" stroke-width="3" stroke-linejoin="round"/>
-                <path d="M50 20 v52" stroke="#ffd700" stroke-width="3"/>
-                <path d="M30 48 h40" stroke="#ffd700" stroke-width="1.5"/>
-                <circle cx="50" cy="20" r="3" fill="#ffd700"/>
-              </svg>
-            </div>
-          </div>
-          <h4>H.G. Dr. Geevarghese Mar Yulios</h4>
-          <p>OCYM President</p>
+      <!-- Desktop Navigation -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="#bearers" class="nav-link">Office Bearers</a></li>
+          <li><a href="programs.html" class="nav-link">Programs</a></li>
+          <li><a href="notice.html" class="nav-link">Notice Board</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         SECTION 2 - HERO SECTION
+         ========================================================================== -->
+    <section class="hero">
+      <div class="hero-bg-overlay"></div>
+      <div class="hero-glow"></div>
+      
+      <div class="container hero-content reveal reveal-fade">
+        <div class="hero-badge">
+          <span>✨ Orthodox Christian Youth Movement</span>
         </div>
 
-        <div class="bishop-small">
-          <div style="width: 130px; height: 130px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-            <img src="images/bishop3.jpg" alt="Bishop" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div style="display:none; width: 130px; height: 130px;">
-              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; border-radius: 50%;">
-                <circle cx="50" cy="50" r="50" fill="url(#mitreGradSmall1)"/>
-                <path d="M50 20 L30 48 L35 72 L65 72 L70 48 Z" fill="none" stroke="#ffd700" stroke-width="3" stroke-linejoin="round"/>
-                <path d="M50 20 v52" stroke="#ffd700" stroke-width="3"/>
-                <path d="M30 48 h40" stroke="#ffd700" stroke-width="1.5"/>
-                <circle cx="50" cy="20" r="3" fill="#ffd700"/>
-              </svg>
-            </div>
-          </div>
-          <h4>H.G. Dr. Joseph Mar Dionysius</h4>
-          <p>Kollam Diocese</p>
+        <h1 class="hero-title">
+          Official Website of <span>OCYM Kollam Diocese</span>
+        </h1>
+
+        <p class="hero-tagline">
+          Growing together in Faith, Fellowship and Service under the grace of the Malankara Orthodox Syrian Church.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="#slider" class="btn btn-gold">Explore Website</a>
+          <a href="registration.html" class="btn btn-outline-white registration-cta" style="display: none;">Register for Kalamela</a>
+          <a href="notice.html" class="btn btn-outline-white">Latest Notices</a>
+        </div>
+      </div>
+
+      <!-- Animated Scroll Down Indicator -->
+      <a href="#slider" class="scroll-indicator" aria-label="Scroll down to event slider">
+        <span>Scroll Down</span>
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+      </a>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3 - HOMEPAGE DYNAMIC IMAGE SLIDER
+         ========================================================================== -->
+    <section id="slider" class="slider-section">
+      <div id="homepageSliderSection" class="slider-container" style="display: none;">
+        <!-- Manual controls -->
+        <button id="sliderPrevBtn" class="slider-btn slider-prev" aria-label="Previous Slide">‹</button>
+        <button id="sliderNextBtn" class="slider-btn slider-next" aria-label="Next Slide">›</button>
+
+        <!-- Dynamic slides wrapper -->
+        <div id="sliderWrapper" class="slider-wrapper">
+          <!-- Slide items loaded dynamically from Apps Script -->
+        </div>
+
+        <!-- Pagination dots -->
+        <div id="sliderDots" class="slider-dots"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4 - BIBLE VERSE
+         ========================================================================== -->
+    <section class="verse-section">
+      <div class="container">
+        <div class="verse-box reveal reveal-fade">
+          <div class="verse-quote-mark">“</div>
+          <p class="verse-text">Let all that you do be done in love.</p>
+          <div class="verse-ref">1 Corinthians 16:14</div>
         </div>
       </div>
     </section>
 
-    <!-- ANNOUNCEMENTS -->
-    <section class="announcement-section" id="announceSection" style="display:none;">
-      <h2>📢 Latest Announcements</h2>
-      <div class="announcement-grid" id="noticeBox"></div>
-    </section>
+    <!-- ==========================================================================
+         SECTION 5 - BISHOP & HIERARCHS SECTION
+         ========================================================================== -->
+    <section id="bishops" class="section section-light">
+      <div class="container">
+        <div class="section-header reveal reveal-slide-up">
+          <span class="section-subtitle">Spiritual Guidance</span>
+          <h2 class="section-title">Hierarchs of the Church</h2>
+          <p class="section-desc">Guiding our youth with wisdom, prayer, and spiritual leadership.</p>
+        </div>
 
-    <!-- ABOUT SHORT -->
-    <section class="about-home">
-      <h2>About OCYM Kollam</h2>
-      <p>
-        Orthodox Christian Youth Movement (OCYM) Kollam functions under the
-        Malankara Orthodox Syrian Church and aims to build spiritually strong,
-        socially responsible and leadership-oriented youth.
-      </p>
-    </section>
-
-    <!-- SOCIAL MEDIA -->
-    <section class="social-section">
-      <h2>🌐 Follow OCYM Kollam</h2>
-      <div class="social-links">
-        <!-- FACEBOOK -->
-        <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" class="social-card facebook">
-          <div style="width: 48px; height: 48px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
-            <img src="images/facebook.png" alt="Facebook" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div style="display:none; width:48px; height:48px;">
-              <svg viewBox="0 0 24 24" fill="#1877f2" style="width: 100%; height: 100%;">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-              </svg>
+        <div class="bishops-grid">
+          <!-- Featured Large Bishop Card -->
+          <div class="bishop-featured-card reveal reveal-slide-up">
+            <div class="bishop-portrait-wrapper">
+              <div class="bishop-portrait-ring"></div>
+              <img src="images/bishop1.jpg" alt="H.H. Baselios Marthoma Mathews III" class="bishop-portrait" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';">
+            </div>
+            <div class="bishop-info">
+              <span class="bishop-role-tag">Catholicos of the East & Malankara Metropolitan</span>
+              <h3 class="bishop-name">H.H. Baselios Marthoma Mathews III</h3>
+              <p class="bishop-quote">"Spiritual discipline and service to humanity are the key foundations of Christian youth leadership."</p>
             </div>
           </div>
-          <span>Facebook</span>
-        </a>
 
-        <!-- INSTAGRAM -->
-        <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" class="social-card instagram">
-          <div style="width: 48px; height: 48px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
-            <img src="images/instagram.png" alt="Instagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div style="display:none; width:48px; height:48px;">
-              <svg viewBox="0 0 24 24" style="width: 100%; height: 100%;">
-                <radialGradient id="igGradIndex" cx="30%" cy="107%" r="130%">
-                  <stop offset="0%" stop-color="#fdf497"/>
-                  <stop offset="5%" stop-color="#fdf497"/>
-                  <stop offset="45%" stop-color="#fd5949"/>
-                  <stop offset="60%" stop-color="#d6249f"/>
-                  <stop offset="90%" stop-color="#285AEB"/>
-                </radialGradient>
-                <path fill="url(#igGradIndex)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-              </svg>
+          <!-- Two Smaller Cards Below -->
+          <div class="bishops-row">
+            <div class="bishop-card reveal reveal-slide-up">
+              <img src="images/bishop2.jpg" alt="H.G. Dr. Geevarghese Mar Yulios" class="bishop-card-portrait" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80';">
+              <div>
+                <h4 class="bishop-card-name">H.G. Dr. Geevarghese Mar Yulios</h4>
+                <p class="bishop-card-title">OCYM President</p>
+              </div>
+            </div>
+
+            <div class="bishop-card reveal reveal-slide-up">
+              <img src="images/bishop3.jpg" alt="H.G. Dr. Joseph Mar Dionysius" class="bishop-card-portrait" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80';">
+              <div>
+                <h4 class="bishop-card-name">H.G. Dr. Joseph Mar Dionysius</h4>
+                <p class="bishop-card-title">Metropolitan of Kollam Diocese</p>
+              </div>
             </div>
           </div>
-          <span>Instagram</span>
-        </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 6 - ABOUT OCYM
+         ========================================================================== -->
+    <section id="about" class="section section-white">
+      <div class="container">
+        <div class="about-split">
+          <!-- Graphic Card Side -->
+          <div class="about-graphic-card reveal reveal-scale-in">
+            <div class="about-badge-icon">✝</div>
+            <h3 style="font-size: 1.8rem; color: white; font-weight: 700; margin-bottom: 12px;">Nurturing Faith & Christian Leadership</h3>
+            <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.98rem; line-height: 1.65;">
+              The Orthodox Christian Youth Movement (OCYM) is the premier youth organization of the Malankara Orthodox Syrian Church, empowering young believers to serve Christ and society.
+            </p>
+            
+            <div class="about-pillar-grid">
+              <div class="about-pillar-item">
+                <h4>Faith</h4>
+                <p>Worship & Prayer</p>
+              </div>
+              <div class="about-pillar-item">
+                <h4>Fellowship</h4>
+                <p>Unity & Brotherhood</p>
+              </div>
+              <div class="about-pillar-item">
+                <h4>Service</h4>
+                <p>Charity & Mission</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mission & Vision List Side -->
+          <div class="about-content-list reveal reveal-slide-up">
+            <div class="about-item-card">
+              <div class="about-item-icon">🌟</div>
+              <div class="about-item-text">
+                <h3>Our Mission</h3>
+                <p>To lead young people to Christ, encouraging active involvement in the Orthodox Church and building morally upright Christian leaders.</p>
+              </div>
+            </div>
+
+            <div class="about-item-card">
+              <div class="about-item-icon">🎯</div>
+              <div class="about-item-text">
+                <h3>Our Vision</h3>
+                <p>A vibrant, spirit-filled youth community that bears witness to Christian values through social action, charity, and fellowship.</p>
+              </div>
+            </div>
+
+            <div class="about-item-card">
+              <div class="about-item-icon">🤝</div>
+              <div class="about-item-text">
+                <h3>Diocesan Engagement</h3>
+                <p>Coordinating retreats, leadership camps, regional Kalamela competitions, and community outreach projects across Kollam Diocese.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 7 - HOMEPAGE ANNOUNCEMENTS
+         ========================================================================== -->
+    <section id="announcements" class="section section-light" style="display: none;">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Updates</span>
+          <h2 class="section-title">📢 Latest Announcements</h2>
+        </div>
+        <div id="announcementsGrid" class="announcements-grid">
+          <!-- Announcements populated dynamically by js/announcements.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 8 - UPCOMING PROGRAMS PREVIEW
+         ========================================================================== -->
+    <section id="homepageProgramsSection" class="section section-white" style="display: none;">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Calendar</span>
+          <h2 class="section-title">✨ Upcoming Programs</h2>
+          <p class="section-desc">Join us in upcoming diocesan events, retreats, and celebrations.</p>
+        </div>
+
+        <div id="homepageProgramsGrid" class="programs-grid">
+          <!-- Programs populated dynamically by js/programs.js -->
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+          <a href="programs.html" class="btn btn-primary">View All Programs & Archives</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 9 - NOTICE BOARD PREVIEW
+         ========================================================================== -->
+    <section id="noticeSection" class="section section-light" style="display: none;">
+      <div id="homepageNoticeFlag"></div>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Official Circulars</span>
+          <h2 class="section-title">📌 Notice Board</h2>
+        </div>
+
+        <div id="noticeList" class="notices-list">
+          <!-- Top 3 notices populated dynamically by js/notices.js -->
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+          <a href="notice.html" class="btn btn-secondary">View All Notices</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 10 - OFFICE BEARERS
+         ========================================================================== -->
+    <section id="bearers" class="section section-white">
+      <div class="container">
+        <div class="section-header reveal reveal-slide-up">
+          <span class="section-subtitle">Leadership Team</span>
+          <h2 class="section-title">Office Bearers</h2>
+          <p class="section-desc">Dedicated leaders managing OCYM Kollam Diocese activities.</p>
+        </div>
+
+        <div class="bearers-grid">
+          <!-- Vice President -->
+          <div class="bearer-card reveal reveal-slide-up">
+            <div class="bearer-photo-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 42px; height: 42px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <h3 class="bearer-name">Fr. Mathew P. George</h3>
+            <p class="bearer-role">Vice President</p>
+            <div class="bearer-actions">
+              <a href="tel:+918848963115" class="bearer-contact-btn" aria-label="Call Fr. Mathew P. George">📞</a>
+            </div>
+          </div>
+
+          <!-- General Secretary -->
+          <div class="bearer-card reveal reveal-slide-up">
+            <div class="bearer-photo-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 42px; height: 42px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <h3 class="bearer-name">Liju Thomas</h3>
+            <p class="bearer-role">General Secretary</p>
+            <div class="bearer-actions">
+              <a href="tel:+919446227479" class="bearer-contact-btn" aria-label="Call Liju Thomas">📞</a>
+            </div>
+          </div>
+
+          <!-- Treasurer -->
+          <div class="bearer-card reveal reveal-slide-up">
+            <div class="bearer-photo-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 42px; height: 42px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <h3 class="bearer-name">Santhosh Thomas</h3>
+            <p class="bearer-role">Treasurer</p>
+            <div class="bearer-actions">
+              <a href="tel:+918113868512" class="bearer-contact-btn" aria-label="Call Santhosh Thomas">📞</a>
+            </div>
+          </div>
+
+          <!-- Joint Secretaries -->
+          <div class="bearer-card reveal reveal-slide-up">
+            <div class="bearer-photo-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 42px; height: 42px;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h3 class="bearer-name">Abel T. Jose & Jincy Babu</h3>
+            <p class="bearer-role">Joint Secretaries</p>
+            <div class="bearer-actions" style="visibility: hidden;">
+              <span class="bearer-contact-btn">📞</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 11 - OCYM AT A GLANCE (STATISTICS)
+         ========================================================================== -->
+    <section class="stats-section">
+      <div class="container stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+        <div class="stat-card">
+          <div class="stat-number" data-target="64" data-suffix="">0</div>
+          <div class="stat-label">Parish Units</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number" data-target="1000" data-suffix="+">0+</div>
+          <div class="stat-label">Youth Members</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number" data-target="40" data-suffix="+">0+</div>
+          <div class="stat-label">Yearly Activities</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 12 - CONTACT & GOOGLE MAPS EMBED
+         ========================================================================== -->
+    <section id="contact" class="section section-light">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Get In Touch</span>
+          <h2 class="section-title">Contact Information & Location</h2>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Info Cards Column -->
+          <div class="contact-cards-col">
+            <!-- Address -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">📍</div>
+              <div class="contact-info-text">
+                <h4>Diocesan Office Address</h4>
+                <p>Bishop House of Malankara Orthodox Church, Kollam Diocese, Kerala, India - 691001</p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">📞</div>
+              <div class="contact-info-text">
+                <h4>Phone Contacts</h4>
+                <p>Fr. Mathew P. George: <a href="tel:+918848963115">+91 88489 63115</a></p>
+                <p>Liju Thomas: <a href="tel:+919446227479">+91 94462 27479</a></p>
+                <p>Santhosh Thomas: <a href="tel:+918113868512">+91 81138 68512</a></p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">✉️</div>
+              <div class="contact-info-text">
+                <h4>Email Address</h4>
+                <p><a href="mailto:ocymkollam@gmail.com">ocymkollam@gmail.com</a></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maps Frame & Live Embed -->
+          <div class="map-card-wrapper reveal reveal-scale-in">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d44597.78435438211!2d76.57135082237977!3d8.886614796324091!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05fcf0ad496265%3A0xab81080ce41b5ab9!2sBishop%20House%20of%20Malankara%20Orthodox%20Church%2C%20Kollam!5e0!3m2!1sen!2sin!4v1784649468705!5m2!1sen!2sin" 
+              class="map-frame" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade" 
+              title="Bishop House of Malankara Orthodox Church, Kollam Map">
+            </iframe>
+
+            <div style="padding: 16px; text-align: center;">
+              <a href="https://maps.app.goo.gl/7NF9i9Ssafhksx1D7" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%;">
+                🗺️ Open Directions on Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
+  <!-- ==========================================================================
+       SECTION 13 - FOOTER
+       ========================================================================== -->
   <footer>
-    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo" style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+          <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#0B3C5D" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
+        </div>
+        <p class="footer-brand-desc">
+          Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About OCYM</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="notice.html">Notice Board</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
+        <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/facebook.png" alt="Facebook" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
+          </a>
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/instagram.png" alt="Instagram" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 OCYM Kollam Diocese | All Rights Reserved</p>
+      <p>Designed for Malankara Orthodox Syrian Church</p>
+    </div>
   </footer>
 
-  <!-- FETCH ANNOUNCEMENTS SCRIPT -->
-  <script>
-    function formatDate(d){
-      const date = new Date(d);
-      return date.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-      });
-    }
+  <!-- Back to Top Button -->
+  <button class="back-to-top" aria-label="Back to top">↑</button>
 
-    fetch("https://script.google.com/macros/s/AKfycbwQ7auUVM2anVJHVQBHnyBAcuMs-OTp2Y_U1_q-v-5eyFufp5mxtXeXKcdT66Nokwjc/exec")
-      .then(res => res.json())
-      .then(data => {
-        if(!data || data.length === 0){
-          return; // hide section if no announcements
-        }
-
-        document.getElementById("announceSection").style.display = "block";
-        const box = document.getElementById("noticeBox");
-        box.innerHTML = ""; // clear any initial content
-
-        data.slice(0, 3).forEach(n => {
-          box.innerHTML += `
-            <div class="announcement-card">
-              <h3>${n.title}</h3>
-              <p class="date">${formatDate(n.date)}</p>
-              <p>${n.message}</p>
-            </div>
-          `;
-        });
-      })
-      .catch(err => {
-        console.error("Announcement load failed:", err);
-      });
-  </script>
+  <!-- Global Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/announcements.js"></script>
+  <script src="js/programs.js"></script>
+  <script src="js/notices.js"></script>
 </body>
 </html>

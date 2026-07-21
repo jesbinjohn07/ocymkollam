@@ -3,100 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact - OCYM Kollam</title>
+  <title>Contact Us | OCYM Kollam Diocese</title>
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Contact OCYM Kollam Diocese office, office bearers, address and directions.">
   
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
   <!-- HEADER -->
-  <header>
-    <div class="header-box">
-      <!-- Logo Container with fallback -->
-      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
-        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div style="display:none; width: 70px; height: 70px;">
-          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
-            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
-          </svg>
+  <header class="header-wrapper scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
+        <div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#0B3C5D" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4AF37" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
-      </div>
-      <h1>OCYM Kollam</h1>
-      <p class="subtitle">Orthodox Christian Youth Movement</p>
-      <p class="diocese">Kollam Diocese</p>
-    </div>
+        <div class="brand-text">
+          <span class="brand-title">OCYM Kollam</span>
+          <span class="brand-sub">Kollam Diocese</span>
+        </div>
+      </a>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="notice.html">Notice</a>
-      <a href="registration.html">Registration</a>
-      <a href="programs.html">Programs</a>
-      <a href="contact.html" class="active">Contact</a>
-    </nav>
+      <!-- Navigation -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="index.html#bearers" class="nav-link">Office Bearers</a></li>
+          <li><a href="programs.html" class="nav-link">Programs</a></li>
+          <li><a href="notice.html" class="nav-link">Notice Board</a></li>
+          <li><a href="contact.html" class="nav-link active">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </header>
 
-  <main>
-    <!-- CONTACT SECTION -->
-    <section class="contact-section" style="margin-top: 40px;">
-      <h2>📞 Contact Us</h2>
-
-      <div class="contact-grid">
-        <!-- Office Address -->
-        <div class="contact-card">
-          <div style="width: 55px; height: 55px; margin: 0 auto 20px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 26px; height: 26px;">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-          </div>
-          <h3>Office Address</h3>
-          <p>
-            OCYM Kollam Diocese<br>
-            Orthodox Church Office<br>
-            Kollam, Kerala, India
-          </p>
+  <main style="padding-top: 130px; min-height: 80vh;">
+    <section class="section section-light">
+      <div class="container">
+        <div class="section-header reveal reveal-slide-up">
+          <span class="section-subtitle">Reach Out To Us</span>
+          <h2 class="section-title">📞 Contact Us</h2>
+          <p class="section-desc">Get in touch with OCYM Kollam Diocese leadership and office representatives.</p>
         </div>
 
-        <!-- Phone -->
-        <div class="contact-card">
-          <div style="width: 55px; height: 55px; margin: 0 auto 20px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 26px; height: 26px;">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-              <line x1="12" y1="18" x2="12.01" y2="18" />
-            </svg>
-          </div>
-          <h3>Phone Numbers</h3>
-          <p style="margin-bottom: 8px;"><a href="tel:+918848963115">📱 +91 88489 63115</a></p>
-          <p style="margin-bottom: 8px;"><a href="tel:+919446227479">📱 +91 94462 27479</a></p>
-          <p><a href="tel:+918113868512">📱 +91 81138 68512</a></p>
-        </div>
+        <div class="contact-grid" style="margin-top: 40px;">
+          <!-- Info Cards Column -->
+          <div class="contact-cards-col">
+            <!-- Office Address Card -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">📍</div>
+              <div class="contact-info-text">
+                <h4>Office Address</h4>
+                <p>Bishop House of Malankara Orthodox Church, Kollam Diocese, Kerala, India - 691001</p>
+              </div>
+            </div>
 
-        <!-- Email -->
-        <div class="contact-card">
-          <div style="width: 55px; height: 55px; margin: 0 auto 20px; border-radius: 50%; background: #eef4f8; display: flex; align-items: center; justify-content: center;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0b3c5d" stroke-width="2" style="width: 26px; height: 26px;">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
-            </svg>
+            <!-- Phone Numbers Card -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">📞</div>
+              <div class="contact-info-text">
+                <h4>Phone Numbers</h4>
+                <p>Fr. Mathew P. George (Vice President): <a href="tel:+918848963115">+91 88489 63115</a></p>
+                <p>Liju Thomas (General Secretary): <a href="tel:+919446227479">+91 94462 27479</a></p>
+                <p>Santhosh Thomas (Treasurer): <a href="tel:+918113868512">+91 81138 68512</a></p>
+              </div>
+            </div>
+
+            <!-- Email Address Card -->
+            <div class="contact-item-card reveal reveal-slide-up">
+              <div class="contact-icon-box">✉️</div>
+              <div class="contact-info-text">
+                <h4>Email Address</h4>
+                <p><a href="mailto:ocymkollam@gmail.com">ocymkollam@gmail.com</a></p>
+              </div>
+            </div>
           </div>
-          <h3>Email Address</h3>
-          <p><a href="mailto:ocymkollam@gmail.com">📧 ocymkollam@gmail.com</a></p>
+
+          <!-- Maps Frame Column -->
+          <div class="map-card-wrapper reveal reveal-scale-in">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d44597.78435438211!2d76.57135082237977!3d8.886614796324091!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05fcf0ad496265%3A0xab81080ce41b5ab9!2sBishop%20House%20of%20Malankara%20Orthodox%20Church%2C%20Kollam!5e0!3m2!1sen!2sin!4v1784649468705!5m2!1sen!2sin" 
+              class="map-frame" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade" 
+              title="Bishop House of Malankara Orthodox Church, Kollam Map">
+            </iframe>
+
+            <div style="padding: 16px; text-align: center;">
+              <a href="https://maps.app.goo.gl/7NF9i9Ssafhksx1D7" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%;">
+                🗺️ Open Directions on Google Maps
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo" style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+          <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#0B3C5D" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
+        </div>
+        <p class="footer-brand-desc">
+          Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About OCYM</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="notice.html">Notice Board</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
+        <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/facebook.png" alt="Facebook" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
+          </a>
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/instagram.png" alt="Instagram" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 OCYM Kollam Diocese | All Rights Reserved</p>
+      <p>Designed for Malankara Orthodox Syrian Church</p>
+    </div>
   </footer>
 
+  <button class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

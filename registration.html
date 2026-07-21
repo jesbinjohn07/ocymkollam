@@ -3,281 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalamela Registration - OCYM Kollam</title>
+  <title>Kalamela Registration | OCYM Kollam Diocese</title>
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Register participants for Kalamela events under OCYM Kollam Diocese.">
   
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
   <!-- HEADER -->
-  <header>
-    <div class="header-box">
-      <!-- Logo Container with fallback -->
-      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
-        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div style="display:none; width: 70px; height: 70px;">
-          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
-            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
-          </svg>
+  <header class="header-wrapper scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
+        <div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#0B3C5D" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4AF37" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
-      </div>
-      <h1>OCYM Kollam</h1>
-      <p class="subtitle">Orthodox Christian Youth Movement</p>
-      <p class="diocese">Kollam Diocese</p>
-    </div>
+        <div class="brand-text">
+          <span class="brand-title">OCYM Kollam</span>
+          <span class="brand-sub">Kollam Diocese</span>
+        </div>
+      </a>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="notice.html">Notice</a>
-      <a href="registration.html" class="active">Registration</a>
-      <a href="programs.html">Programs</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+      <!-- Navigation -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="index.html#bearers" class="nav-link">Office Bearers</a></li>
+          <li><a href="programs.html" class="nav-link">Programs</a></li>
+          <li><a href="notice.html" class="nav-link">Notice Board</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </header>
 
-  <main>
-    <!-- FORM -->
-    <section class="form-section" style="margin-top: 20px;">
-      <h2>🎭 Kalamela Registration</h2>
-
-      <form class="registration-form" id="regForm" onsubmit="onSubmit(event)">
-
-        <!-- Basic Details Header -->
-        <h3 style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 20px;">📋</span> Primary Contact Details
-        </h3>
-        
-        <label for="fullName">Full Name</label>
-        <input id="fullName" type="text" placeholder="Enter your full name" required>
-
-        <label for="parish">Parish</label>
-        <input id="parish" type="text" placeholder="Enter parish name" required>
-
-        <label for="position">Position</label>
-        <select id="position" required>
-          <option value="">Select Position</option>
-          <option value="Secretary">Secretary</option>
-          <option value="Vice President">Vice President</option>
-          <option value="President">President</option>
-          <option value="Member">Member</option>
-        </select>
-
-        <label for="phone">Phone Number</label>
-        <input id="phone" type="tel" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}">
-
-        <hr>
-
-        <!-- Item Registration Header -->
-        <h3 style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 20px;">🎯</span> Item Registration
-        </h3>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: -10px; margin-bottom: 15px;">
-          Add one or more items that your parish youth will participate in.
-        </p>
-        
-        <div id="itemsContainer"></div>
-
-        <div style="display:flex; gap:12px; margin-top:15px;">
-          <button type="button" onclick="addItem()">➕ Add Item</button>
-          <button type="button" onclick="clearItems()">🧹 Clear All</button>
+  <main style="padding-top: 130px; min-height: 80vh;">
+    <section class="section section-light">
+      <div class="container" style="max-width: 800px;">
+        <div class="section-header reveal reveal-slide-up">
+          <span class="section-subtitle">Diocesan Kalamela</span>
+          <h2 class="section-title">🎭 Kalamela Participant Registration</h2>
+          <p class="section-desc">Submit parish participant entries for the diocesan Kalamela competition.</p>
         </div>
 
-        <button type="submit" id="submitBtn">
-          Submit Registration
-        </button>
-      </form>
+        <!-- Registration Closed State Card (Shown if SHOW_REGISTRATION = false) -->
+        <div id="registrationClosedNotice" class="registration-closed-card" style="display: none;">
+          <div class="registration-closed-icon">🔒</div>
+          <h3 style="font-size: 1.6rem; color: var(--primary); margin-bottom: 12px;">Registrations Currently Closed</h3>
+          <p style="color: var(--text-secondary); line-height: 1.65; margin-bottom: 24px;">
+            Kalamela registrations are currently disabled. Registration links are opened annually during the Kalamela season.
+          </p>
+          <a href="index.html" class="btn btn-primary">Return to Homepage</a>
+        </div>
+
+        <!-- Registration Active Form -->
+        <form id="regForm" onsubmit="onSubmit(event)">
+          <!-- Contact Details Card -->
+          <div class="registration-form-card reveal reveal-slide-up">
+            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+              <span>📋</span> Parish Official Contact Details
+            </h3>
+
+            <div class="form-group">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="parish" class="form-label">Parish Name</label>
+              <input type="text" id="parish" class="form-control" placeholder="Enter parish name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="position" class="form-label">Official Position</label>
+              <select id="position" class="form-control" required>
+                <option value="">Select Position</option>
+                <option>Secretary</option>
+                <option>Vice President</option>
+                <option>President</option>
+                <option>Member</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="phone" class="form-label">Mobile Phone Number</label>
+              <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <!-- Program Selection Card -->
+          <div class="registration-form-card reveal reveal-slide-up">
+            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: gap: 10px;">
+              <span>🎭</span> Program & Participant Selection
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px;">
+              Add one or more event programs. Participant input fields will appear automatically after selecting each program.
+            </p>
+
+            <div id="itemsContainer"></div>
+
+            <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" onclick="addItem()">+ Add Program</button>
+              <button type="button" class="btn btn-outline" onclick="clearItems()">Clear All Items</button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="text-align: center; margin-top: 32px;" class="reveal reveal-slide-up">
+            <button type="submit" id="submitBtn" class="btn btn-gold" style="width: 100%; max-width: 400px; padding: 16px;">
+              Submit Registration Form
+            </button>
+          </div>
+        </form>
+      </div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo" style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+          <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#0B3C5D" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
+        </div>
+        <p class="footer-brand-desc">
+          Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About OCYM</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="notice.html">Notice Board</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
+        <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/facebook.png" alt="Facebook" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
+          </a>
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/instagram.png" alt="Instagram" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 OCYM Kollam Diocese | All Rights Reserved</p>
+      <p>Designed for Malankara Orthodox Syrian Church</p>
+    </div>
   </footer>
 
-  <!-- SUCCESS POPUP -->
-  <div id="successPopup" class="success-popup">
-    <div class="success-box">
-      <span>Registration Submitted Successfully!</span>
-    </div>
-  </div>
+  <button class="back-to-top" aria-label="Back to top">↑</button>
 
-  <script>
-    /* ===== PROGRAM LIST ===== */
-    const programs = [
-      { name: "ലളിതഗാനം", count: 1 },
-      { name: "സമൂഹഗാനം", count: 3 },
-      { name: "സോപോകരണ സമൂഹഗാനം", count: 7 },
-      { name: "പ്രസംഗം", count: 1 },
-      { name: "കഥാപ്രസംഗം", count: 1 },
-      { name: "സ്ടിറിംഗ് ഇൻസ്ട്രമെൻ്റ്", count: 1 },
-      { name: "കീബോർഡ്", count: 1 },
-      { name: "തബല", count: 1 },
-      { name: "ഉപന്യാസം", count: 1 },
-      { name: "ചിത്രരചന", count: 1 },
-      { name: "കഥാരചന", count: 1 },
-      { name: "കവിതാരചന", count: 1 },
-      { name: "മാർഗംകളി", count: 8 },
-      { name: "പരിചമുട്ട് കളി", count: 8 },
-      { name: "തെരുവ് നാടകം", count: 10 },
-      { name: "ക്വിസ്", count: 3 },
-      { name: "മൈം", count: 7 }
-    ];
-
-    /* ADD ITEM */
-    function addItem(){
-      const container = document.getElementById('itemsContainer');
-
-      let options = '<option value="">Select Program</option>';
-      programs.forEach((p, idx) => {
-        options += `<option value="${idx}">${p.name} (${p.count} Participant${p.count > 1 ? 's' : ''})</option>`;
-      });
-
-      const div = document.createElement('div');
-      div.className = 'item-block';
-      div.innerHTML = `
-        <label style="margin-top: 0;">Item Program</label>
-        <select onchange="onProgramChange(this)" required>
-          ${options}
-        </select>
-
-        <div class="participants" style="margin-top: 5px;"></div>
-
-        <button type="button" onclick="removeItem(this)">❌ Remove Item</button>
-      `;
-
-      container.appendChild(div);
-    }
-
-    /* PROGRAM CHANGE */
-    function onProgramChange(selectEl){
-      const idx = selectEl.value;
-      const partsDiv = selectEl.parentElement.querySelector('.participants');
-      partsDiv.innerHTML = "";
-
-      if(!idx) return;
-
-      // Prevent duplicate selections
-      const selected = Array.from(document.querySelectorAll('#itemsContainer select'))
-        .map(s => s.value);
-      if(selected.filter(v => v === idx).length > 1){
-        alert("This program has already been selected!");
-        selectEl.value = "";
-        return;
-      }
-
-      const n = programs[idx].count;
-      for(let i = 1; i <= n; i++){
-        const inp = document.createElement('input');
-        inp.type = "text";
-        inp.placeholder = `Participant ${i} Full Name`;
-        inp.required = true;
-        partsDiv.appendChild(inp);
-      }
-    }
-
-    /* REMOVE ITEM */
-    function removeItem(btn){
-      if(!confirm("Are you sure you want to remove this item?")) return;
-      btn.closest('.item-block').remove();
-    }
-
-    /* CLEAR */
-    function clearItems(){
-      if(document.getElementById('itemsContainer').children.length === 0) return;
-      if(!confirm("Clear all selected items?")) return;
-      document.getElementById('itemsContainer').innerHTML = "";
-    }
-
-    /* SUBMIT */
-    function onSubmit(e){
-      e.preventDefault();
-
-      const fullName = document.getElementById('fullName').value.trim();
-      const parish = document.getElementById('parish').value.trim();
-      const position = document.getElementById('position').value;
-      const phone = document.getElementById('phone').value.trim();
-
-      const blocks = Array.from(document.querySelectorAll('.item-block'));
-      if(blocks.length === 0){
-        alert("Please add at least one item to register.");
-        return;
-      }
-
-      const items = [];
-      for(const b of blocks){
-        const sel = b.querySelector('select');
-        const idx = sel.value;
-        if(!idx){ 
-          alert("Please select a program for all items."); 
-          return; 
-        }
-
-        const names = Array.from(b.querySelectorAll('.participants input'))
-          .map(i => i.value.trim());
-        if(names.some(n => n === "")){
-          alert("Please fill out all participant names.");
-          return;
-        }
-
-        items.push({
-          program: programs[idx].name,
-          participants: names.join(" | ")
-        });
-      }
-
-      if(!confirm("Are you ready to submit your registration?")) return;
-
-      const submitBtn = document.getElementById("submitBtn");
-      const originalText = submitBtn.innerText;
-      submitBtn.innerText = "Submitting registration...";
-      submitBtn.disabled = true;
-
-      const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
-
-      fetch(postUrl, {
-        method: "POST",
-        body: JSON.stringify({
-          fullName,
-          parish,
-          position,
-          phone,
-          items
-        })
-      })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("HTTP error " + res.status);
-        }
-        return res.text();
-      })
-      .then(() => {
-        const popup = document.getElementById("successPopup");
-        popup.style.display = "flex";
-
-        setTimeout(() => {
-          popup.style.display = "none";
-        }, 3000);
-
-        document.getElementById('regForm').reset();
-        document.getElementById('itemsContainer').innerHTML = "";
-      })
-      .catch(err => {
-        alert("❌ Submission failed. Please verify your internet connection or try again later.");
-        console.error("Submission error:", err);
-      })
-      .finally(() => {
-        submitBtn.innerText = originalText;
-        submitBtn.disabled = false;
-      });
-    }
-  </script>
-
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/registration.js"></script>
 </body>
 </html>

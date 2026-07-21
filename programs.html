@@ -3,263 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Programs - OCYM Kollam</title>
+  <title>Programs & Events | OCYM Kollam Diocese</title>
   
-  <meta name="description" content="Programs and Events of OCYM Kollam Diocese">
+  <meta name="description" content="Explore programs, retreat archives, and activities of OCYM Kollam Diocese.">
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
-  
+  <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
 
   <!-- HEADER -->
-  <header>
-    <div class="header-box">
-      <!-- Logo Container with fallback -->
-      <div style="width: 80px; height: 80px; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;">
-        <img src="images/logo.png" class="logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div style="display:none; width: 70px; height: 70px;">
-          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-            <circle cx="50" cy="50" r="45" fill="#0b3c5d" stroke="#ffd700" stroke-width="3"/>
-            <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#ffd700" stroke-width="6" stroke-linecap="round"/>
-          </svg>
+  <header class="header-wrapper scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
+        <div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#0B3C5D" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4AF37" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
-      </div>
-      <h1>OCYM Kollam</h1>
-      <p class="subtitle">Orthodox Christian Youth Movement</p>
-      <p class="diocese">Kollam Diocese</p>
-    </div>
+        <div class="brand-text">
+          <span class="brand-title">OCYM Kollam</span>
+          <span class="brand-sub">Kollam Diocese</span>
+        </div>
+      </a>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="notice.html">Notice</a>
-      <a href="registration.html">Registration</a>
-      <a href="programs.html" class="active">Programs</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+      <!-- Navigation -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="index.html#bearers" class="nav-link">Office Bearers</a></li>
+          <li><a href="programs.html" class="nav-link active">Programs</a></li>
+          <li><a href="notice.html" class="nav-link">Notice Board</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </header>
 
-  <main>
-    <section class="programs-section" style="margin-top: 20px;">
-      <h2>✨ OCYM Programs</h2>
+  <main style="padding-top: 130px; min-height: 80vh;">
+    <section class="section section-light">
+      <div class="container">
+        <div class="section-header reveal reveal-slide-up">
+          <span class="section-subtitle">Activities Calendar</span>
+          <h2 class="section-title">✨ OCYM Programs & Events</h2>
+          <p class="section-desc">Browse through current, upcoming, and past diocesan activities.</p>
+        </div>
 
-      <!-- SEARCH BAR -->
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Search programs by title, year, or keywords...">
-      </div>
+        <!-- Search Box -->
+        <div style="max-width: 600px; margin: 0 auto 40px;">
+          <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search programs by title, year, or keyword..." style="padding: 16px 22px; font-size: 1rem; border-radius: var(--radius-full); box-shadow: var(--shadow-sm);">
+        </div>
 
-      <!-- PROGRAMS CONTAINER -->
-      <div id="programsContainer">
-        <!-- Bouncing Loader -->
-        <div class="loader">
-          <div class="dots">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- Container for Year Accordions -->
+        <div id="programsContainer">
+          <div class="loader">
+            <div class="dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-secondary);">Loading programs database...</p>
           </div>
-          <p>Fetching activities from database…</p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2026 OCYM Kollam | All Rights Reserved</p>
-  </footer>
-
-  <!-- ==========================================
-       PROGRAM DETAIL MODAL
-       ========================================== -->
+  <!-- PROGRAM DETAIL MODAL DIALOG -->
   <div class="modal" id="programModal">
-    <button class="close-btn" onclick="closeModal()" aria-label="Close modal">×</button>
     <div class="modal-content">
-      <!-- Modal image with custom fallback layout -->
-      <div style="position: relative; width: 100%; max-height: 280px; background: #062f4f; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-        <img id="modalImage" alt="Program Banner" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div id="modalImageFallback" style="display:none; width: 100%; height: 280px;">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width: 100%; height: 100%;">
-            <rect width="100" height="100" fill="#0b3c5d"/>
-            <circle cx="50" cy="50" r="22" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.25"/>
-            <path d="M50 35 v30 M42 43 h16 M40 50 h20 M44 61 l12 -4" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
-          </svg>
-        </div>
+      <button class="modal-close-btn" onclick="closeProgramModal()" aria-label="Close modal">×</button>
+      
+      <div style="width: 100%; height: 260px; background: var(--primary); overflow: hidden; position: relative;">
+        <img id="modalImage" alt="Program Banner" style="width: 100%; height: 100%; object-fit: cover;">
       </div>
       
-      <div class="modal-body">
-        <h3 id="modalTitle"></h3>
-        <div class="modal-meta">
-          <div class="modal-chip" id="modalYear"></div>
-          <div class="modal-chip" id="modalDate"></div>
+      <div style="padding: 32px;">
+        <h3 id="modalTitle" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 12px;"></h3>
+        
+        <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+          <span id="modalYear" style="background: var(--primary-surface); color: var(--primary); font-size: 0.85rem; font-weight: 600; padding: 6px 14px; border-radius: var(--radius-full);"></span>
+          <span id="modalDate" style="background: var(--accent-surface); color: #8c7014; font-size: 0.85rem; font-weight: 600; padding: 6px 14px; border-radius: var(--radius-full);"></span>
         </div>
-        <p id="modalDescription"></p>
+
+        <p id="modalDescription" style="font-size: 0.98rem; color: var(--text-secondary); line-height: 1.7; margin: 0;"></p>
       </div>
     </div>
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzb9l6Ce2ShxIpJccCBZoPxZ-ZCEqyH2twcA5E_fIH2ohvaZGIxycEcF1jqQQ5GWaehaA/exec";
-    let allPrograms = [];
-
-    /* =========================
-       FETCH DATA FROM SPREADSHEET
-       ========================= */
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        allPrograms = data;
-        renderPrograms(data);
-      })
-      .catch(err => {
-        document.getElementById("programsContainer").innerHTML = `
-          <div class="empty-state" style="border-color: #ef4444;">
-            <p>❌ Unable to load programs. Please check your internet connection.</p>
-          </div>
-        `;
-        console.error("Programs load failed:", err);
-      });
-
-    /* =========================
-       RENDER PROGRAMS GRID
-       ========================= */
-    function renderPrograms(data){
-      const container = document.getElementById("programsContainer");
-      container.innerHTML = "";
-
-      if(!data || data.length === 0){
-        container.innerHTML = `
-          <div class="empty-state">
-            <p>📭 No programs found matching your search query.</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Group by year
-      let years = {};
-      data.forEach(item => {
-        if(!years[item.year]){
-          years[item.year] = [];
-        }
-        years[item.year].push(item);
-      });
-
-      // Render years sorted descending
-      Object.keys(years)
-        .sort()
-        .reverse()
-        .forEach((year, index) => {
-          let cards = "";
-
-          years[year].forEach(p => {
-            const imagePath = p.image || "images/logo.png";
-            
-            // We escape quotes to avoid syntax breakdown in inline JS attributes
-            const cleanTitle = p.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-            const cleanDesc = p.description ? p.description.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "";
-            const cleanDate = p.date ? p.date.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "Program";
-            
-            cards += `
-              <div class="program-card" onclick="openModal('${imagePath}', '${cleanTitle}', '${cleanDesc}', '${year}', '${cleanDate}')">
-                <!-- Fallback wrapper -->
-                <div style="position: relative; width: 100%; height: 170px; background: #062f4f; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                  <img loading="lazy" src="${imagePath}" alt="${p.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                  <div style="display:none; width: 100%; height: 100%;">
-                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                      <rect width="100" height="100" fill="#0b3c5d" opacity="0.9"/>
-                      <circle cx="50" cy="50" r="25" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.2"/>
-                      <path d="M50 35 v30 M42 43 h16 M40 50 h20 M44 61 l12 -4" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
-                    </svg>
-                  </div>
-                </div>
-                
-                <div class="program-info">
-                  <div class="program-date">${p.date || "Program"}</div>
-                  <h4>${p.title}</h4>
-                  <div class="tap-view">Tap to View details</div>
-                </div>
-              </div>
-            `;
-          });
-
-          // Open the first year block by default, collapse others
-          const openClass = index === 0 ? "open" : "";
-
-          container.innerHTML += `
-            <div class="year-block ${openClass}">
-              <div class="year-header" onclick="toggleYear(this)">
-                <div class="year-title">📅 Academic Year ${year}</div>
-                <div class="arrow">▼</div>
-              </div>
-              <div class="year-content">
-                <div class="program-grid">
-                  ${cards}
-                </div>
-              </div>
-            </div>
-          `;
-        });
-    }
-
-    /* =========================
-       TOGGLE ACCORDION
-       ========================= */
-    function toggleYear(headerEl){
-      headerEl.parentElement.classList.toggle("open");
-    }
-
-    /* =========================
-       MODAL CONTROLS
-       ========================= */
-    function openModal(image, title, description, year, date){
-      const modalImg = document.getElementById("modalImage");
-      const modalFallback = document.getElementById("modalImageFallback");
-
-      // Reset fallback state
-      modalImg.style.display = "block";
-      modalFallback.style.display = "none";
-
-      modalImg.src = image;
-      document.getElementById("modalTitle").innerText = title;
-      document.getElementById("modalDescription").innerText = description || "No detailed description provided for this program.";
-      document.getElementById("modalYear").innerText = "📅 Year: " + year;
-      document.getElementById("modalDate").innerText = "✨ Date: " + date;
-
-      document.getElementById("programModal").classList.add("active");
-      document.body.style.overflow = "hidden"; // disable background scrolling
-    }
-
-    function closeModal(){
-      document.getElementById("programModal").classList.remove("active");
-      document.body.style.overflow = ""; // restore scrolling
-    }
-
-    /* Close modal when clicking on background overlay */
-    window.onclick = function(e){
+    function closeProgramModal() {
       const modal = document.getElementById("programModal");
-      if(e.target === modal){
-        closeModal();
+      if (modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
       }
     }
 
-    /* =========================
-       SEARCH FILTER
-       ========================= */
-    document.getElementById("searchInput").addEventListener("input", function(){
-      const query = this.value.toLowerCase();
-      const filtered = allPrograms.filter(p => 
-        p.title.toLowerCase().includes(query) || 
-        p.year.toString().includes(query) || 
-        (p.description && p.description.toLowerCase().includes(query))
-      );
-      renderPrograms(filtered);
-    });
+    window.onclick = function(e) {
+      const modal = document.getElementById("programModal");
+      if (e.target === modal) {
+        closeProgramModal();
+      }
+    };
   </script>
 
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo" style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+          <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#D4AF37" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#0B3C5D" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
+        </div>
+        <p class="footer-brand-desc">
+          Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About OCYM</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="notice.html">Notice Board</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
+        <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/facebook.png" alt="Facebook" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
+          </a>
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
+            <img src="images/instagram.png" alt="Instagram" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 OCYM Kollam Diocese | All Rights Reserved</p>
+      <p>Designed for Malankara Orthodox Syrian Church</p>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/programs.js"></script>
 </body>
 </html>
