@@ -52,37 +52,40 @@
   function formatProgramDate(dateStr) {
     if (!dateStr) return "Program";
     
-    // Check if it's an ISO-8601 Date String
-    if (typeof dateStr === "string" && dateStr.includes("T")) {
-      const parts = dateStr.split("T");
-      const datePart = parts[0]; // e.g. "2026-02-28"
-      const ymd = datePart.split("-");
-      if (ymd.length === 3) {
-        const year = parseInt(ymd[0], 10);
-        const month = parseInt(ymd[1], 10) - 1;
-        const day = parseInt(ymd[2], 10);
-        const localDate = new Date(year, month, day);
-        if (!isNaN(localDate.getTime())) {
-          return localDate.toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-          });
+    const str = String(dateStr).trim();
+
+    // 1. If it contains a slash, manually parse it (treat as exact local date format DD/MM/YY)
+    if (str.includes("/")) {
+      const parts = str.split("/");
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // 0-indexed month
+        let parsedYear = parseInt(parts[2], 10);
+        const year = parsedYear < 100 ? 2000 + parsedYear : parsedYear;
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        if (month >= 0 && month < 12 && day > 0 && day <= 31 && !isNaN(year)) {
+          return `${day} ${months[month]} ${year}`;
         }
       }
     }
-    
-    // Fallback normal parse
-    const dateObj = new Date(dateStr);
-    if (!isNaN(dateObj.getTime())) {
-      return dateObj.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-      });
+    // 2. If it is in ISO/UTC format, parse it using Date and format in India timezone (Asia/Kolkata)
+    else if (str.includes("-") || str.includes("T")) {
+      const dateObj = new Date(str);
+      if (!isNaN(dateObj.getTime())) {
+        const dayFormatter = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: 'Asia/Kolkata' });
+        const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'Asia/Kolkata' });
+        const yearFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', timeZone: 'Asia/Kolkata' });
+
+        const d = dayFormatter.format(dateObj);
+        const m = monthFormatter.format(dateObj);
+        const y = yearFormatter.format(dateObj);
+
+        return `${d} ${m} ${y}`;
+      }
     }
 
-    return dateStr;
+    return str;
   }
 
   /* =========================

@@ -10,6 +10,39 @@
   if (!section || !grid) return;
 
   function formatDate(d) {
+    if (!d) return "";
+    const str = String(d).trim();
+
+    // 1. Slash format (DD/MM/YY)
+    if (str.includes("/")) {
+      const parts = str.split("/");
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        let parsedYear = parseInt(parts[2], 10);
+        const year = parsedYear < 100 ? 2000 + parsedYear : parsedYear;
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        if (month >= 0 && month < 12 && day > 0 && day <= 31 && !isNaN(year)) {
+          return `${day} ${months[month]} ${year}`;
+        }
+      }
+    }
+    // 2. ISO/UTC format
+    else if (str.includes("-") || str.includes("T")) {
+      const dateObj = new Date(str);
+      if (!isNaN(dateObj.getTime())) {
+        const dayFormatter = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: 'Asia/Kolkata' });
+        const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'Asia/Kolkata' });
+        const yearFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', timeZone: 'Asia/Kolkata' });
+
+        const dayVal = dayFormatter.format(dateObj);
+        const monthVal = monthFormatter.format(dateObj);
+        const yearVal = yearFormatter.format(dateObj);
+
+        return `${dayVal} ${monthVal} ${yearVal}`;
+      }
+    }
+
     const date = new Date(d);
     if (isNaN(date.getTime())) return d;
     return date.toLocaleDateString("en-IN", {
