@@ -49,6 +49,42 @@
       }
     });
 
+  function formatProgramDate(dateStr) {
+    if (!dateStr) return "Program";
+    
+    // Check if it's an ISO-8601 Date String
+    if (typeof dateStr === "string" && dateStr.includes("T")) {
+      const parts = dateStr.split("T");
+      const datePart = parts[0]; // e.g. "2026-02-28"
+      const ymd = datePart.split("-");
+      if (ymd.length === 3) {
+        const year = parseInt(ymd[0], 10);
+        const month = parseInt(ymd[1], 10) - 1;
+        const day = parseInt(ymd[2], 10);
+        const localDate = new Date(year, month, day);
+        if (!isNaN(localDate.getTime())) {
+          return localDate.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+          });
+        }
+      }
+    }
+    
+    // Fallback normal parse
+    const dateObj = new Date(dateStr);
+    if (!isNaN(dateObj.getTime())) {
+      return dateObj.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    return dateStr;
+  }
+
   /* =========================
      HOMEPAGE PREVIEW RENDER
      ========================= */
@@ -57,7 +93,8 @@
     items.forEach(p => {
       const imagePath = p.image || "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80";
       const cleanTitle = p.title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      const cleanDate = p.date ? p.date.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Program";
+      const formattedDate = formatProgramDate(p.date);
+      const cleanDate = formattedDate.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       const cleanDesc = p.description ? p.description.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "";
 
       const card = document.createElement("div");
@@ -113,7 +150,8 @@
           const imagePath = p.image || "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80";
           const cleanTitle = p.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
           const cleanDesc = p.description ? p.description.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "";
-          const cleanDate = p.date ? p.date.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "Program";
+          const formattedDate = formatProgramDate(p.date);
+          const cleanDate = formattedDate.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
           cardsHtml += `
             <div class="program-card" onclick="openProgramModal('${imagePath}', '${cleanTitle}', '${cleanDesc}', '${year}', '${cleanDate}')">
