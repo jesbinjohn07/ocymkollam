@@ -88,7 +88,12 @@
     })
     .then(data => {
       allNotices = (data || []).map(item => {
-        let type = (item.type || "").trim();
+        // Support both old and new Google Apps Script schemas robustly
+        let type = (item.type || item.date || "").trim();
+        let rawDate = item.type ? item.date : item.title;
+        let name = (item.name || item.message || "").trim();
+        let link = (item.link || "").trim();
+
         const lowerType = type.toLowerCase();
         if (lowerType.includes("circular") || lowerType.includes("cicular")) {
           type = "Circular";
@@ -96,10 +101,17 @@
           type = "Kalpana";
         } else if (lowerType.includes("announcement")) {
           type = "Announcement";
+        } else if (type) {
+          type = type.charAt(0).toUpperCase() + type.slice(1);
+        } else {
+          type = "Announcement";
         }
+
         return {
-          ...item,
-          type: type
+          type: type,
+          date: rawDate,
+          name: name,
+          link: link
         };
       });
       renderNotices();
