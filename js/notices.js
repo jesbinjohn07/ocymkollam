@@ -87,7 +87,21 @@
       return res.json();
     })
     .then(data => {
-      allNotices = data || [];
+      allNotices = (data || []).map(item => {
+        let type = (item.type || "").trim();
+        const lowerType = type.toLowerCase();
+        if (lowerType.includes("circular") || lowerType.includes("cicular")) {
+          type = "Circular";
+        } else if (lowerType.includes("kalpana")) {
+          type = "Kalpana";
+        } else if (lowerType.includes("announcement")) {
+          type = "Announcement";
+        }
+        return {
+          ...item,
+          type: type
+        };
+      });
       renderNotices();
     })
     .catch(err => {
@@ -112,16 +126,16 @@
     if (!isHomepage) {
       if (currentCategory !== "all") {
         filtered = filtered.filter(item => {
-          const category = (item.category || item.Category || "general").toLowerCase().trim();
-          return category === currentCategory;
+          const type = (item.type || "").toLowerCase().trim();
+          return type.includes(currentCategory) || currentCategory.includes(type);
         });
       }
 
       if (searchQuery) {
         filtered = filtered.filter(item => {
-          const title = (item.title || "").toLowerCase();
-          const message = (item.message || "").toLowerCase();
-          return title.includes(searchQuery) || message.includes(searchQuery);
+          const name = (item.name || "").toLowerCase();
+          const type = (item.type || "").toLowerCase();
+          return name.includes(searchQuery) || type.includes(searchQuery);
         });
       }
     } else {
@@ -135,7 +149,7 @@
       } else {
         listContainer.innerHTML = `
           <div class="card" style="text-align: center; padding: 40px;">
-            <p style="font-size: 1.1rem; color: var(--text-secondary);">📭 No notices match your criteria.</p>
+            <p style="font-size: 1.1rem; color: var(--text-secondary);">📭 No circulars match your criteria.</p>
           </div>
         `;
       }
@@ -148,14 +162,17 @@
 
     filtered.forEach(item => {
       const formattedDate = formatDate(item.date);
-      const cleanTitle = item.title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      const cleanMessage = item.message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const cleanTitle = (item.name || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       
-      const link = item.link || item.Link || item.pdfLink || item.PdfLink || "";
-      const buttonText = item.button || item.Button || "View Document";
+      const link = item.link || "";
+      const buttonText = "View Document";
       
       const isNew = isNewNotice(item.date);
       const badgeHtml = isNew ? `<span class="notice-badge-new">NEW</span>` : "";
+
+      const typeLabel = item.type ? item.type.trim() : "";
+      const typeBadgeClass = typeLabel.toLowerCase().includes("kalpana") ? "badge-kalpana" : (typeLabel.toLowerCase().includes("circular") ? "badge-circular" : "badge-announcement");
+      const typeBadgeHtml = typeLabel ? `<span class="notice-badge-type ${typeBadgeClass}">${typeLabel}</span>` : "";
 
       const buttonHtml = link 
         ? `<a href="${link}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="margin-top: 12px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px;">
@@ -167,10 +184,12 @@
       card.className = "notice-card reveal reveal-slide-up";
       card.innerHTML = `
         <div class="notice-info">
-          ${badgeHtml}
-          <div class="notice-date">📌 ${formattedDate}</div>
-          <h3 class="notice-title">${cleanTitle}</h3>
-          <p class="notice-preview">${cleanMessage}</p>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+            ${badgeHtml}
+            ${typeBadgeHtml}
+            <div class="notice-date" style="margin-bottom: 0;">📌 ${formattedDate}</div>
+          </div>
+          <h3 class="notice-title" style="margin-top: 8px; margin-bottom: 0;">${cleanTitle}</h3>
         </div>
         ${buttonHtml}
       `;
