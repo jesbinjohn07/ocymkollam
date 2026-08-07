@@ -3,7 +3,7 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  initRegistrationToggle();
+  initDynamicNavigation();
   initStickyHeader();
   initMobileMenu();
   initScrollAnimations();
@@ -11,44 +11,69 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================================================
-   1. Dynamic Registration Configuration Toggle
+   1. Dynamic Header Navigation Injection
    ========================================================================== */
-function initRegistrationToggle() {
-  const isRegistrationActive = !!(window.SHOW_REGISTRATION);
+function initDynamicNavigation() {
   const navMenus = document.querySelectorAll(".nav-menu");
-  const regButtons = document.querySelectorAll(".registration-cta");
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
 
-  // Handle header navigation link
   navMenus.forEach(menu => {
-    let existingRegLink = menu.querySelector('a[href="registration.html"]');
+    menu.innerHTML = ""; // Clear existing static list items
 
-    if (isRegistrationActive) {
-      if (!existingRegLink) {
-        const li = document.createElement("li");
-        const currentPage = window.location.pathname.split("/").pop();
-        const isActive = currentPage === "registration.html" ? "active" : "";
-        li.innerHTML = `<a href="registration.html" class="nav-link nav-reg-btn ${isActive}">Registration</a>`;
-        
-        // Insert before Contact link if present, else append
-        const contactLi = Array.from(menu.children).find(child => child.querySelector('a[href="contact.html"]'));
-        if (contactLi) {
-          menu.insertBefore(li, contactLi);
-        } else {
-          menu.appendChild(li);
-        }
-      } else {
-        existingRegLink.parentElement.style.display = "block";
-      }
-    } else {
-      if (existingRegLink) {
-        existingRegLink.parentElement.style.display = "none";
-      }
+    // 1. Home
+    const homeLi = document.createElement("li");
+    const isHomeActive = (currentPage === "index.html" || currentPage === "") ? "active" : "";
+    homeLi.innerHTML = `<a href="index.html" class="nav-link ${isHomeActive}">Home</a>`;
+    menu.appendChild(homeLi);
+
+    // 2. About
+    const aboutLi = document.createElement("li");
+    const isAboutActive = (currentPage === "about.html") ? "active" : "";
+    aboutLi.innerHTML = `<a href="about.html" class="nav-link ${isAboutActive}">About</a>`;
+    menu.appendChild(aboutLi);
+
+    // 3. Programs
+    const programsLi = document.createElement("li");
+    const isProgramsActive = (currentPage === "programs.html") ? "active" : "";
+    programsLi.innerHTML = `<a href="programs.html" class="nav-link ${isProgramsActive}">Programs</a>`;
+    menu.appendChild(programsLi);
+
+    // 4. Circulars
+    const noticeLi = document.createElement("li");
+    const isNoticeActive = (currentPage === "notice.html") ? "active" : "";
+    noticeLi.innerHTML = `<a href="notice.html" class="nav-link ${isNoticeActive}">Circulars</a>`;
+    menu.appendChild(noticeLi);
+
+    // 5. Yuvadarshanam
+    const yuvadarshanamLi = document.createElement("li");
+    const isYuvadarshanamActive = (currentPage === "yuvadarshanam.html") ? "active" : "";
+    yuvadarshanamLi.innerHTML = `<a href="yuvadarshanam.html" class="nav-link ${isYuvadarshanamActive}">Yuvadarshanam</a>`;
+    menu.appendChild(yuvadarshanamLi);
+
+    // 6. Contact
+    const contactLi = document.createElement("li");
+    const isContactActive = (currentPage === "contact.html") ? "active" : "";
+    contactLi.innerHTML = `<a href="contact.html" class="nav-link ${isContactActive}">Contact</a>`;
+    menu.appendChild(contactLi);
+
+    // 7. Blood Bank (External Link in New Tab)
+    const bloodBankLi = document.createElement("li");
+    bloodBankLi.innerHTML = `<a href="https://www.ocymraktadhan.online/" target="_blank" rel="noopener" class="nav-link">Blood Bank <svg style="display: inline-block; vertical-align: middle; margin-left: 4px; fill: none; stroke: currentColor; stroke-width: 2.5;" width="11" height="11" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>`;
+    menu.appendChild(bloodBankLi);
+
+    // 8. Registration (Only if active)
+    if (window.SHOW_REGISTRATION) {
+      const regLi = document.createElement("li");
+      const isRegActive = (currentPage === "registration.html") ? "active" : "";
+      regLi.innerHTML = `<a href="registration.html" class="nav-link nav-reg-btn ${isRegActive}">Registration</a>`;
+      menu.appendChild(regLi);
     }
   });
 
   // Handle CTA buttons across Hero and Quick Links
+  const regButtons = document.querySelectorAll(".registration-cta");
   regButtons.forEach(btn => {
-    if (isRegistrationActive) {
+    if (window.SHOW_REGISTRATION) {
       btn.style.display = "inline-flex";
     } else {
       btn.style.display = "none";

@@ -13,7 +13,7 @@
  *
  * Change this ONE boolean value below to toggle the entire feature.
  */
-window.SHOW_REGISTRATION = true;
+window.SHOW_REGISTRATION = false;
 
 /**
  * HOMEPAGE IMAGE SLIDER API ENDPOINT

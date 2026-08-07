@@ -116,9 +116,15 @@ function onSubmit(e) {
   const position = document.getElementById('position').value;
   const phone = document.getElementById('phone').value.trim();
 
+  const phonePattern = /^[0-9]{10}$/;
+  if (!phonePattern.test(phone)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
   const blocks = Array.from(document.querySelectorAll('.item-block'));
   if (blocks.length === 0) {
-    alert("Please add at least one item to register.");
+    alert("Please add at least one program to register.");
     return;
   }
 
@@ -147,8 +153,8 @@ function onSubmit(e) {
   if (!confirm("Are you ready to submit your registration?")) return;
 
   const submitBtn = document.getElementById("submitBtn");
-  const originalText = submitBtn.innerText;
-  submitBtn.innerText = "Submitting registration...";
+  const originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = `<span>⏳</span> Submitting registration...`;
   submitBtn.disabled = true;
 
   const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
@@ -168,16 +174,30 @@ function onSubmit(e) {
     return res.text();
   })
   .then(() => {
-    alert("🎉 Registration submitted successfully!");
+    const successOverlay = document.getElementById("successOverlay");
+    if (successOverlay) {
+      successOverlay.classList.add("active");
+    } else {
+      alert("🎉 Registration submitted successfully!");
+    }
     document.getElementById('regForm').reset();
-    document.getElementById('itemsContainer').innerHTML = "";
+    const container = document.getElementById('itemsContainer');
+    if (container) container.innerHTML = "";
   })
   .catch(err => {
     alert("❌ Submission failed. Please check your internet connection or try again later.");
     console.error("Submission error:", err);
   })
   .finally(() => {
-    submitBtn.innerText = originalText;
+    submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
   });
 }
+
+/* CLOSE SUCCESS MODAL */
+window.closeSuccessModal = function() {
+  const successOverlay = document.getElementById("successOverlay");
+  if (successOverlay) {
+    successOverlay.classList.remove("active");
+  }
+};

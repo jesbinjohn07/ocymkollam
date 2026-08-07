@@ -108,9 +108,8 @@
           <img class="program-img" loading="lazy" src="${imagePath}" alt="${cleanTitle}" onerror="this.src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80';">
           <div class="program-date-badge">📅 ${cleanDate}</div>
         </div>
-        <div class="program-body">
-          <h3 class="program-title">${cleanTitle}</h3>
-          <p class="program-desc">${cleanDesc.substring(0, 110)}${cleanDesc.length > 110 ? '...' : ''}</p>
+        <div class="program-body" style="padding: 20px;">
+          <h3 class="program-title" style="margin: 0; font-size: 1.1rem;">${cleanTitle}</h3>
         </div>
       `;
       homepageContainer.appendChild(card);
@@ -162,10 +161,8 @@
                 <img class="program-img" loading="lazy" src="${imagePath}" alt="${p.title}" onerror="this.src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80';">
                 <div class="program-date-badge">📅 ${cleanDate}</div>
               </div>
-              <div class="program-body">
-                <h3 class="program-title">${p.title}</h3>
-                <p class="program-desc">${(p.description || '').substring(0, 100)}...</p>
-                <div style="font-size: 0.85rem; font-weight: 600; color: var(--secondary); margin-top: 10px;">Tap for full details →</div>
+              <div class="program-body" style="padding: 20px;">
+                <h3 class="program-title" style="margin: 0; font-size: 1.1rem;">${p.title}</h3>
               </div>
             </div>
           `;

@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notice Board | OCYM Kollam Diocese</title>
+  <title>Circulars | OCYM Kollam Diocese</title>
   
-  <meta name="description" content="Official notices and circulars of OCYM Kollam Diocese.">
+  <meta name="description" content="Official notices, bulletins, and circulars of OCYM Kollam Diocese under the Malankara Orthodox Syrian Church.">
   
-  <!-- Google Fonts: Poppins & Inter -->
+  <!-- Google Fonts: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
@@ -21,30 +21,26 @@
   <header class="header-wrapper scrolled">
     <div class="container nav-container">
       <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
-        <div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
           <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <div style="display:none; width: 44px; height: 44px;">
             <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-              <circle cx="50" cy="50" r="45" fill="#0B3C5D" stroke="#D4AF37" stroke-width="3"/>
-              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4AF37" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="50" cy="50" r="45" fill="#D4A017" stroke="#B8860B" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
         <div class="brand-text">
           <span class="brand-title">OCYM Kollam</span>
           <span class="brand-sub">Kollam Diocese</span>
+          <span class="brand-motto">Worship • Study • Service</span>
         </div>
       </a>
 
-      <!-- Navigation -->
+      <!-- Desktop Navigation Menu (Populated dynamically via js/main.js) -->
       <nav aria-label="Main Navigation">
         <ul class="nav-menu">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="about.html" class="nav-link">About</a></li>
-          <li><a href="index.html#bearers" class="nav-link">Office Bearers</a></li>
-          <li><a href="programs.html" class="nav-link">Programs</a></li>
-          <li><a href="notice.html" class="nav-link active">Notice Board</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <!-- Populated by JS -->
         </ul>
       </nav>
 
@@ -60,12 +56,29 @@
   <main style="padding-top: 130px; min-height: 80vh;">
     <section class="section section-light">
       <div class="container">
+        
+        <!-- Header Banner -->
         <div class="section-header reveal reveal-slide-up">
           <span class="section-subtitle">Official Announcements</span>
-          <h2 class="section-title">📌 Notice Board</h2>
-          <p class="section-desc">Latest circulars, announcements, and notices published by OCYM Kollam Diocese.</p>
+          <h2 class="section-title">📌 Circulars</h2>
+          <p class="section-desc">Search and view circulars, announcements, and notices published by OCYM Kollam Diocese.</p>
         </div>
 
+        <!-- Search Box & Filter Container -->
+        <div style="max-width: 700px; margin: 0 auto 30px; display: flex; flex-direction: column; gap: 20px;">
+          <input type="text" id="noticeSearchInput" class="form-control" placeholder="🔍 Search notices by title, date, or keyword..." style="padding: 16px 22px; font-size: 1rem; border-radius: var(--radius-full); box-shadow: var(--shadow-sm);">
+          
+          <!-- Category Filters -->
+          <div class="category-filter-container" id="categoryFilters">
+            <button class="category-btn active" data-category="all">All Circulars</button>
+            <button class="category-btn" data-category="worship">Worship</button>
+            <button class="category-btn" data-category="study">Study</button>
+            <button class="category-btn" data-category="service">Service</button>
+            <button class="category-btn" data-category="general">General</button>
+          </div>
+        </div>
+
+        <!-- Notices Container -->
         <div id="noticeList" class="notices-list">
           <!-- Bouncing loader -->
           <div class="loader">
@@ -77,6 +90,7 @@
             <p style="font-size: 0.95rem; color: var(--text-secondary);">Fetching latest notices from server...</p>
           </div>
         </div>
+
       </div>
     </section>
   </main>
@@ -89,8 +103,8 @@
           <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <div style="display:none; width: 44px; height: 44px;">
             <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#D4AF37" stroke-width="3"/>
-              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#0B3C5D" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#B8860B" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4A017" stroke-width="6" stroke-linecap="round"/>
             </svg>
           </div>
           <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
@@ -98,6 +112,9 @@
         <p class="footer-brand-desc">
           Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
         </p>
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; margin-top: 18px; text-transform: uppercase;">
+          Worship • Study • Service
+        </div>
       </div>
 
       <div class="footer-col">
@@ -106,21 +123,40 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About OCYM</a></li>
           <li><a href="programs.html">Programs</a></li>
-          <li><a href="notice.html">Notice Board</a></li>
+          <li><a href="notice.html">Circulars</a></li>
+          <li><a href="yuvadarshanam.html">Yuvadarshanam</a></li>
           <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="https://www.ocymraktadhan.online/" target="_blank" rel="noopener">Blood Bank <svg style="display: inline-block; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2.5;" width="10" height="10" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a></li>
         </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; line-height: 1.5;">
+          📍 Diocesan Office Address:<br>
+          Bishop House, Kollam Diocese,<br>Kerala, India - 691001
+        </p>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; line-height: 1.5;">
+          📞 Phone Contacts:<br>
+          VP: <a href="tel:+918848963115" style="color: var(--accent);">+91 88489 63115</a><br>
+          Sec: <a href="tel:+919446227479" style="color: var(--accent);">+91 94462 27479</a>
+        </p>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.5;">
+          ✉️ Email:<br>
+          <a href="mailto:ocymkollam@gmail.com" style="color: var(--accent);">ocymkollam@gmail.com</a>
+        </p>
       </div>
 
       <div class="footer-col">
         <h4>Follow Us</h4>
         <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
         <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
-          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
-            <img src="images/facebook.png" alt="Facebook" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+            <img src="images/facebook.png" alt="Facebook" class="social-btn-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
           </a>
-          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 8px;">
-            <img src="images/instagram.png" alt="Instagram" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+            <img src="images/instagram.png" alt="Instagram" class="social-btn-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
           </a>
         </div>
