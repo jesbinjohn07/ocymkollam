@@ -50,6 +50,12 @@ function initDynamicNavigation() {
     yuvadarshanamLi.innerHTML = `<a href="yuvadarshanam.html" class="nav-link ${isYuvadarshanamActive}">Yuvadarshanam</a>`;
     menu.appendChild(yuvadarshanamLi);
 
+    // 5b. Gallery
+    const galleryLi = document.createElement("li");
+    const isGalleryActive = (currentPage === "gallery.html") ? "active" : "";
+    galleryLi.innerHTML = `<a href="gallery.html" class="nav-link ${isGalleryActive}">Gallery</a>`;
+    menu.appendChild(galleryLi);
+
     // 6. Contact
     const contactLi = document.createElement("li");
     const isContactActive = (currentPage === "contact.html") ? "active" : "";

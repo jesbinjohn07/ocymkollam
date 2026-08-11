@@ -21,3 +21,10 @@ window.SHOW_REGISTRATION = false;
  * The Google Sheet contains: Image URL | Event Title | Description / Caption
  */
 window.SLIDER_API_URL = "https://script.google.com/macros/s/AKfycbzCwEngUV4q6tQMkYq4fNg1ugV20c1evz7Z-m9JHODkMh3k-0ejwHkIApHnpGlZ4CSq/exec";
+
+/**
+ * GALLERY API ENDPOINT
+ * --------------------------------------------------------------------------
+ * The Google Apps Script returns: [{ "title": "...", "date": "...", "photos": [{ "name": "...", "url": "..." }] }]
+ */
+window.GALLERY_API_URL = "https://script.google.com/macros/s/AKfycby6kskI1i9Kl9O-Ftk_qq3cgtEa3sBGKzwi7_di_1DFF2BGyde6rJ9MUX9ldH2BvWU-Og/exec";

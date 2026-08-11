@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | OCYM Kollam Diocese</title>
+
+  <meta name="description" content="Browse photo galleries from OCYM Kollam Diocese events, programs, and activities under the Malankara Orthodox Syrian Church.">
+  <meta name="keywords" content="OCYM Kollam Gallery, Orthodox Youth Photos, Kollam Diocese Events, MOSC">
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Global Design System -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Gallery Page Styles (inline to avoid extra file per existing conventions) -->
+  <style>
+    /* =====================================================
+       GALLERY PAGE — Scoped Styles
+       ===================================================== */
+
+    /* Page header band */
+    .gallery-page-header {
+      padding: 48px 0 36px;
+      text-align: center;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .gallery-page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-page-header .gallery-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Main gallery wrapper */
+    .gallery-main {
+      padding-top: 140px;
+      min-height: 80vh;
+      background: var(--bg-main);
+    }
+
+    /* =====================================================
+       LOADING STATE
+       ===================================================== */
+    .gallery-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .gallery-loading-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .gallery-loading-dots span {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: galleryDotBounce 1.2s ease-in-out infinite;
+    }
+
+    .gallery-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .gallery-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes galleryDotBounce {
+      0%, 80%, 100% { transform: scale(0.75); opacity: 0.5; }
+      40% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .gallery-loading-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* =====================================================
+       ERROR STATE
+       ===================================================== */
+    .gallery-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .gallery-error-icon {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .gallery-error-text {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      max-width: 380px;
+    }
+
+    .gallery-retry-btn {
+      margin-top: 8px;
+      padding: 12px 28px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-family);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      box-shadow: 0 4px 14px rgba(23, 58, 94, 0.2);
+    }
+
+    .gallery-retry-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(23, 58, 94, 0.28);
+    }
+
+    .gallery-retry-btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* =====================================================
+       ALBUMS CONTAINER
+       ===================================================== */
+    .gallery-albums {
+      padding: 52px 0 80px;
+    }
+
+    /* Separator line between albums */
+    .album-separator {
+      border: none;
+      border-top: 1px solid var(--border-light);
+      margin: 52px 0;
+    }
+
+    /* =====================================================
+       ALBUM CARD
+       ===================================================== */
+    .album-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+    }
+
+    .album-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(212, 160, 23, 0.22);
+    }
+
+    .album-card-body {
+      padding: 28px 32px 32px;
+    }
+
+    /* Album title & date header */
+    .album-header {
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 16px;
+    }
+
+    .album-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .album-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .album-date-icon {
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+
+    /* =====================================================
+       PHOTO GRID
+       ===================================================== */
+    .album-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    /* 4:3 aspect ratio thumbnail */
+    .album-photo-item {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--border-light);
+    }
+
+    .album-photo-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity var(--transition-smooth);
+      display: block;
+    }
+
+    .album-photo-item:hover img {
+      transform: scale(1.07);
+    }
+
+    /* Hover overlay */
+    .album-photo-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(23, 58, 94, 0.0);
+      transition: background var(--transition-smooth);
+      border-radius: var(--radius-md);
+    }
+
+    .album-photo-item:hover::after {
+      background: rgba(23, 58, 94, 0.12);
+    }
+
+    /* Focus ring for keyboard nav */
+    .album-photo-item:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* No photos message */
+    .album-no-photos {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    /* =====================================================
+       LIGHTBOX
+       ===================================================== */
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 10, 5, 0.92);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .gallery-lightbox.lb-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Prevent body scroll when open — handled via JS body class */
+    body.gallery-lb-open {
+      overflow: hidden;
+    }
+
+    /* Backdrop click target (behind image) */
+    .lb-backdrop {
+      position: absolute;
+      inset: 0;
+      cursor: default;
+    }
+
+    /* Inner wrapper for image + controls */
+    .lb-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      width: 100%;
+      height: 100%;
+      padding: 70px 60px 52px;
+      pointer-events: none;
+    }
+
+    /* Image container */
+    .lb-image-wrap {
+      position: relative;
+      max-width: min(900px, 90vw);
+      max-height: calc(100vh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .lb-image-wrap.lb-transitioning {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+
+    .lb-image-wrap img {
+      max-width: 100%;
+      max-height: calc(100vh - 160px);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Close button */
+    .lb-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      z-index: 9001;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.3rem;
+      line-height: 1;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+      pointer-events: auto;
+    }
+
+    .lb-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.08);
+    }
+
+    .lb-close:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Prev / Next navigation buttons */
+    .lb-nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9001;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: background var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
+      pointer-events: auto;
+    }
+
+    .lb-prev { left: 18px; }
+    .lb-next { right: 18px; }
+
+    .lb-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.38);
+    }
+
+    .lb-nav-btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .lb-nav-btn:disabled,
+    .lb-nav-btn[aria-disabled="true"] {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    /* Counter */
+    .lb-counter {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9001;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* =====================================================
+       RESPONSIVE — Tablet 768px
+       ===================================================== */
+    @media (max-width: 1024px) {
+      .album-photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .gallery-main {
+        padding-top: 120px;
+      }
+
+      .gallery-page-header {
+        padding: 36px 0 28px;
+      }
+
+      .gallery-page-header h1 {
+        font-size: 1.65rem;
+      }
+
+      .album-card-body {
+        padding: 22px 20px 24px;
+      }
+
+      .album-title {
+        font-size: 1.1rem;
+      }
+
+      .album-photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .lb-inner {
+        padding: 60px 16px 60px;
+      }
+
+      .lb-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+      }
+
+      .lb-prev { left: 10px; }
+      .lb-next { right: 10px; }
+    }
+
+    /* =====================================================
+       RESPONSIVE — Mobile 480px
+       ===================================================== */
+    @media (max-width: 480px) {
+      .album-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .album-card-body {
+        padding: 18px 16px 20px;
+      }
+
+      .album-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+      }
+
+      .gallery-albums {
+        padding: 36px 0 60px;
+      }
+
+      .lb-image-wrap img {
+        max-height: calc(100vh - 120px);
+      }
+
+      .lb-inner {
+        padding: 56px 8px 56px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .album-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+    }
+  </style>
+
+  <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER (identical pattern to other pages)
+       ============================================================ -->
+  <header class="header-wrapper scrolled">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="OCYM Kollam Homepage">
+        <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img src="images/logo.png" class="brand-logo" alt="OCYM Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#D4A017" stroke="#B8860B" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">OCYM Kollam</span>
+          <span class="brand-sub">Kollam Diocese</span>
+          <span class="brand-motto">Worship • Study • Service</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation (Populated dynamically via js/main.js) -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <!-- Populated by JS -->
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="gallery-main" id="gallery-main" role="main">
+
+    <!-- Page Header -->
+    <div class="gallery-page-header">
+      <div class="container">
+        <h1>Gallery</h1>
+        <p class="gallery-subtitle">Moments and memories of OCYM Kollam Diocese</p>
+      </div>
+    </div>
+
+    <!-- Albums container — JS renders into this -->
+    <section class="gallery-albums" aria-label="Photo Albums">
+      <div class="container" id="galleryContainer">
+
+        <!-- Initial loading state -->
+        <div class="gallery-loading" id="galleryLoading" aria-live="polite" aria-label="Loading gallery">
+          <div class="gallery-loading-dots" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p class="gallery-loading-text">Loading gallery…</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       LIGHTBOX (hidden by default, shown by JS)
+       ============================================================ -->
+  <div
+    class="gallery-lightbox"
+    id="galleryLightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Photo viewer"
+    aria-hidden="true"
+  >
+    <!-- Backdrop — clicking closes lightbox -->
+    <div class="lb-backdrop" id="lbBackdrop"></div>
+
+    <!-- Close button -->
+    <button class="lb-close" id="lbCloseBtn" aria-label="Close photo viewer">&#x2715;</button>
+
+    <!-- Prev / Next nav -->
+    <button class="lb-nav-btn lb-prev" id="lbPrevBtn" aria-label="Previous photo">&#8249;</button>
+    <button class="lb-nav-btn lb-next" id="lbNextBtn" aria-label="Next photo">&#8250;</button>
+
+    <!-- Image area -->
+    <div class="lb-inner">
+      <div class="lb-image-wrap" id="lbImageWrap">
+        <img id="lbImage" src="" alt="" draggable="false">
+      </div>
+    </div>
+
+    <!-- Photo counter -->
+    <div class="lb-counter" id="lbCounter" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER (identical to other pages)
+       ============================================================ -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo" style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+          <img src="images/logo.png" alt="OCYM Logo" style="width: 44px; height: 44px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div style="display:none; width: 44px; height: 44px;">
+            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+              <circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#B8860B" stroke-width="3"/>
+              <path d="M50 15 v70 M35 30 h30 M30 45 h40 M38 72 l24 -8" stroke="#D4A017" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-brand-title" style="font-size: 1.35rem; font-weight: 700;">OCYM Kollam Diocese</span>
+        </div>
+        <p class="footer-brand-desc">
+          Empowering Orthodox Christian youth in spiritual faith, Christian fellowship, and dedicated community service across the Kollam Diocese under the Malankara Orthodox Syrian Church.
+        </p>
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; margin-top: 18px; text-transform: uppercase;">
+          Worship • Study • Service
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About OCYM</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="notice.html">Circulars</a></li>
+          <li><a href="yuvadarshanam.html">Yuvadarshanam</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="https://www.ocymraktadhan.online/" target="_blank" rel="noopener">Blood Bank <svg style="display: inline-block; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2.5;" width="10" height="10" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; line-height: 1.5;">
+          📍 Diocesan Office Address:<br>
+          Bishop House, Kollam Diocese,<br>Kerala, India - 691001
+        </p>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; line-height: 1.5;">
+          📞 Phone Contacts:<br>
+          VP: <a href="tel:+918848963115" style="color: var(--accent);">+91 88489 63115</a><br>
+          Sec: <a href="tel:+919446227479" style="color: var(--accent);">+91 94462 27479</a>
+        </p>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.5;">
+          ✉️ Email:<br>
+          <a href="mailto:ocymkollam@gmail.com" style="color: var(--accent);">ocymkollam@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow Us</h4>
+        <p style="font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 16px;">Connect with our official social media handles.</p>
+        <div class="footer-socials" style="display: flex; gap: 14px; align-items: center;">
+          <a href="https://www.facebook.com/ocymkollamdiocese/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+            <img src="images/facebook.png" alt="Facebook" class="social-btn-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">FB</span>
+          </a>
+          <a href="https://instagram.com/ocym_kollam_diocese" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+            <img src="images/instagram.png" alt="Instagram" class="social-btn-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; color: white; font-weight: bold; font-size: 0.9rem;">IG</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 OCYM Kollam Diocese | All Rights Reserved</p>
+      <p>Designed for Malankara Orthodox Syrian Church</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Back to top">↑</button>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/gallery.js"></script>
+
+</body>
+</html>
