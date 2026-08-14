@@ -1389,8 +1389,45 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
    -------------------------------------------------------------------------- */
 .bearers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+}
+
+/* Row 2 — joint secretaries centered under the 3-column row */
+.bearers-grid-row2 {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.bearers-grid-row2 .bearer-card {
+  flex: 0 0 calc(33.333% - 20px);
+  max-width: 320px;
+}
+
+@media (max-width: 900px) {
+  .bearers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bearers-grid-row2 .bearer-card {
+    flex: 0 0 calc(50% - 15px);
+  }
+}
+
+@media (max-width: 600px) {
+  .bearers-grid {
+    grid-template-columns: 1fr;
+  }
+  .bearers-grid-row2 {
+    flex-direction: column;
+    align-items: center;
+  }
+  .bearers-grid-row2 .bearer-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .bearer-card {
@@ -2099,6 +2136,16 @@ footer {
   color: var(--secondary);
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-fast), border-color var(--transition-fast);
+  overflow: hidden;
+}
+
+.bearer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  display: block;
 }
 
 .bearer-card:hover .bearer-avatar {
