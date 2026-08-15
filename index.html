@@ -85,23 +85,6 @@
           <a href="registration.html" class="btn btn-outline registration-cta" style="display: none;">Register for Kalamela</a>
           <a href="notice.html" class="btn btn-outline">Latest Notices</a>
         </div>
-
-        <!-- Inauguration Launch Button (hidden after launch) -->
-        <div class="inauguration-btn-wrap" id="inaugurationBtnWrap">
-          <button
-            class="btn-inauguration"
-            id="inaugurateLaunchBtn"
-            aria-label="Officially launch the OCYM Kollam Diocese website"
-          >
-            <span class="inauguration-btn-icon" aria-hidden="true">&#10022;</span>
-            <span>Officially Launch Website</span>
-          </button>
-        </div>
-
-        <!-- Launched Banner (visible after launch) -->
-        <div class="inauguration-launched-banner" id="inauguratedBanner" style="display:none;" role="status" aria-live="polite">
-          <span aria-hidden="true">&#10022;</span> Official Website Launched
-        </div>
       </div>
 
       <!-- Animated Scroll Down Indicator -->
@@ -557,70 +540,6 @@
   <!-- Back to Top Button -->
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
-  <!-- ============================================================
-       INAUGURATION — CONFIRMATION DIALOG
-       ============================================================ -->
-  <div
-    class="inaug-overlay" id="inaugConfirmOverlay"
-    role="dialog" aria-modal="true"
-    aria-labelledby="inaugConfirmTitle"
-    aria-describedby="inaugConfirmDesc"
-    aria-hidden="true"
-  >
-    <div class="inaug-dialog" id="inaugConfirmDialog">
-      <!-- Header -->
-      <div class="inaug-dialog-header">
-        <img src="images/logo.png" alt="OCYM Logo" class="inaug-dialog-logo" onerror="this.style.display='none'">
-        <h2 class="inaug-dialog-org" id="inaugConfirmTitle">OCYM Kollam Diocese</h2>
-        <p class="inaug-dialog-event">Official Website Inauguration</p>
-        <p class="inaug-dialog-motto">&ldquo;Worship &bull; Study &bull; Service&rdquo;</p>
-      </div>
-      <!-- Body -->
-      <div class="inaug-dialog-body">
-        <p id="inaugConfirmDesc">Ready to officially launch the website?</p>
-      </div>
-      <!-- Actions -->
-      <div class="inaug-dialog-actions">
-        <button class="inaug-btn-cancel" id="inaugCancelBtn" aria-label="Cancel inauguration">Cancel</button>
-        <button class="inaug-btn-proceed" id="inaugProceedBtn" aria-label="Proceed with website inauguration">Proceed with Inauguration</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================================
-       INAUGURATION — CEREMONIAL ANIMATION OVERLAY
-       ============================================================ -->
-  <div
-    class="inaug-ceremony" id="inaugCeremony"
-    role="dialog" aria-modal="true"
-    aria-label="Website inauguration ceremony"
-    aria-hidden="true"
-  >
-    <div class="inaug-ceremony-inner">
-      <!-- Logo -->
-      <div class="inaug-logo-wrap">
-        <div class="inaug-logo-glow" aria-hidden="true"></div>
-        <img src="images/logo.png" alt="OCYM Kollam Diocese Logo" class="inaug-ceremony-logo" onerror="this.style.display='none'">
-      </div>
-
-      <!-- Reveal lines -->
-      <p class="inaug-line inaug-line-org" aria-hidden="true">OCYM Kollam Diocese</p>
-      <p class="inaug-line inaug-line-website" aria-hidden="true">Official Website</p>
-      <p class="inaug-line inaug-line-motto" aria-hidden="true">Worship &bull; Study &bull; Service</p>
-
-      <div class="inaug-divider" aria-hidden="true"></div>
-
-      <!-- Final declaration -->
-      <div class="inaug-declaration">
-        <div class="inaug-cross" aria-hidden="true">&#10013;</div>
-        <p class="inaug-launched-text">WEBSITE OFFICIALLY LAUNCHED</p>
-        <p class="inaug-launched-org">OCYM Kollam Diocese</p>
-      </div>
-    </div>
-    <!-- Screen-reader-only accessible announcement -->
-    <span class="sr-only" role="status" aria-live="assertive" id="inaugSRAnnounce"></span>
-  </div>
-
   <!-- Global Scripts -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
@@ -628,6 +547,5 @@
   <script src="js/announcements.js"></script>
   <script src="js/programs.js"></script>
   <script src="js/notices.js"></script>
-  <script src="js/inauguration.js"></script>
 </body>
 </html>
