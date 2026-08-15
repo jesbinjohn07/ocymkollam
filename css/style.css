@@ -1389,30 +1389,30 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
    -------------------------------------------------------------------------- */
 .bearers-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
-/* Row 2 — joint secretaries centered under the 3-column row */
+/* Row 2 — joint secretaries centered under the 4-column row */
 .bearers-grid-row2 {
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .bearers-grid-row2 .bearer-card {
-  flex: 0 0 calc(33.333% - 20px);
+  flex: 0 0 calc(25% - 18px);
   max-width: 320px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
   .bearers-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .bearers-grid-row2 .bearer-card {
-    flex: 0 0 calc(50% - 15px);
+    flex: 0 0 calc(50% - 12px);
   }
 }
 
