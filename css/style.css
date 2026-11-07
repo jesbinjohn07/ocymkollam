@@ -1949,6 +1949,154 @@ footer {
   margin-bottom: 20px;
 }
 
+/* Kalamela Collapsible Rules */
+.kalamela-rules-details {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.kalamela-rules-summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  user-select: none;
+  list-style: none;
+}
+
+.kalamela-rules-summary::-webkit-details-marker {
+  display: none;
+}
+
+.kalamela-rules-summary::before {
+  content: '▶';
+  font-size: 0.75rem;
+  color: var(--accent);
+  transition: transform var(--transition-fast);
+}
+
+.kalamela-rules-details[open] .kalamela-rules-summary::before {
+  transform: rotate(90deg);
+}
+
+.kalamela-rules-content {
+  margin-top: 16px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.kalamela-rules-content ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin: 10px 0;
+}
+
+.kalamela-rules-content li {
+  margin-bottom: 8px;
+}
+
+.kalamela-points-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.88rem;
+}
+
+.kalamela-points-table th, .kalamela-points-table td {
+  border: 1px solid var(--border-light);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.kalamela-points-table th {
+  background: var(--bg-subtle);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Participant Card inside Program Item */
+.participant-entry-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.participant-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.participant-fields-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.3fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 650px) {
+  .participant-fields-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.participant-sub-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.substitutes-box {
+  background: rgba(212, 160, 23, 0.05);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+
+/* Inline Validation Message */
+.form-error-msg {
+  display: none;
+  font-size: 0.82rem;
+  color: #dc2626;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.form-error-msg.visible {
+  display: block;
+}
+
+.form-control.has-error {
+  border-color: #dc2626 !important;
+  background-color: #fef2f2 !important;
+}
+
+.form-banner-error {
+  display: none;
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.form-banner-error.visible {
+  display: block;
+}
+
 .registration-closed-card {
   text-align: center;
   padding: 60px 40px;
