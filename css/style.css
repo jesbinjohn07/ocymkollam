@@ -2012,6 +2012,17 @@ footer {
   text-align: left;
 }
 
+@media (max-width: 600px) {
+  .registration-form-card {
+    padding: 24px 18px !important;
+  }
+
+  .kalamela-points-table th, .kalamela-points-table td {
+    padding: 8px 8px;
+    font-size: 0.8rem;
+  }
+}
+
 .kalamela-points-table th {
   background: var(--bg-subtle);
   color: var(--primary);
