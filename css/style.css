@@ -33,8 +33,8 @@
   --border-light: #EBE5D5;
   --border-focus: #173A5E;
 
-  /* Typography - Poppins */
-  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Typography - Poppins with Noto Sans Malayalam fallback */
+  --font-family: 'Poppins', 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Spacing & Layout */
   --radius-sm: 8px;
