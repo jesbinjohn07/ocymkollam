@@ -2517,9 +2517,28 @@ footer {
   .nav-link { font-size: 1.1rem; }
   .nav-link::after { display: none; }
 
-  .hero { padding: 120px 0 80px; }
+  .hero { 
+    padding: 120px 0 120px; 
+    min-height: calc(100vh + 60px);
+  }
   .hero-title { font-size: 2.2rem; }
   .hero-tagline { font-size: 1.05rem; }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    gap: 12px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .scroll-indicator {
+    bottom: 20px;
+  }
   
   .slider-container { height: 420px; }
   .slide-caption-box { bottom: 40px; }
