@@ -263,6 +263,8 @@
     if (regForm) {
       regForm.addEventListener("submit", onSubmit);
     }
+
+    initParishSelect();
   });
 
   /* ===== ADD PROGRAM BLOCK ===== */
@@ -712,7 +714,7 @@
 
   /* ===== ERROR UI HELPERS ===== */
   function clearAllErrors() {
-    document.querySelectorAll('.form-control.has-error').forEach(el => el.classList.remove('has-error'));
+    document.querySelectorAll('.form-control.has-error, .parish-trigger-btn.has-error').forEach(el => el.classList.remove('has-error'));
     document.querySelectorAll('.form-error-msg').forEach(el => {
       el.classList.remove('visible');
       el.textContent = '';
@@ -728,11 +730,15 @@
     const field = document.getElementById(fieldId);
     const errDiv = document.getElementById(fieldId + 'Error');
     if (field) field.classList.add('has-error');
+    if (fieldId === 'parish') {
+      const trigger = document.getElementById('parishTriggerBtn');
+      if (trigger) trigger.classList.add('has-error');
+    }
     if (errDiv) {
       errDiv.textContent = errorMsg;
       errDiv.classList.add('visible');
     }
-    return field;
+    return (fieldId === 'parish' ? (document.getElementById('parishTriggerBtn') || field) : field);
   }
 
   function setCustomError(element, errorDiv, errorMsg) {
@@ -790,7 +796,7 @@
       recordError(setFieldError('fullName', 'Please enter your full name.'), 'Full Name is required.');
     }
     if (!parish) {
-      recordError(setFieldError('parish', 'Please enter parish name.'), 'Parish Name is required.');
+      recordError(setFieldError('parish', 'Please select your parish.'), 'Parish Name is required.');
     }
     if (!position) {
       recordError(setFieldError('position', 'Please select official position.'), 'Official Position is required.');
@@ -1106,6 +1112,14 @@
         const form = document.getElementById('regForm');
         if (form) form.reset();
 
+        const parishHidden = document.getElementById('parish');
+        if (parishHidden) parishHidden.value = '';
+        const parishTriggerText = document.getElementById('parishTriggerText');
+        if (parishTriggerText) {
+          parishTriggerText.textContent = 'Select Parish Name';
+          parishTriggerText.classList.add('placeholder');
+        }
+
         const container = document.getElementById('itemsContainer');
         if (container) container.innerHTML = "";
 
@@ -1129,5 +1143,153 @@
       successOverlay.classList.remove("active");
     }
   };
+
+  /* ===== SEARCHABLE PARISH DROPDOWN COMPONENT ===== */
+  function initParishSelect() {
+    const wrapper = document.getElementById('parishSelectWrapper');
+    const triggerBtn = document.getElementById('parishTriggerBtn');
+    const triggerText = document.getElementById('parishTriggerText');
+    const panel = document.getElementById('parishDropdownPanel');
+    const searchInput = document.getElementById('parishSearchInput');
+    const optionsList = document.getElementById('parishOptionsList');
+    const closeBtn = document.getElementById('parishSheetCloseBtn');
+    const parishInput = document.getElementById('parish');
+    const parishError = document.getElementById('parishError');
+
+    if (!wrapper || !triggerBtn || !panel || !optionsList || !parishInput) return;
+
+    const parishes = (window.PARISH_LIST && Array.isArray(window.PARISH_LIST)) ? window.PARISH_LIST : [];
+    let isOpen = false;
+
+    function renderList(query = '') {
+      const q = query.trim().toLowerCase();
+      optionsList.innerHTML = '';
+
+      const filtered = parishes.filter(p => {
+        if (!q) return true;
+        return p.name.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        const noRes = document.createElement('li');
+        noRes.className = 'parish-no-results';
+        noRes.textContent = 'No matching parish found (ഇടവക കണ്ടെത്താനായില്ല)';
+        optionsList.appendChild(noRes);
+        return;
+      }
+
+      filtered.forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'parish-option-item';
+        li.setAttribute('role', 'option');
+        li.textContent = p.name;
+        if (parishInput.value === p.name) {
+          li.classList.add('selected');
+          li.setAttribute('aria-selected', 'true');
+        }
+
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectParish(p.name);
+        });
+
+        optionsList.appendChild(li);
+      });
+    }
+
+    function selectParish(name) {
+      parishInput.value = name;
+      triggerText.textContent = name;
+      triggerText.classList.remove('placeholder');
+
+      triggerBtn.classList.remove('has-error');
+      if (parishError) {
+        parishError.classList.remove('visible');
+        parishError.textContent = '';
+      }
+
+      closeDropdown();
+      triggerBtn.focus();
+    }
+
+    function openDropdown() {
+      if (isOpen) return;
+      isOpen = true;
+      panel.classList.add('open');
+      triggerBtn.classList.add('is-active');
+      triggerBtn.setAttribute('aria-expanded', 'true');
+
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      renderList('');
+
+      // Lock body scroll on mobile only
+      if (window.innerWidth <= 640) {
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeDropdown() {
+      if (!isOpen) return;
+      isOpen = false;
+      panel.classList.remove('open');
+      triggerBtn.classList.remove('is-active');
+      triggerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // Toggle on trigger click
+    triggerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isOpen) {
+        closeDropdown();
+      } else {
+        openDropdown();
+      }
+    });
+
+    // Close button (Mobile Sheet header)
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeDropdown();
+      });
+    }
+
+    // Backdrop click on mobile
+    panel.addEventListener('click', (e) => {
+      if (e.target === panel) {
+        closeDropdown();
+      }
+    });
+
+    // Search filter
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        renderList(searchInput.value);
+      });
+    }
+
+    // Close when clicking outside on desktop
+    document.addEventListener('click', (e) => {
+      if (!isOpen) return;
+      if (!wrapper.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+
+    // Keyboard support: Escape to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeDropdown();
+        triggerBtn.focus();
+      }
+    });
+
+    // Initial render
+    renderList('');
+  }
 
 })();

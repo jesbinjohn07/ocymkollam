@@ -63,8 +63,8 @@
       <div class="container" style="max-width: 840px;">
         <div class="section-header reveal reveal-slide-up">
           <span class="section-subtitle">യുവജന പ്രസ്ഥാനം കൊല്ലം ഭദ്രാസനം</span>
-          <h2 class="section-title">🎭 ജ്വാല – യുവജന കലാമേള</h2>
-          <p class="section-desc">Kalamela Participant Registration (2026–27) — Submit parish participant entries for the diocesan Kalamela competition.</p>
+          <h2 class="section-title">ജ്വാല – യുവജന കലാമേള</h2>
+          <p class="section-desc" style="font-size: 1.05rem; font-weight: 500; color: var(--primary); letter-spacing: 0.05em; text-transform: uppercase;">Registration</p>
         </div>
 
         <!-- Collapsible Rules & Points Card -->
@@ -130,7 +130,7 @@
           <div id="formErrorBanner" class="form-banner-error" role="alert" aria-live="assertive"></div>
 
           <!-- Contact Details Card -->
-          <div class="registration-form-card reveal reveal-slide-up">
+          <div class="registration-form-card reveal reveal-slide-up" style="position: relative; z-index: 100;">
             <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
               <span>📋</span> Parish Official Contact Details
             </h3>
@@ -142,9 +142,43 @@
             </div>
 
             <div class="form-group">
-              <label for="parish" class="form-label">Parish Name <span style="color: #dc2626;">*</span></label>
-              <input type="text" id="parish" class="form-control" placeholder="Enter parish name" required>
-              <div class="form-error-msg" id="parishError">Please enter the parish name.</div>
+              <label id="parishLabel" class="form-label">Parish Name <span style="color: #dc2626;">*</span></label>
+              <!-- Hidden input keeping id="parish" for seamless submission and backward compatibility -->
+              <input type="hidden" id="parish" name="parish" required>
+              
+              <div class="parish-select-wrapper" id="parishSelectWrapper">
+                <button type="button" 
+                        class="parish-trigger-btn" 
+                        id="parishTriggerBtn" 
+                        aria-haspopup="listbox" 
+                        aria-expanded="false" 
+                        aria-labelledby="parishLabel parishTriggerText">
+                  <span class="parish-trigger-text placeholder" id="parishTriggerText">Select Parish Name</span>
+                  <span class="parish-trigger-arrow" aria-hidden="true">▼</span>
+                </button>
+
+                <div class="parish-dropdown-panel" id="parishDropdownPanel" role="dialog" aria-modal="true" aria-label="Select Parish">
+                  <div class="parish-sheet-container">
+                    <div class="parish-sheet-header">
+                      <h4 class="parish-sheet-title">Select Parish</h4>
+                      <button type="button" class="parish-sheet-close-btn" id="parishSheetCloseBtn" aria-label="Close parish picker">✕</button>
+                    </div>
+                    <div class="parish-search-box">
+                      <input type="text" 
+                             class="parish-search-input" 
+                             id="parishSearchInput" 
+                             placeholder="Search parish name (തിരയുക)..." 
+                             autocomplete="off" 
+                             autocapitalize="off" 
+                             spellcheck="false">
+                    </div>
+                    <ul class="parish-options-list" id="parishOptionsList" role="listbox" aria-label="Parish options">
+                      <!-- Populated dynamically via parishes.js -->
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="form-error-msg" id="parishError">Please select your parish.</div>
             </div>
 
             <div class="form-group">
@@ -295,6 +329,7 @@
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="js/config.js"></script>
+  <script src="js/parishes.js"></script>
   <script src="js/main.js"></script>
   <script src="js/registration.js"></script>
 </body>
