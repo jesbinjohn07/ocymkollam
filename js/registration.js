@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    OCYM Kollam Diocese - Kalamela Registration Script
    Circular 2026–27: "ജ്വാല – യുവജന കലാമേള" (Jwala – Yuvajana Kalamela)
    ========================================================================== */
@@ -265,6 +265,7 @@
     }
 
     initParishSelect();
+    initSubmissionModals();
   });
 
   /* ===== ADD PROGRAM BLOCK ===== */
@@ -766,9 +767,150 @@
     }
   }
 
-  /* ===== CLIENT-SIDE VALIDATION & SUBMISSION (Requirement 4) ===== */
+  /* ===== SUBMISSION STATE & MODAL MANAGEMENT ===== */
+  let isSubmitting = false;
+  let lastSubmissionPayload = null;
+
+  function showOverlay(overlayId) {
+    const el = document.getElementById(overlayId);
+    if (el) {
+      el.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function hideOverlay(overlayId) {
+    const el = document.getElementById(overlayId);
+    if (el) {
+      el.classList.remove('active');
+      // If no other overlay is open, restore scroll
+      const activeOverlays = document.querySelectorAll('.reg-modal-overlay.active');
+      if (activeOverlays.length === 0) {
+        document.body.style.overflow = '';
+      }
+    }
+  }
+
+  function showSuccessModal(regId, parishName, programCount) {
+    const idEl = document.getElementById('successRegId');
+    if (idEl) idEl.textContent = regId;
+
+    const summaryEl = document.getElementById('successSummaryPill');
+    if (summaryEl) {
+      summaryEl.innerHTML = `<strong>Parish:</strong> ${escapeHTML(parishName)} &bull; <strong>Programs:</strong> ${programCount}`;
+    }
+
+    showOverlay('successOverlay');
+  }
+
+  function showFailureModal(shortReason) {
+    const reasonEl = document.getElementById('failureReasonText');
+    if (reasonEl) {
+      reasonEl.textContent = shortReason;
+    }
+    showOverlay('failureOverlay');
+  }
+
+  function performPostSubmission(payload) {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    lastSubmissionPayload = payload;
+
+    const submitBtn = document.getElementById("submitBtn");
+    const originalText = submitBtn ? submitBtn.innerHTML : 'Submit Registration Form';
+    if (submitBtn) {
+      submitBtn.innerHTML = `<span>⏳</span> Submitting registration...`;
+      submitBtn.disabled = true;
+    }
+
+    showOverlay('waitOverlay');
+
+    const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
+
+    // 60-second AbortController timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+    fetch(postUrl, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    })
+      .then(async (res) => {
+        clearTimeout(timeoutId);
+        const text = await res.text();
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status + ": " + (text.slice(0, 100) || "Server returned an error"));
+        }
+
+        let parsed;
+        try {
+          parsed = JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error("Invalid response format received from server.");
+        }
+
+        if (!parsed || parsed.status !== "success" || !parsed.regId || typeof parsed.regId !== "string" || !parsed.regId.trim()) {
+          const errMsg = (parsed && parsed.message) ? parsed.message : "The server did not return a valid registration confirmation.";
+          const err = new Error(errMsg);
+          err.serverReported = true;
+          throw err;
+        }
+
+        return parsed;
+      })
+      .then((parsed) => {
+        hideOverlay('waitOverlay');
+        showSuccessModal(parsed.regId.trim(), payload.parish, payload.items.length);
+
+        // Reset form ONLY on confirmed success
+        const form = document.getElementById('regForm');
+        if (form) form.reset();
+
+        const parishHidden = document.getElementById('parish');
+        if (parishHidden) parishHidden.value = '';
+        const parishTriggerText = document.getElementById('parishTriggerText');
+        if (parishTriggerText) {
+          parishTriggerText.textContent = 'Select Parish Name';
+          parishTriggerText.classList.add('placeholder');
+        }
+
+        const container = document.getElementById('itemsContainer');
+        if (container) container.innerHTML = "";
+
+        clearAllErrors();
+        refreshProgramDropdowns();
+      })
+      .catch((err) => {
+        hideOverlay('waitOverlay');
+        console.error("Kalamela Registration Submission Error:", err);
+
+        let shortReason = "Network problem. Check your internet connection.";
+        if (err.name === 'AbortError') {
+          shortReason = "No response from the server (timed out).";
+        } else if (err.serverReported) {
+          shortReason = `Server error: ${err.message}`;
+        } else if (err.message && err.message.startsWith('HTTP')) {
+          shortReason = `Server error: ${err.message}`;
+        } else if (err.message && err.message.includes('Invalid response')) {
+          shortReason = "Server error: Invalid response received.";
+        }
+
+        showFailureModal(shortReason);
+      })
+      .finally(() => {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+  }
+
+  /* ===== SUBMIT FORM HANDLER ===== */
   function onSubmit(e) {
     e.preventDefault();
+    if (isSubmitting) return;
     clearAllErrors();
 
     const errorsList = [];
@@ -1077,71 +1219,112 @@
     if (!confirm(confirmMsg)) return;
 
     // 5. Submit to Google Apps Script
-    const submitBtn = document.getElementById("submitBtn");
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = `<span>⏳</span> Submitting registration...`;
-    submitBtn.disabled = true;
-
-    // Existing POST URL - kept unchanged as required
-    const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
-
-    const payload = {
+    performPostSubmission({
       fullName,
       parish,
       position,
       phone,
       items
-    };
-
-    fetch(postUrl, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    })
-      .then(res => {
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return res.text();
-      })
-      .then(() => {
-        const successOverlay = document.getElementById("successOverlay");
-        if (successOverlay) {
-          successOverlay.classList.add("active");
-        } else {
-          alert("🎉 Registration submitted successfully!");
-        }
-
-        const form = document.getElementById('regForm');
-        if (form) form.reset();
-
-        const parishHidden = document.getElementById('parish');
-        if (parishHidden) parishHidden.value = '';
-        const parishTriggerText = document.getElementById('parishTriggerText');
-        if (parishTriggerText) {
-          parishTriggerText.textContent = 'Select Parish Name';
-          parishTriggerText.classList.add('placeholder');
-        }
-
-        const container = document.getElementById('itemsContainer');
-        if (container) container.innerHTML = "";
-
-        clearAllErrors();
-        refreshProgramDropdowns();
-      })
-      .catch(err => {
-        alert("❌ Submission failed. Please check your internet connection or try again later.");
-        console.error("Submission error:", err);
-      })
-      .finally(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      });
+    });
   }
 
-  /* ===== CLOSE SUCCESS MODAL ===== */
-  window.closeSuccessModal = function () {
-    const successOverlay = document.getElementById("successOverlay");
-    if (successOverlay) {
-      successOverlay.classList.remove("active");
+  /* ===== MODAL & OVERLAY EVENT BINDINGS ===== */
+  function initSubmissionModals() {
+    // Copy ID button
+    const copyBtn = document.getElementById('copyRegIdBtn');
+    const copyBtnText = document.getElementById('copyRegIdBtnText');
+    const regIdEl = document.getElementById('successRegId');
+
+    if (copyBtn && regIdEl) {
+      copyBtn.addEventListener('click', async () => {
+        const textToCopy = regIdEl.textContent.trim();
+        let copiedSuccessfully = false;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(textToCopy);
+            copiedSuccessfully = true;
+          } catch (e) {
+            copiedSuccessfully = false;
+          }
+        }
+
+        if (!copiedSuccessfully) {
+          // Fallback: select text for manual copy
+          const range = document.createRange();
+          range.selectNodeContents(regIdEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try {
+            copiedSuccessfully = document.execCommand('copy');
+          } catch (e) {
+            copiedSuccessfully = false;
+          }
+        }
+
+        if (copiedSuccessfully) {
+          copyBtn.classList.add('copied');
+          if (copyBtnText) copyBtnText.textContent = 'Copied ✓';
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            if (copyBtnText) copyBtnText.textContent = 'Copy ID';
+          }, 2000);
+        }
+      });
     }
+
+    // Success overlay buttons
+    const regAnotherBtn = document.getElementById('registerAnotherBtn');
+    if (regAnotherBtn) {
+      regAnotherBtn.addEventListener('click', () => {
+        hideOverlay('successOverlay');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+    if (closeSuccessBtn) {
+      closeSuccessBtn.addEventListener('click', () => {
+        hideOverlay('successOverlay');
+      });
+    }
+
+    // Failure overlay buttons
+    const retryBtn = document.getElementById('retrySubmitBtn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        hideOverlay('failureOverlay');
+        if (lastSubmissionPayload) {
+          performPostSubmission(lastSubmissionPayload);
+        }
+      });
+    }
+
+    const backToFormBtn = document.getElementById('backToFormBtn');
+    if (backToFormBtn) {
+      backToFormBtn.addEventListener('click', () => {
+        hideOverlay('failureOverlay');
+      });
+    }
+
+    // Escape key closes open overlays (except waitOverlay)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const successModal = document.getElementById('successOverlay');
+        const failureModal = document.getElementById('failureOverlay');
+        if (successModal && successModal.classList.contains('active')) {
+          hideOverlay('successOverlay');
+        } else if (failureModal && failureModal.classList.contains('active')) {
+          hideOverlay('failureOverlay');
+        }
+      }
+    });
+  }
+
+  // Backward compatibility for any remaining inline reference
+  window.closeSuccessModal = function () {
+    hideOverlay('successOverlay');
   };
 
   /* ===== SEARCHABLE PARISH DROPDOWN COMPONENT ===== */
@@ -1293,3 +1476,4 @@
   }
 
 })();
+

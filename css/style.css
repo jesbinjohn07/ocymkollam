@@ -2588,57 +2588,187 @@ footer {
   border-color: var(--accent);
 }
 
-/* Registration Success Modal */
-.success-overlay {
+/* Registration Overlays (Waiting, Success, Failure) */
+.reg-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(21, 15, 1, 0.7);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 3000;
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow-y: auto;
 }
-.success-overlay.active {
+
+.reg-modal-overlay.active {
   opacity: 1;
   visibility: visible;
 }
-.success-card {
+
+.reg-modal-card {
   background: var(--bg-card);
   border-radius: var(--radius-xl);
-  padding: 40px;
-  max-width: 450px;
-  width: 90%;
+  padding: 36px 32px;
+  max-width: 500px;
+  width: 100%;
   text-align: center;
-  box-shadow: var(--shadow-lg);
-  transform: scale(0.9);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 2px solid var(--primary-hover);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid var(--border-light);
+  margin: auto;
 }
-.success-overlay.active .success-card {
+
+.reg-modal-overlay.active .reg-modal-card {
   transform: scale(1);
 }
-.success-checkmark {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
+
+/* Spinner for Waiting Overlay */
+.reg-spinner {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  border: 4px solid rgba(212, 160, 23, 0.2);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: regSpin 0.9s linear infinite;
+}
+
+@keyframes regSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Modal Icons */
+.reg-icon-circle {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--primary-surface);
-  border: 4px solid var(--primary);
-  color: var(--primary);
-  font-size: 2.5rem;
-  animation: scaleInCheck 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  font-size: 2.2rem;
+  font-weight: 700;
+  animation: scaleInCheck 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
-@keyframes scaleInCheck {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+
+.reg-icon-circle.success {
+  background: rgba(22, 163, 74, 0.12);
+  border: 3px solid #16a34a;
+  color: #16a34a;
+}
+
+.reg-icon-circle.error {
+  background: rgba(220, 38, 38, 0.12);
+  border: 3px solid #dc2626;
+  color: #dc2626;
+}
+
+/* Registration ID Box */
+.reg-id-box {
+  background: var(--bg-subtle);
+  border: 2px dashed rgba(23, 58, 94, 0.3);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.reg-id-text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  user-select: all;
+}
+
+.reg-copy-btn {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 7px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.reg-copy-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.03);
+}
+
+.reg-copy-btn.copied {
+  background: #16a34a;
+}
+
+/* Details summary pill on success */
+.reg-summary-pill {
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Error message callout on failure */
+.reg-error-callout {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: #991b1b;
+  font-size: 0.9rem;
+  margin: 16px 0;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* Modal Actions Stack */
+.reg-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.reg-modal-actions .btn {
+  min-height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 12px 20px;
+}
+
+@media (max-width: 480px) {
+  .reg-modal-card {
+    padding: 28px 20px;
+  }
+  .reg-id-text {
+    font-size: 1.1rem;
+  }
 }

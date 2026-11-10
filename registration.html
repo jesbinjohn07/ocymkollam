@@ -314,15 +314,86 @@
     </div>
   </footer>
 
-  <!-- Success Overlay Popup -->
-  <div class="success-overlay" id="successOverlay">
-    <div class="success-card">
-      <div class="success-checkmark">✓</div>
-      <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 12px; font-weight: 700;">Registration Submitted!</h3>
-      <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; font-size: 0.95rem;">
-        Your entry has been recorded in the diocesan Kalamela registration sheet.
+  <!-- 1. Please Wait / Submitting Overlay (non-closable) -->
+  <div class="reg-modal-overlay" id="waitOverlay" role="dialog" aria-modal="true" aria-labelledby="waitTitle" aria-describedby="waitDesc">
+    <div class="reg-modal-card">
+      <div class="reg-spinner"></div>
+      <h3 id="waitTitle" style="font-size: 1.35rem; color: var(--primary); margin-bottom: 10px; font-weight: 700;">
+        Submitting registration…
+      </h3>
+      <p id="waitDesc" style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin: 0;">
+        Submitting your registration… Please do not close or refresh this page.<br>
+        <span style="font-size: 0.88rem; color: var(--text-muted); display: block; margin-top: 6px;">
+          സമർപ്പിക്കുന്നു… ദയവായി പേജ് അടയ്ക്കുകയോ റിഫ്രഷ് ചെയ്യുകയോ ചെയ്യരുത്.
+        </span>
       </p>
-      <button type="button" class="btn btn-gold" onclick="closeSuccessModal()" style="width: 100%; padding: 14px;">Continue</button>
+    </div>
+  </div>
+
+  <!-- 2. Success Overlay Popup -->
+  <div class="reg-modal-overlay" id="successOverlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="reg-modal-card">
+      <div class="reg-icon-circle success">✓</div>
+      <h3 id="successTitle" style="font-size: 1.45rem; color: var(--primary); margin-bottom: 6px; font-weight: 700;">
+        Registration Submitted<br>
+        <span style="font-size: 1.05rem; font-weight: 500; color: #16a34a;">രജിസ്ട്രേഷൻ സമർപ്പിച്ചു</span>
+      </h3>
+
+      <div class="reg-id-box">
+        <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 600;">Registration ID</span>
+        <div class="reg-id-text" id="successRegId">JWL-XXXXXXXX-XXXXXX-XXX</div>
+        <button type="button" class="reg-copy-btn" id="copyRegIdBtn" aria-label="Copy Registration ID">
+          <span>📋</span> <span id="copyRegIdBtnText">Copy ID</span>
+        </button>
+      </div>
+
+      <div class="reg-summary-pill" id="successSummaryPill">
+        <!-- Parish Name & Programs Count injected dynamically -->
+      </div>
+
+      <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; font-size: 0.86rem; text-align: left; background: #fafafa; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+        📌 <strong>Please take a screenshot or note this Registration ID.</strong> You will need it for any correction or enquiry.<br>
+        <span style="color: var(--text-muted); display: block; margin-top: 4px;">
+          ഈ രജിസ്ട്രേഷൻ ഐഡി സ്ക്രീൻഷോട്ട് എടുക്കുകയോ കുറിച്ചുവയ്ക്കുകയോ ചെയ്യുക. തിരുത്തലുകൾക്ക് ഇത് ആവശ്യമാണ്.
+        </span>
+      </p>
+
+      <div class="reg-modal-actions">
+        <button type="button" class="btn btn-primary" id="registerAnotherBtn">Register Another Parish</button>
+        <button type="button" class="btn btn-outline" id="closeSuccessBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Failure Overlay Popup -->
+  <div class="reg-modal-overlay" id="failureOverlay" role="dialog" aria-modal="true" aria-labelledby="failureTitle">
+    <div class="reg-modal-card">
+      <div class="reg-icon-circle error">✕</div>
+      <h3 id="failureTitle" style="font-size: 1.45rem; color: #dc2626; margin-bottom: 6px; font-weight: 700;">
+        Submission Failed<br>
+        <span style="font-size: 1.05rem; font-weight: 500; color: #b91c1c;">സമർപ്പിക്കാൻ കഴിഞ്ഞില്ല</span>
+      </h3>
+
+      <p style="color: var(--text-secondary); line-height: 1.55; font-size: 0.92rem; margin-bottom: 8px;">
+        Your registration was <strong>NOT confirmed</strong>. Your entered details are still on this page and have not been lost.<br>
+        <span style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 4px;">
+          നിങ്ങളുടെ രജിസ്ട്രേഷൻ സ്ഥിരീകരിച്ചിട്ടില്ല. നൽകിയ വിവരങ്ങൾ ഈ പേജിൽ തന്നെയുണ്ട്.
+        </span>
+      </p>
+
+      <div class="reg-error-callout" id="failureReasonBox">
+        <strong>Reason:</strong> <span id="failureReasonText">Network problem. Check your internet connection.</span>
+      </div>
+
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin: 8px 0 16px;">
+        If the problem continues, please contact the OCYM diocesan office.<br>
+        പ്രശ്നം തുടർന്നാൽ OCYM ഡയോസിഷൻ ഓഫീസുമായി ബന്ധപ്പെടുക.
+      </p>
+
+      <div class="reg-modal-actions">
+        <button type="button" class="btn btn-primary" id="retrySubmitBtn">Retry Submission</button>
+        <button type="button" class="btn btn-outline" id="backToFormBtn">Back to Form</button>
+      </div>
     </div>
   </div>
 
