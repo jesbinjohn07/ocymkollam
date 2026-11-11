@@ -811,6 +811,57 @@
     showOverlay('failureOverlay');
   }
 
+  /* ===== Reliable submit: retry + "did it save?" check =====
+     Safe because the server returns the ORIGINAL Reg ID for the same submissionId. */
+  function parseReply(text) {
+    let parsed;
+    try { parsed = JSON.parse(text); }
+    catch (e) { throw new Error("Invalid response format received from server."); }
+    if (!parsed || parsed.status !== "success" || !parsed.regId || typeof parsed.regId !== "string" || !parsed.regId.trim()) {
+      const err = new Error((parsed && parsed.message) ? parsed.message : "The server did not return a valid registration confirmation.");
+      err.serverReported = true;
+      throw err;
+    }
+    return parsed;
+  }
+
+  function fetchWithTimeout(url, options, ms) {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), ms);
+    return fetch(url, Object.assign({}, options, { signal: controller.signal }))
+      .finally(() => clearTimeout(t));
+  }
+
+  async function checkSaved(postUrl, submissionId) {
+    try {
+      const res = await fetchWithTimeout(postUrl + "?check=" + encodeURIComponent(submissionId), {}, 15000);
+      const data = JSON.parse(await res.text());
+      return (data && data.status === "success" && data.regId) ? data : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function submitWithRecovery(postUrl, payload) {
+    let lastErr;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const res = await fetchWithTimeout(postUrl, { method: "POST", body: JSON.stringify(payload) }, 30000);
+        const text = await res.text();
+        if (!res.ok) throw new Error("HTTP " + res.status + ": " + (text.slice(0, 100) || "Server returned an error"));
+        return parseReply(text);
+      } catch (err) {
+        if (err.serverReported || (err.message && err.message.includes("Invalid response"))) throw err;
+        lastErr = err;
+        // The reply may have been lost even though the data was saved: ask the server
+        const saved = await checkSaved(postUrl, payload.submissionId);
+        if (saved) return saved;
+        await new Promise(r => setTimeout(r, 1500 * attempt));
+      }
+    }
+    throw lastErr;
+  }
+
   function performPostSubmission(payload) {
     if (isSubmitting) return;
     isSubmitting = true;
@@ -827,38 +878,7 @@
 
     const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
 
-    // 60-second AbortController timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000);
-
-    fetch(postUrl, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    })
-      .then(async (res) => {
-        clearTimeout(timeoutId);
-        const text = await res.text();
-        if (!res.ok) {
-          throw new Error("HTTP " + res.status + ": " + (text.slice(0, 100) || "Server returned an error"));
-        }
-
-        let parsed;
-        try {
-          parsed = JSON.parse(text);
-        } catch (jsonErr) {
-          throw new Error("Invalid response format received from server.");
-        }
-
-        if (!parsed || parsed.status !== "success" || !parsed.regId || typeof parsed.regId !== "string" || !parsed.regId.trim()) {
-          const errMsg = (parsed && parsed.message) ? parsed.message : "The server did not return a valid registration confirmation.";
-          const err = new Error(errMsg);
-          err.serverReported = true;
-          throw err;
-        }
-
-        return parsed;
-      })
+    submitWithRecovery(postUrl, payload)
       .then((parsed) => {
         hideOverlay('waitOverlay');
         showSuccessModal(parsed.regId.trim(), payload.parish, payload.items.length);
@@ -1481,4 +1501,3 @@
   }
 
 })();
-
