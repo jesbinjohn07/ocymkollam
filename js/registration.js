@@ -1219,7 +1219,12 @@
     if (!confirm(confirmMsg)) return;
 
     // 5. Submit to Google Apps Script
+    const submissionId = (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+
     performPostSubmission({
+      submissionId,
       fullName,
       parish,
       position,
