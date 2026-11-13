@@ -19,15 +19,24 @@
 
   /* ===== 18 VERBATIM KALAMELA PROGRAMS ===== */
   const programs = [
-    // --- 11 Individual Items (1 participant each) ---
+    // --- 12 Individual Items (1 participant each) ---
     {
-      name: "ലളിതഗാനം",
+      name: "ലളിതഗാനം (Male)",
       type: "individual",
       min: 1,
       max: 1,
-      gender: "ask",
+      gender: "male_only",
       substitutes: false,
-      note: "സ്ത്രീകൾക്കും പുരുഷന്മാർക്കും പ്രത്യേക മത്സരങ്ങൾ ഉണ്ടായിരിക്കും"
+      note: "പുരുഷന്മാർക്ക് മാത്രം"
+    },
+    {
+      name: "ലളിതഗാനം (Female)",
+      type: "individual",
+      min: 1,
+      max: 1,
+      gender: "female_only",
+      substitutes: false,
+      note: "വനിതകൾക്ക് മാത്രം"
     },
     {
       name: "പ്രസംഗം",
@@ -54,7 +63,7 @@
       max: 1,
       gender: "any",
       substitutes: false,
-      note: "Violin - Eastern style"
+      note: "വയലിൻ – ഈസ്റ്റേൺ ശൈലി"
     },
     {
       name: "സ്ട്രിംഗ് ഇൻസ്ട്രുമെൻ്റ് (ഗിറ്റാർ – വെസ്റ്റേൺ)",
@@ -63,7 +72,7 @@
       max: 1,
       gender: "any",
       substitutes: false,
-      note: "Guitar - Western style"
+      note: "ഗിറ്റാർ – വെസ്റ്റേൺ ശൈലി"
     },
     {
       name: "കീബോർഡ്",
@@ -99,7 +108,7 @@
       max: 1,
       gender: "any",
       substitutes: false,
-      note: "Pencil Drawing"
+      note: "പെൻസിൽ ചിത്രരചന"
     },
     {
       name: "കഥാരചന",
@@ -129,7 +138,7 @@
       fixed: true,
       gender: "any",
       substitutes: true, // Rule 7: max 2 substitutes
-      note: "കൃത്യം 3 അംഗങ്ങൾ (Exactly 3 members)"
+      note: "കൃത്യം 3 അംഗങ്ങൾ"
     },
     {
       name: "സോപോകരണ സമൂഹഗാനം",
@@ -169,7 +178,7 @@
       fixed: false,
       gender: "any",
       substitutes: true, // Rule 7: max 2 substitutes
-      note: "പരമാവധി 10 അംഗങ്ങൾ (Street Play)"
+      note: "പരമാവധി 10 അംഗങ്ങൾ"
     },
     {
       name: "ക്വിസ്",
@@ -179,7 +188,7 @@
       fixed: true,
       gender: "any",
       substitutes: false,
-      note: "കൃത്യം 3 അംഗങ്ങൾ (Exactly 3 members)"
+      note: "കൃത്യം 3 അംഗങ്ങൾ"
     },
     {
       name: "മൈം",
@@ -189,7 +198,7 @@
       fixed: false,
       gender: "any",
       substitutes: true, // Rule 7: max 2 substitutes
-      note: "പരമാവധി 7 അംഗങ്ങൾ (Mime)"
+      note: "പരമാവധി 7 അംഗങ്ങൾ"
     }
   ];
 
@@ -254,8 +263,46 @@
     return age;
   }
 
+  /* ===== REGISTRATION AVAILABILITY CHECK ===== */
+  function checkRegistrationOpenStatus() {
+    const isOpen = (window.SHOW_REGISTRATION !== false);
+    const regForm = document.getElementById("regForm");
+    const pickerCard = document.getElementById("programPickerCard");
+    const stickyBar = document.getElementById("stickySummaryBar");
+    const rulesCard = document.querySelector(".kalamela-rules-card");
+    const closedNotice = document.getElementById("registrationClosedNotice");
+    const heroActions = document.querySelector(".kalamela-hero-actions");
+    const heroScrollHint = document.querySelector(".kalamela-scroll-hint");
+
+    if (!isOpen) {
+      if (regForm) regForm.style.display = "none";
+      if (pickerCard) pickerCard.style.display = "none";
+      if (stickyBar) stickyBar.style.display = "none";
+      if (rulesCard) rulesCard.style.display = "none";
+      if (heroActions) heroActions.style.display = "none";
+      if (heroScrollHint) heroScrollHint.style.display = "none";
+      if (closedNotice) closedNotice.style.display = "block";
+      document.body.classList.remove("sticky-bar-active");
+    } else {
+      if (regForm) regForm.style.display = "block";
+      if (pickerCard) pickerCard.style.display = "block";
+      if (rulesCard) rulesCard.style.display = "block";
+      if (closedNotice) closedNotice.style.display = "none";
+      if (heroActions) heroActions.style.display = "flex";
+      if (heroScrollHint) heroScrollHint.style.display = "flex";
+      if (stickyBar) {
+        stickyBar.style.display = "block";
+        document.body.classList.add("sticky-bar-active");
+      }
+    }
+    return isOpen;
+  }
+
   /* ===== DOM INITIALIZATION ===== */
   document.addEventListener("DOMContentLoaded", () => {
+    // 0. Check whether registrations are open
+    checkRegistrationOpenStatus();
+
     // 1. Initial render of event cards
     renderEventCards();
 
@@ -301,7 +348,8 @@
           history.pushState({ editSheetOpen: true, progIdx: currentEditingProgIdx }, '');
           showUnsavedModal();
         } else {
-          closeEditSheet(true);
+          // The browser already popped the history entry when popstate fired
+          closeEditSheet(false);
         }
       }
     });
@@ -311,8 +359,8 @@
      EVENT PICKER CARDS (GRID RENDERING)
      ========================================================================== */
   function renderEventCards() {
-    const indivContainer = document.getElementById('individualEventsGrid');
-    const groupContainer = document.getElementById('groupEventsGrid');
+    const indivContainer = document.getElementById('individualEventsGrid') || document.getElementById('individualEventsList');
+    const groupContainer = document.getElementById('groupEventsGrid') || document.getElementById('groupEventsList');
     if (!indivContainer || !groupContainer) return;
 
     indivContainer.innerHTML = '';
@@ -415,7 +463,20 @@
   }
 
   function updateSummaryBar() {
+    if (window.SHOW_REGISTRATION === false) {
+      const stickyBar = document.getElementById('stickySummaryBar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      document.body.classList.remove('sticky-bar-active');
+      return;
+    }
+
     const count = selectedEventsState.size;
+    const stickyBar = document.getElementById('stickySummaryBar');
+    if (stickyBar) {
+      stickyBar.style.display = 'block';
+      document.body.classList.add('sticky-bar-active');
+    }
+
     const badge = document.getElementById('pickerCountBadge');
     if (badge) {
       badge.textContent = `${count} Selected`;
@@ -447,6 +508,7 @@
      EVENT EDIT BOTTOM SHEET / MODAL LOGIC
      ========================================================================== */
   function openEditSheet(progIdx) {
+    submissionSucceeded = false;
     currentEditingProgIdx = progIdx;
     const prog = programs[progIdx];
     if (!prog) return;
@@ -655,14 +717,13 @@
 
     // 3. Gender
     const genderCol = document.createElement('div');
-    const isAsk = prog.gender === 'ask';
     const isFemaleOnly = prog.gender === 'female_only';
     const isMaleOnly = prog.gender === 'male_only';
-    const reqStar = (isAsk || isFemaleOnly || isMaleOnly) ? '<span style="color:#dc2626;">*</span>' : '';
+    const reqStar = (isFemaleOnly || isMaleOnly) ? '<span style="color:#dc2626;">*</span>' : '';
 
     let genderHtml = `
       <label class="form-label" style="font-size: 0.8rem; margin-bottom: 3px;">Gender ${reqStar}</label>
-      <select class="form-control p-gender" ${isAsk ? 'required' : ''}>
+      <select class="form-control p-gender">
     `;
 
     const savedGender = initialVal && initialVal.gender ? initialVal.gender : '';
@@ -671,12 +732,6 @@
       genderHtml += `<option value="Female" selected>Female</option>`;
     } else if (isMaleOnly) {
       genderHtml += `<option value="Male" selected>Male</option>`;
-    } else if (isAsk) {
-      genderHtml += `
-        <option value="">Select</option>
-        <option value="Female" ${savedGender === 'Female' ? 'selected' : ''}>Female</option>
-        <option value="Male" ${savedGender === 'Male' ? 'selected' : ''}>Male</option>
-      `;
     } else {
       genderHtml += `
         <option value="">Select (Optional)</option>
@@ -867,7 +922,8 @@
     if (hasUnsavedSheetChanges()) {
       showUnsavedModal();
     } else {
-      closeEditSheet(false);
+      // Pop the history entry that was pushed when opening the sheet
+      closeEditSheet(true);
     }
   }
 
@@ -982,13 +1038,7 @@
         }
       }
 
-      if (prog.gender === 'ask' && !pGender) {
-        genderSelect.classList.add('has-error');
-        cardErr.textContent = 'Gender selection is required.';
-        cardErr.classList.add('visible');
-        errors.push(`Participant ${cIdx + 1}: Gender selection is required.`);
-        cardHasErr = true;
-      }
+      // All gender-restricted events (Margamkali, Parichamuttukali, Lalithaganam Male/Female) are locked
 
       if (pName && pDob) {
         const personKey = getPersonNormalizedKey(pName, pDob);
@@ -1203,6 +1253,7 @@
     if (selectedEventsState.size === 0) return;
     if (!confirm("Are you sure you want to clear all selected programs and participant entries?")) return;
 
+    submissionSucceeded = false;
     selectedEventsState.clear();
     renderEventCards();
     closeEditSheet(true);
@@ -1602,6 +1653,9 @@
   function onSubmit(e) {
     if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
+    }
+    if (window.SHOW_REGISTRATION === false) {
+      return;
     }
     if (isSubmitting) return;
     clearAllErrors();

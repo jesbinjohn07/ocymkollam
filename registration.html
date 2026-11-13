@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ജ്വാല – യുവജന കലാമേള | Kalamela Registration</title>
   
   <meta name="description" content="Register parish participants for ജ്വാല – യുവജന കലാമേള (Jwala – Yuvajana Kalamela 2026–27) under OCYM Kollam Diocese.">
@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_5">
+  <link rel="stylesheet" href="css/style.css?v=20261113_8">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -97,9 +97,8 @@
           <details class="kalamela-rules-details" id="kalamelaRulesDetails" open style="margin-top: 0; padding-top: 0; border-top: none;">
             <summary class="kalamela-rules-summary" aria-label="Toggle competition rules">
               <span class="rules-summary-title">📜 മത്സര നിബന്ധനകളും വിവരങ്ങളും</span>
-              <span class="rules-toggle-pill">
-                <span class="toggle-text">വിവരങ്ങൾ</span>
-                <span class="rules-chevron" aria-hidden="true">▼</span>
+              <span class="rules-toggle-pill" aria-hidden="true">
+                <span class="rules-chevron">▼</span>
               </span>
             </summary>
             <div class="kalamela-rules-content">
@@ -351,26 +350,24 @@
               <!-- Top Validation Error Message for Program Selection -->
               <div class="form-error-msg" id="itemsContainerError" style="margin-bottom: 10px;"></div>
 
-              <!-- Category Switcher Tabs (Individual vs Group) -->
-              <div class="event-tabs-nav" role="tablist" aria-label="Event Categories">
-                <button type="button" class="event-tab-btn active" id="tabIndividualBtn" role="tab" aria-selected="true" aria-controls="individualEventsPanel">
-                  <span>👤</span> വ്യക്തിഗതം (Individual) <span class="tab-count-pill" id="tabIndivCountBadge">0/11</span>
-                </button>
-                <button type="button" class="event-tab-btn" id="tabGroupBtn" role="tab" aria-selected="false" aria-controls="groupEventsPanel">
-                  <span>👥</span> ഗ്രൂപ്പ് (Group) <span class="tab-count-pill" id="tabGroupCountBadge">0/7</span>
-                </button>
-              </div>
-
-              <!-- Panel 1: Individual Items (11) -->
-              <div class="event-tab-panel active" id="individualEventsPanel" role="tabpanel" aria-labelledby="tabIndividualBtn">
-                <div class="event-rows-list" id="individualEventsList">
+              <!-- Group 1: Individual Items (12) -->
+              <div class="event-group-section">
+                <div class="event-group-header">
+                  <h4 class="event-group-title"><span>👤</span> വ്യക്തിഗത ഇനങ്ങൾ (Individual)</h4>
+                  <span class="event-group-count">12 ഇനങ്ങൾ</span>
+                </div>
+                <div class="event-cards-grid" id="individualEventsGrid">
                   <!-- Populated dynamically via registration.js -->
                 </div>
               </div>
 
-              <!-- Panel 2: Group Items (7) -->
-              <div class="event-tab-panel" id="groupEventsPanel" role="tabpanel" aria-labelledby="tabGroupBtn" style="display: none;">
-                <div class="event-rows-list" id="groupEventsList">
+              <!-- Group 2: Group Items (7) -->
+              <div class="event-group-section" style="margin-top: 24px;">
+                <div class="event-group-header">
+                  <h4 class="event-group-title"><span>👥</span> ഗ്രൂപ്പ് ഇനങ്ങൾ (Group)</h4>
+                  <span class="event-group-count">7 ഇനങ്ങൾ</span>
+                </div>
+                <div class="event-cards-grid" id="groupEventsGrid">
                   <!-- Populated dynamically via registration.js -->
                 </div>
               </div>
@@ -677,8 +674,8 @@
 
   <script src="js/config.js"></script>
   <script src="js/parishes.js"></script>
-  <script src="js/kalamela-data.js?v=20261113_5"></script>
+  <script src="js/kalamela-data.js?v=20261113_8"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_5"></script>
+  <script src="js/registration.js?v=20261113_8"></script>
 </body>
 </html>

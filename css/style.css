@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    OCYM Kollam Diocese - Premium Golden Theme Stylesheet
    Design Philosophy: Apple, Stripe, Framer, Vercel (Golden Palette Edition)
    ========================================================================== */
@@ -2044,7 +2044,9 @@ footer {
 
 /* Move back-to-top button up when sticky bar is active */
 body.sticky-bar-active .back-to-top {
-  bottom: 78px !important;
+  bottom: calc(74px + env(safe-area-inset-bottom, 0px)) !important;
+  right: 16px !important;
+  z-index: 1000 !important;
 }
 
 @keyframes arrowBounce {
@@ -2147,6 +2149,10 @@ body.sticky-bar-active .back-to-top {
     right: 14px !important;
     width: 38px !important;
     height: 38px !important;
+  }
+  body.sticky-bar-active .back-to-top {
+    bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
   }
 
   /* Compact Form Cards & Inputs on Mobile */
@@ -2497,27 +2503,54 @@ body.sticky-bar-active .back-to-top {
   font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;
   font-weight: 700;
   font-size: 1.15rem;
+  line-height: 1.35;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .rules-summary-title {
+    font-size: 1.02rem;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  body.sticky-bar-active .back-to-top {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 10px !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+  .rules-summary-title {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
 }
 
 .rules-toggle-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: 'Gayathri', 'Manjari', 'Poppins', sans-serif;
-  font-size: 0.82rem;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.74rem;
   font-weight: 700;
   color: #8c6304;
   background: rgba(212, 160, 23, 0.15);
-  border: 1px solid rgba(212, 160, 23, 0.3);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.02em;
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  flex-shrink: 0;
   transition: all var(--transition-fast);
 }
 
 .rules-chevron {
   font-size: 0.72rem;
   display: inline-block;
+  line-height: 1;
   transition: transform var(--transition-fast);
 }
 
@@ -4419,5 +4452,178 @@ body.sticky-bar-active .back-to-top {
     padding: 8px 14px !important;
     font-size: 0.88rem !important;
     min-height: 38px !important;
+  }
+}
+
+/* ==========================================================================
+   SUPERIOR MOBILE RESPONSIVENESS (iOS/Android, Small Screens <= 360px)
+   ========================================================================== */
+
+/* 1. Page bottom clearance for sticky summary bar */
+.registration-page-main {
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.sticky-summary-bar {
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 2. Prevent iOS Safari auto-zoom on input focus (< 16px triggers zoom) */
+@media (max-width: 600px) {
+  .form-control,
+  .parish-trigger-btn,
+  .parish-search-input,
+  input[type="text"],
+  input[type="date"],
+  input[type="tel"],
+  select.form-control {
+    font-size: 16px !important;
+    min-height: 44px !important;
+  }
+
+  /* Date inputs clean rendering on iOS/Android */
+  input[type="date"].form-control {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
+    line-height: 1.35;
+  }
+
+  /* Fast, responsive touch with no 300ms tap delay */
+  .event-card,
+  .btn,
+  .sheet-btn,
+  .event-card-btn,
+  .parish-trigger-btn,
+  .parish-option-item {
+    touch-action: manipulation;
+  }
+
+  /* Prevent background page bounce/scroll when scrolling modals or sheets */
+  .edit-event-sheet,
+  .parish-sheet-container,
+  .reg-modal-card {
+    overscroll-behavior: contain;
+  }
+
+  .sheet-body {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .edit-event-sheet {
+    max-height: 90dvh;
+    max-height: 90vh;
+  }
+
+  .sheet-footer {
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sheet-btn {
+    min-height: 44px;
+  }
+
+  .sheet-btn-remove {
+    min-height: 44px;
+  }
+}
+
+/* 3. Ultra-compact & flexible on extra small screens (<= 360px e.g. iPhone SE, Galaxy A) */
+@media (max-width: 360px) {
+  body.sticky-bar-active .back-to-top {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 10px !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+  .event-card {
+    padding: 10px 12px;
+  }
+
+  .event-card-top {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .event-card-title {
+    font-size: 0.92rem;
+  }
+
+  .event-card-rule-pill {
+    font-size: 0.68rem;
+    padding: 1px 6px;
+  }
+
+  .event-card-btn-group {
+    gap: 4px;
+  }
+
+  .event-card-btn {
+    padding: 5px 9px;
+    font-size: 0.74rem;
+    min-height: 34px;
+  }
+
+  .sticky-summary-inner {
+    gap: 6px;
+  }
+
+  .summary-count-badge {
+    font-size: 0.78rem;
+  }
+
+  .summary-clear-btn {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+
+  .summary-review-btn {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+    min-height: 36px !important;
+  }
+
+  .sheet-header {
+    padding: 12px 14px 10px;
+  }
+
+  .sheet-title {
+    font-size: 1.05rem;
+  }
+
+  .sheet-body {
+    padding: 12px 14px;
+  }
+
+  .sheet-footer {
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 6px;
+  }
+
+  .sheet-footer-right {
+    gap: 6px;
+  }
+
+  .sheet-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .points-card-row {
+    gap: 4px;
+  }
+
+  .points-col-item {
+    padding: 5px 2px;
+  }
+
+  .points-col-item .place-rank {
+    font-size: 0.7rem;
+  }
+
+  .points-col-item .place-points {
+    font-size: 0.8rem;
   }
 }
