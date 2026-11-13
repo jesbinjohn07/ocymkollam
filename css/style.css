@@ -1956,9 +1956,14 @@ footer {
 }
 
 .kalamela-scroll-hint {
-  display: inline-flex;
+  display: flex !important;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 14px;
   font-size: 0.84rem;
   font-weight: 600;
@@ -2146,13 +2151,16 @@ body.sticky-bar-active .back-to-top {
   }
   .back-to-top {
     bottom: 16px !important;
-    right: 14px !important;
-    width: 38px !important;
-    height: 38px !important;
+    right: 12px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .back-to-top.visible {
+    opacity: 0.85 !important;
   }
   body.sticky-bar-active .back-to-top {
-    bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 14px !important;
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 12px !important;
   }
 
   /* Compact Form Cards & Inputs on Mobile */
@@ -2516,13 +2524,6 @@ body.sticky-bar-active .back-to-top {
 }
 
 @media (max-width: 360px) {
-  body.sticky-bar-active .back-to-top {
-    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 10px !important;
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 14px !important;
-  }
   .rules-summary-title {
     font-size: 0.95rem;
     gap: 6px;
@@ -2916,13 +2917,32 @@ body.sticky-bar-active .back-to-top {
 
 .participant-fields-grid {
   display: grid;
-  grid-template-columns: 2fr 1.3fr 1fr;
+  grid-template-columns: 1.6fr 1fr minmax(110px, 0.9fr);
   gap: 12px;
 }
 
-@media (max-width: 650px) {
+.participant-fields-grid > div:last-child {
+  min-width: 110px;
+}
+
+select.p-gender {
+  padding-right: 28px;
+}
+
+@media (max-width: 600px) {
   .participant-fields-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .participant-fields-grid > div:last-child {
+    min-width: 0;
+  }
+
+  select.p-gender {
+    width: 100%;
+    font-size: 16px !important;
+    min-height: 44px !important;
   }
 }
 
@@ -4641,13 +4661,6 @@ body.sticky-bar-active .back-to-top {
 
 /* 3. Ultra-compact & flexible on extra small screens (<= 360px e.g. iPhone SE, Galaxy A) */
 @media (max-width: 360px) {
-  body.sticky-bar-active .back-to-top {
-    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 10px !important;
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 14px !important;
-  }
   .event-card {
     padding: 10px 12px;
   }
@@ -4834,12 +4847,12 @@ body.sticky-bar-active .back-to-top {
 }
 
 /* ==========================================================================
-   Kalamela Circular PDF Section
+   Kalamela Circular PDF Section & Mobile Layout Overrides
    ========================================================================== */
 .kalamela-circular-box {
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px dashed rgba(212, 160, 23, 0.35);
+  border-top: 1px dashed rgba(212, 160, 23, 0.5);
   text-align: left;
 }
 
@@ -4848,10 +4861,10 @@ body.sticky-bar-active .back-to-top {
   font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
 }
 
-.kalamela-circular-link {
+.kalamela-circular-box .kalamela-circular-link {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -4862,8 +4875,41 @@ body.sticky-bar-active .back-to-top {
 }
 
 @media (max-width: 600px) {
-  .kalamela-circular-link {
-    width: 100%;
+  /* 1. Centered hint line on mobile */
+  .kalamela-scroll-hint {
+    display: flex !important;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* 2. Full-width circular PDF button */
+  .kalamela-circular-box .kalamela-circular-link {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Back-to-top button mobile sizing and positioning above sticky bar */
+  .back-to-top {
+    width: 40px !important;
+    height: 40px !important;
+    right: 12px !important;
+    bottom: 16px !important;
+  }
+
+  .back-to-top.visible {
+    opacity: 0.85 !important;
+  }
+
+  body.sticky-bar-active .back-to-top {
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 12px !important;
   }
 }

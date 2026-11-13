@@ -808,7 +808,7 @@
 
     const labelSpan = document.createElement('span');
     labelSpan.innerHTML = isSubstitute
-      ? `🔄 <strong>Substitute ${index}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Rule 7 - Optional)</span>`
+      ? `🔄 <strong>Substitute ${index}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Optional)</span>`
       : `👤 <strong>Participant ${index}</strong>`;
     header.appendChild(labelSpan);
 
@@ -1020,7 +1020,7 @@
     title.style.fontWeight = '700';
     title.style.fontSize = '0.88rem';
     title.style.color = 'var(--primary)';
-    title.innerHTML = `🔁 Substitutes (Max 2 per Rule 7)`;
+    title.innerHTML = `🔁 Substitutes (Max 2)`;
     header.appendChild(title);
 
     const addSubBtn = document.createElement('button');
@@ -1637,7 +1637,7 @@
         const subChips = item.substitutes.map(s => {
           return `<span class="preview-participant-chip" style="border-style: dashed; background: rgba(212, 160, 23, 0.08);">🔄 ${escapeHTML(s.name)} (Sub)</span>`;
         }).join('');
-        subHtml = `<div class="preview-substitutes-wrap"><strong>പകരക്കാർ (Rule 7):</strong> ${subChips}</div>`;
+        subHtml = `<div class="preview-substitutes-wrap"><strong>പകരക്കാർ:</strong> ${subChips}</div>`;
       }
 
       return `
