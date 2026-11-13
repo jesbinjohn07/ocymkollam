@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_3">
+  <link rel="stylesheet" href="css/style.css?v=20261113_5">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -332,24 +332,51 @@
           </div>
 
           <!-- Program Selection Card -->
-          <div class="registration-form-card">
-            <h3 class="form-card-title">
-              <span>🎭</span> Program & Participant Selection
-            </h3>
-            <p class="card-subtitle-compact" style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.45;">
-              Add one or more event programs. Participant details (Name, Date of Birth, Gender) must be provided for each entry.
-            </p>
+          <!-- Program & Participant Selection (Card Grid Event Picker) -->
+            <div class="registration-form-card program-picker-card" id="programPickerCard">
+              <div class="program-picker-header">
+                <div>
+                  <h3 class="form-card-title">
+                    <span>🎭</span> Program &amp; Participant Selection
+                  </h3>
+                  <p class="card-subtitle-compact" style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.4;">
+                    Select an event row below to add or edit participants (ടാപ്പ് ചെയ്ത് വിവരങ്ങൾ നൽകുക).
+                  </p>
+                </div>
+                <div class="program-picker-stats">
+                  <span class="picker-stat-badge" id="pickerCountBadge">0 Selected</span>
+                </div>
+              </div>
 
-            <div id="itemsContainer"></div>
-            <div class="form-error-msg" id="itemsContainerError" style="margin-bottom: 14px;"></div>
+              <!-- Top Validation Error Message for Program Selection -->
+              <div class="form-error-msg" id="itemsContainerError" style="margin-bottom: 10px;"></div>
 
-            <div class="program-action-buttons">
-              <button type="button" class="btn btn-primary" id="addProgramBtn">+ Add Program</button>
-              <button type="button" class="btn btn-outline" id="clearProgramsBtn">Clear All Items</button>
+              <!-- Category Switcher Tabs (Individual vs Group) -->
+              <div class="event-tabs-nav" role="tablist" aria-label="Event Categories">
+                <button type="button" class="event-tab-btn active" id="tabIndividualBtn" role="tab" aria-selected="true" aria-controls="individualEventsPanel">
+                  <span>👤</span> വ്യക്തിഗതം (Individual) <span class="tab-count-pill" id="tabIndivCountBadge">0/11</span>
+                </button>
+                <button type="button" class="event-tab-btn" id="tabGroupBtn" role="tab" aria-selected="false" aria-controls="groupEventsPanel">
+                  <span>👥</span> ഗ്രൂപ്പ് (Group) <span class="tab-count-pill" id="tabGroupCountBadge">0/7</span>
+                </button>
+              </div>
+
+              <!-- Panel 1: Individual Items (11) -->
+              <div class="event-tab-panel active" id="individualEventsPanel" role="tabpanel" aria-labelledby="tabIndividualBtn">
+                <div class="event-rows-list" id="individualEventsList">
+                  <!-- Populated dynamically via registration.js -->
+                </div>
+              </div>
+
+              <!-- Panel 2: Group Items (7) -->
+              <div class="event-tab-panel" id="groupEventsPanel" role="tabpanel" aria-labelledby="tabGroupBtn" style="display: none;">
+                <div class="event-rows-list" id="groupEventsList">
+                  <!-- Populated dynamically via registration.js -->
+                </div>
+              </div>
             </div>
-          </div>
 
-          <!-- Mandatory Declaration Checkbox (Requirement 4) -->
+            <!-- Mandatory Declaration Checkbox (Requirement 4) -->
           <div class="registration-form-card declaration-card">
             <div class="declaration-wrapper">
               <input type="checkbox" id="declarationCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" required>
@@ -445,7 +472,79 @@
     </div>
   </footer>
 
-  <!-- 0. Submission Preview Overlay Popup -->
+  <!-- Edit Event Panel (Bottom Sheet on Mobile, Modal on Desktop) -->
+    <div class="edit-event-sheet-overlay" id="editEventOverlay" role="dialog" aria-modal="true" aria-labelledby="sheetEventTitle">
+      <div class="edit-event-sheet" id="editEventSheet">
+        <div class="sheet-handle-bar"></div>
+        <div class="sheet-header">
+          <div>
+            <h3 class="sheet-title" id="sheetEventTitle">മത്സര ഇനം</h3>
+            <div class="sheet-subtitle-row">
+              <span class="sheet-type-badge" id="sheetTypeBadge">വ്യക്തിഗതം</span>
+              <span style="font-size: 0.78rem; color: var(--text-secondary);" id="sheetRuleBadge">1 മത്സരാർത്ഥി</span>
+            </div>
+          </div>
+          <button type="button" class="sheet-close-btn" id="sheetCloseBtn" aria-label="Close edit panel">✕</button>
+        </div>
+
+        <div class="sheet-body" id="sheetBody">
+          <!-- Program Note (if available) -->
+          <div class="sheet-note-box" id="sheetNoteBox" style="display: none;"></div>
+
+          <!-- Sheet Error Banner -->
+          <div class="sheet-error-banner" id="sheetErrorBanner" role="alert"></div>
+
+          <!-- Participants Input Container -->
+          <div id="sheetParticipantsContainer"></div>
+
+          <!-- Substitutes Container (Group items with Rule 7 substitutes) -->
+          <div id="sheetSubstitutesContainer" style="display: none;"></div>
+        </div>
+
+        <div class="sheet-footer">
+          <div>
+            <button type="button" class="sheet-btn sheet-btn-remove" id="sheetRemoveBtn" style="display: none;">
+              🗑️ Remove
+            </button>
+          </div>
+          <div class="sheet-footer-right">
+            <button type="button" class="sheet-btn sheet-btn-cancel" id="sheetCancelBtn">
+              Cancel
+            </button>
+            <button type="button" class="sheet-btn sheet-btn-save" id="sheetSaveBtn">
+              💾 Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unsaved Changes Confirmation Dialog (3 Buttons) -->
+    <div class="reg-modal-overlay unsaved-modal-overlay" id="unsavedChangesOverlay" role="dialog" aria-modal="true" aria-labelledby="unsavedTitle">
+      <div class="reg-modal-card unsaved-modal-card">
+        <div class="reg-icon-circle" style="background: rgba(212, 160, 23, 0.15); color: #8c6006; font-size: 1.8rem; margin: 0 auto 14px;">⚠️</div>
+        <h3 id="unsavedTitle" class="unsaved-modal-title">Unsaved Changes</h3>
+        <p class="unsaved-modal-desc">
+          You have unsaved changes in this event. What would you like to do?<br>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 4px;">
+            നിങ്ങൾ വരുത്തിയ മാറ്റങ്ങൾ സേവ് ചെയ്യണോ?
+          </span>
+        </p>
+        <div class="unsaved-modal-actions">
+          <button type="button" class="btn btn-gold" id="unsavedSaveBtn">
+            💾 Save Changes
+          </button>
+          <button type="button" class="btn btn-outline" id="unsavedDiscardBtn" style="color: #dc2626; border-color: rgba(220, 38, 38, 0.35);">
+            🗑️ Discard Changes
+          </button>
+          <button type="button" class="btn btn-outline" id="unsavedKeepBtn">
+            ✏️ Keep Editing
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 0. Submission Preview Overlay Popup -->
     <div class="reg-modal-overlay" id="previewOverlay" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
       <div class="reg-modal-card reg-preview-modal-card">
         <div class="reg-preview-modal-header">
@@ -561,23 +660,25 @@
     </div>
   </div>
 
-  <!-- Sticky Floating "Go to Form" Bar (Visible while scrolling rules) -->
-  <aside class="sticky-form-bar" id="stickyFormBar" aria-label="Quick jump to registration form">
-    <div class="sticky-form-bar-inner">
-      <a href="#regForm" class="btn btn-gold sticky-form-btn" id="stickyFormJumpBtn">
-        <span class="sticky-btn-icon">✍️</span>
-        <span class="sticky-btn-text">ഫോം പൂരിപ്പിക്കുക (Go to Form)</span>
-        <span class="sticky-btn-arrow">↓</span>
-      </a>
-    </div>
-  </aside>
+  <!-- English-Only Sticky Floating Program Summary Bar -->
+    <aside class="sticky-summary-bar" id="stickySummaryBar" aria-label="Selected programs summary">
+      <div class="sticky-summary-inner">
+        <div class="sticky-summary-info">
+          <span class="summary-count-badge" id="summaryCountBadge">🎯 0 Programs Selected</span>
+          <button type="button" class="summary-clear-btn" id="summaryClearBtn" style="display: none;">Clear All</button>
+        </div>
+        <button type="button" class="btn btn-gold summary-review-btn" id="summaryReviewBtn" disabled>
+          <span>📋</span> Review &amp; Submit
+        </button>
+      </div>
+    </aside>
 
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="js/config.js"></script>
   <script src="js/parishes.js"></script>
-  <script src="js/kalamela-data.js?v=20261113_3"></script>
+  <script src="js/kalamela-data.js?v=20261113_5"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_3"></script>
+  <script src="js/registration.js?v=20261113_5"></script>
 </body>
 </html>

@@ -1,27 +1,25 @@
 ﻿/* ==========================================================================
-   OCYM Kollam Diocese - Kalamela Registration Script
-   Circular 2026–27: "ജ്വാല – യുവജന കലാമേള" (Jwala – Yuvajana Kalamela)
+   OCYM Kollam – Registration Engine (2026-27 Kalamela Edition)
+   --------------------------------------------------------------------------
+   - State-driven "Select event, then edit" bottom sheet/modal workflow
+   - Rule 4: Completed 15 years, under 40 on 9 January 2027
+   - Rule 7: Optional substitutes (max 2 for group items)
+   - Rule 9: Max 2 individual & 2 group events per participant (name + DOB)
+   - English-only sticky summary bar with "Review & Submit"
+   - 3-button unsaved changes confirmation dialog
    ========================================================================== */
 
 (function () {
   'use strict';
 
-  /* ===== AGE CALCULATION REFERENCE DATE =====
-     Reference date for checking participant age limit (15–40 years).
-     Date: 9 January 2027 (Month is 0-indexed: Jan = 0)
-  ============================================ */
-  const AGE_REFERENCE_DATE = new Date(2027, 0, 9);
-  const MIN_AGE = 15;
-  const MAX_AGE = 40;
+  /* ===== COMPETITION DATE & AGE CONFIG ===== */
+  const COMPETITION_DATE = new Date(2027, 0, 9); // 9 January 2027 (Month 0 = Jan)
+  const MIN_AGE = 15; // Completed 15 years
+  const MAX_AGE = 40; // Under 40 on that date (age < 40)
 
-  /* ===== PROGRAM DATA MODEL (Requirement 2) =====
-     type: "individual" | "group"
-     gender: "ask" | "female_only" | "male_only" | "any"
-     substitutes: boolean (allow max 2 substitutes under Rule 15)
-     fixed: boolean (true if count must be exact, e.g. 3 members)
-  ================================================ */
+  /* ===== 18 VERBATIM KALAMELA PROGRAMS ===== */
   const programs = [
-    // --- Individual Items (1 participant each) ---
+    // --- 11 Individual Items (1 participant each) ---
     {
       name: "ലളിതഗാനം",
       type: "individual",
@@ -122,7 +120,7 @@
       note: ""
     },
 
-    // --- Group Items ---
+    // --- 7 Group Items ---
     {
       name: "സമൂഹഗാനം",
       type: "group",
@@ -130,7 +128,7 @@
       max: 3,
       fixed: true,
       gender: "any",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "കൃത്യം 3 അംഗങ്ങൾ (Exactly 3 members)"
     },
     {
@@ -140,7 +138,7 @@
       max: 7,
       fixed: false,
       gender: "any",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "പരമാവധി 7 അംഗങ്ങൾ (പാട്ടുകാരും വാദ്യക്കാരും ഉൾപ്പെടെ)"
     },
     {
@@ -150,7 +148,7 @@
       max: 8,
       fixed: false,
       gender: "female_only",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "വനിതകൾ മാത്രം, പരമാവധി 8 പേർ (2 പാട്ടുകാർ ഉൾപ്പെടെ)"
     },
     {
@@ -160,7 +158,7 @@
       max: 8,
       fixed: false,
       gender: "male_only",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "പുരുഷന്മാർ മാത്രം, പരമാവധി 8 പേർ (പാട്ടുകാർ ഉൾപ്പെടെ)"
     },
     {
@@ -170,7 +168,7 @@
       max: 10,
       fixed: false,
       gender: "any",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "പരമാവധി 10 അംഗങ്ങൾ (Street Play)"
     },
     {
@@ -190,10 +188,24 @@
       max: 7,
       fixed: false,
       gender: "any",
-      substitutes: true,
+      substitutes: true, // Rule 7: max 2 substitutes
       note: "പരമാവധി 7 അംഗങ്ങൾ (Mime)"
     }
   ];
+
+  /* ===== APPLICATION STATE ===== */
+  // Map of progIdx (number) => { progIdx, program, type, participantsDetail: [], substitutes: [] }
+  const selectedEventsState = new Map();
+
+  let isSubmitting = false;
+  let submissionSucceeded = false;
+  let lastSubmissionPayload = null;
+  let pendingSubmissionPayload = null;
+
+  // Edit sheet active state tracking
+  let currentEditingProgIdx = null;
+  let initialSheetStateSnapshot = null;
+  let isSheetOpen = false;
 
   /* ===== HELPER UTILITIES ===== */
   function escapeHTML(str) {
@@ -206,31 +218,34 @@
       .replace(/'/g, '&#39;');
   }
 
-  function normalizeKey(name, dob) {
-    const cleanName = (name || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    const cleanDob = (dob || '').trim();
+  function normalizePersonName(name) {
+    if (!name) return '';
+    return String(name).trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function getPersonNormalizedKey(name, dob) {
+    const cleanName = normalizePersonName(name);
+    const cleanDob = String(dob || '').trim();
+    if (!cleanName || !cleanDob) return null;
     return `${cleanName}|${cleanDob}`;
   }
 
   /**
-   * Calculates age as on reference date (AGE_REFERENCE_DATE = 9 Jan 2027)
-   * Handles "YYYY-MM-DD" reliably across timezones
+   * Calculates completed age on competition date (9 January 2027)
    */
   function calculateAgeOnEventDate(dobString) {
     if (!dobString) return null;
-    
-    // Parse "YYYY-MM-DD" parts directly to avoid UTC vs local timezone shifts
     const parts = dobString.split('-');
     if (parts.length !== 3) return null;
     const birthYear = parseInt(parts[0], 10);
-    const birthMonth = parseInt(parts[1], 10); // 1-12
-    const birthDay = parseInt(parts[2], 10);   // 1-31
+    const birthMonth = parseInt(parts[1], 10);
+    const birthDay = parseInt(parts[2], 10);
 
     if (isNaN(birthYear) || isNaN(birthMonth) || isNaN(birthDay)) return null;
 
-    const refYear = AGE_REFERENCE_DATE.getFullYear();
-    const refMonth = AGE_REFERENCE_DATE.getMonth() + 1; // 1-12
-    const refDay = AGE_REFERENCE_DATE.getDate();
+    const refYear = COMPETITION_DATE.getFullYear();
+    const refMonth = COMPETITION_DATE.getMonth() + 1;
+    const refDay = COMPETITION_DATE.getDate();
 
     let age = refYear - birthYear;
     if (refMonth < birthMonth || (refMonth === birthMonth && refDay < birthDay)) {
@@ -241,29 +256,16 @@
 
   /* ===== DOM INITIALIZATION ===== */
   document.addEventListener("DOMContentLoaded", () => {
+    // 1. Initial render of event cards
+    renderEventCards();
+
+    // 2. Form submission binding
     const regForm = document.getElementById("regForm");
-    const closedNotice = document.getElementById("registrationClosedNotice");
-
-    if (regForm && closedNotice) {
-      if (window.SHOW_REGISTRATION) {
-        regForm.style.display = "block";
-        closedNotice.style.display = "none";
-      } else {
-        regForm.style.display = "none";
-        closedNotice.style.display = "block";
-      }
-    }
-
-    const addBtn = document.getElementById("addProgramBtn");
-    if (addBtn) addBtn.addEventListener("click", () => addItem());
-
-    const clearBtn = document.getElementById("clearProgramsBtn");
-    if (clearBtn) clearBtn.addEventListener("click", clearItems);
-
     if (regForm) {
       regForm.addEventListener("submit", onSubmit);
     }
 
+    // 3. Declaration checkbox live clearing
     const declarationCheck = document.getElementById("declarationCheck");
     if (declarationCheck) {
       declarationCheck.addEventListener("change", () => {
@@ -277,212 +279,309 @@
       });
     }
 
+    // 4. Initialize components & modals
     initParishSelect();
     initSubmissionModals();
-    initStickyFormBar();
+    initEditSheetHandlers();
+    initStickySummaryBar();
+
+    // 5. Unsaved changes beforeunload protection
+    window.addEventListener('beforeunload', (e) => {
+      if (selectedEventsState.size > 0 && !isSubmitting && !submissionSucceeded) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    // 6. Mobile browser history popstate handling (Phone back button)
+    window.addEventListener('popstate', (e) => {
+      if (isSheetOpen) {
+        if (hasUnsavedSheetChanges()) {
+          // Push state back so page doesn't exit, and show unsaved modal
+          history.pushState({ editSheetOpen: true, progIdx: currentEditingProgIdx }, '');
+          showUnsavedModal();
+        } else {
+          closeEditSheet(true);
+        }
+      }
+    });
   });
 
-  /* ===== ADD PROGRAM BLOCK ===== */
-  function addItem() {
-    const container = document.getElementById('itemsContainer');
-    if (!container) return;
+  /* ==========================================================================
+     EVENT PICKER CARDS (GRID RENDERING)
+     ========================================================================== */
+  function renderEventCards() {
+    const indivContainer = document.getElementById('individualEventsGrid');
+    const groupContainer = document.getElementById('groupEventsGrid');
+    if (!indivContainer || !groupContainer) return;
 
-    hideContainerError();
+    indivContainer.innerHTML = '';
+    groupContainer.innerHTML = '';
 
-    const blockId = 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+    programs.forEach((prog, idx) => {
+      const isIndiv = prog.type === 'individual';
+      const container = isIndiv ? indivContainer : groupContainer;
+      const isSaved = selectedEventsState.has(idx);
+      const savedData = selectedEventsState.get(idx);
 
-    const div = document.createElement('div');
-    div.className = 'item-block';
-    div.id = blockId;
+      const card = document.createElement('div');
+      card.className = `event-card ${isSaved ? 'is-saved' : ''}`;
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('data-prog-idx', String(idx));
+      card.setAttribute('aria-label', `${prog.name} (${isSaved ? 'Saved' : 'Not configured'})`);
 
-    div.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px;">
-        <label class="form-label" style="margin: 0; font-size: 1rem; color: var(--primary);">
-          <strong>🎯 Program Selection</strong>
-        </label>
-        <button type="button" class="btn btn-outline btn-sm remove-item-btn" style="color: #dc2626; border-color: #fca5a5; padding: 4px 12px;">
-          ❌ Remove
-        </button>
-      </div>
-      <select class="form-control program-select" required aria-label="Select Kalamela Program">
-        <option value="">-- Select Program --</option>
-      </select>
-      <div class="program-note-box" style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary); display: none;"></div>
-      <div class="participants-container" style="margin-top: 16px;"></div>
-      <div class="substitutes-container" style="margin-top: 14px;"></div>
-      <div class="form-error-msg item-error-msg" style="margin-top: 10px;"></div>
-    `;
-
-    // Bind remove button
-    div.querySelector('.remove-item-btn').addEventListener('click', () => {
-      div.remove();
-      refreshProgramDropdowns();
-    });
-
-    // Bind select change
-    const selectEl = div.querySelector('.program-select');
-    selectEl.addEventListener('change', () => onProgramChange(div, selectEl));
-
-    container.appendChild(div);
-    refreshProgramDropdowns();
-
-    // Auto-focus the new select
-    selectEl.focus();
-  }
-
-  /* ===== REFRESH PROGRAM DROPDOWNS =====
-     Disables already selected programs in other dropdowns (Requirement 4)
-  ======================================================================== */
-  function refreshProgramDropdowns() {
-    const allSelects = Array.from(document.querySelectorAll('.program-select'));
-    const selectedIndices = allSelects
-      .map(s => s.value)
-      .filter(v => v !== "");
-
-    allSelects.forEach(select => {
-      const currentVal = select.value;
-      const currentOpts = Array.from(select.options);
-
-      // Rebuild options if empty or first load
-      if (currentOpts.length <= 1) {
-        select.innerHTML = '<option value="">-- Select Program --</option>';
-        programs.forEach((p, idx) => {
-          let label = p.name;
-          if (p.type === 'individual') {
-            label += ' (Individual - 1 Participant)';
-          } else if (p.fixed) {
-            label += ` (Group - Exactly ${p.max} Members)`;
-          } else {
-            label += ` (Group - Max ${p.max} Members)`;
-          }
-          const opt = document.createElement('option');
-          opt.value = String(idx);
-          opt.textContent = label;
-          select.appendChild(opt);
-        });
-        select.value = currentVal;
+      // Rule badge label
+      let ruleLabel = '';
+      if (isIndiv) {
+        ruleLabel = '1 മത്സരാർത്ഥി (1 Person)';
+      } else if (prog.fixed) {
+        ruleLabel = `കൃത്യം ${prog.max} അംഗങ്ങൾ (Exact ${prog.max})`;
+      } else {
+        ruleLabel = `പരമാവധി ${prog.max} അംഗങ്ങൾ (Max ${prog.max})`;
       }
 
-      // Update disabled state for options
-      Array.from(select.options).forEach(opt => {
-        if (!opt.value) return;
-        if (opt.value !== currentVal && selectedIndices.includes(opt.value)) {
-          opt.disabled = true;
-          opt.textContent = opt.textContent.replace(' [Already Selected]', '') + ' [Already Selected]';
-        } else {
-          opt.disabled = false;
-          opt.textContent = opt.textContent.replace(' [Already Selected]', '');
+      // Card Top
+      let topHtml = `
+        <div class="event-card-top">
+          <h4 class="event-card-title">${escapeHTML(prog.name)}</h4>
+          <span class="event-card-rule-pill">${escapeHTML(ruleLabel)}</span>
+        </div>
+      `;
+
+      // Card Note (if present)
+      let noteHtml = prog.note ? `<div class="event-card-note">ℹ️ ${escapeHTML(prog.note)}</div>` : '';
+
+      // Card Bottom / Saved info
+      let bottomHtml = '';
+      if (isSaved && savedData) {
+        const pCount = (savedData.participantsDetail || []).length;
+        const sCount = (savedData.substitutes || []).length;
+        const namesSummary = savedData.participantsDetail.map(p => escapeHTML(p.name)).join(', ');
+
+        bottomHtml = `
+          <div class="event-card-participants-preview">
+            <span class="event-card-saved-badge">✓ സേവ് ചെയ്തു (Saved)</span>
+            <span class="event-card-p-chip" title="${namesSummary}">👤 ${pCount} പേർ${sCount > 0 ? ` (+${sCount} sub)` : ''}: ${namesSummary}</span>
+          </div>
+          <div class="event-card-bottom">
+            <span style="font-size:0.75rem; color:var(--text-muted);">ടാപ്പ് ചെയ്ത് മാറ്റങ്ങൾ വരുത്താം</span>
+            <div class="event-card-btn-group">
+              <button type="button" class="event-card-btn btn-card-edit" data-edit-idx="${idx}" aria-label="Edit ${escapeHTML(prog.name)}">
+                ✏️ Edit
+              </button>
+              <button type="button" class="event-card-btn btn-card-remove" data-remove-idx="${idx}" aria-label="Remove ${escapeHTML(prog.name)}">
+                🗑️ Remove
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        bottomHtml = `
+          <div class="event-card-bottom">
+            <span class="event-card-action-hint">
+              <span>+ ചേർക്കുക (Add Entry)</span>
+            </span>
+            <span style="font-size: 0.85rem; color: var(--secondary-dark);">➔</span>
+          </div>
+        `;
+      }
+
+      card.innerHTML = topHtml + noteHtml + bottomHtml;
+
+      // Event Listeners for the card
+      card.addEventListener('click', (e) => {
+        // Prevent trigger if clicking remove button
+        if (e.target.closest('.btn-card-remove')) {
+          e.stopPropagation();
+          const remIdx = parseInt(e.target.closest('.btn-card-remove').dataset.removeIdx, 10);
+          removeSavedEvent(remIdx);
+          return;
+        }
+        openEditSheet(idx);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEditSheet(idx);
         }
       });
+
+      container.appendChild(card);
     });
+
+    updateSummaryBar();
   }
 
-  /* ===== PROGRAM CHANGE HANDLER ===== */
-  function onProgramChange(blockDiv, selectEl) {
-    const idx = selectEl.value;
-    const partsDiv = blockDiv.querySelector('.participants-container');
-    const subsDiv = blockDiv.querySelector('.substitutes-container');
-    const noteBox = blockDiv.querySelector('.program-note-box');
-    const errBox = blockDiv.querySelector('.item-error-msg');
-
-    partsDiv.innerHTML = "";
-    subsDiv.innerHTML = "";
-    errBox.classList.remove('visible');
-    errBox.textContent = "";
-
-    if (!idx) {
-      noteBox.style.display = "none";
-      noteBox.textContent = "";
-      refreshProgramDropdowns();
-      return;
+  function updateSummaryBar() {
+    const count = selectedEventsState.size;
+    const badge = document.getElementById('pickerCountBadge');
+    if (badge) {
+      badge.textContent = `${count} Selected`;
+      badge.classList.toggle('has-selected', count > 0);
     }
 
-    refreshProgramDropdowns();
+    const summaryBadge = document.getElementById('summaryCountBadge');
+    if (summaryBadge) {
+      summaryBadge.textContent = `🎯 ${count} Program${count === 1 ? '' : 's'} Selected`;
+    }
 
-    const prog = programs[idx];
+    const reviewBtn = document.getElementById('summaryReviewBtn');
+    if (reviewBtn) {
+      reviewBtn.disabled = (count === 0);
+    }
 
-    // Show Program Note if available
+    const clearBtn = document.getElementById('summaryClearBtn');
+    if (clearBtn) {
+      clearBtn.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+
+    // Hide container error if any items selected
+    if (count > 0) {
+      hideContainerError();
+    }
+  }
+
+  /* ==========================================================================
+     EVENT EDIT BOTTOM SHEET / MODAL LOGIC
+     ========================================================================== */
+  function openEditSheet(progIdx) {
+    currentEditingProgIdx = progIdx;
+    const prog = programs[progIdx];
+    if (!prog) return;
+
+    const overlay = document.getElementById('editEventOverlay');
+    const titleEl = document.getElementById('sheetEventTitle');
+    const typeBadge = document.getElementById('sheetTypeBadge');
+    const ruleBadge = document.getElementById('sheetRuleBadge');
+    const noteBox = document.getElementById('sheetNoteBox');
+    const errBanner = document.getElementById('sheetErrorBanner');
+    const removeBtn = document.getElementById('sheetRemoveBtn');
+    const partsContainer = document.getElementById('sheetParticipantsContainer');
+    const subsContainer = document.getElementById('sheetSubstitutesContainer');
+
+    if (!overlay || !partsContainer || !subsContainer) return;
+
+    // Set Header info
+    titleEl.textContent = prog.name;
+    const isIndiv = prog.type === 'individual';
+    typeBadge.textContent = isIndiv ? 'വ്യക്തിഗത ഇനം (Individual)' : 'ഗ്രൂപ്പ് ഇനം (Group)';
+    
+    if (isIndiv) {
+      ruleBadge.textContent = '1 മത്സരാർത്ഥി (1 Person)';
+    } else if (prog.fixed) {
+      ruleBadge.textContent = `കൃത്യം ${prog.max} അംഗങ്ങൾ (Exact ${prog.max})`;
+    } else {
+      ruleBadge.textContent = `കുറഞ്ഞത് ${prog.min}, പരമാവധി ${prog.max} അംഗങ്ങൾ`;
+    }
+
     if (prog.note) {
-      noteBox.style.display = "block";
+      noteBox.style.display = 'block';
       noteBox.innerHTML = `ℹ️ <em>${escapeHTML(prog.note)}</em>`;
     } else {
-      noteBox.style.display = "none";
-      noteBox.textContent = "";
+      noteBox.style.display = 'none';
+      noteBox.textContent = '';
     }
 
-    // Header label for participants
-    const title = document.createElement('div');
-    title.style.display = 'flex';
-    title.style.justifyContent = 'space-between';
-    title.style.alignItems = 'center';
-    title.style.marginBottom = '12px';
-    title.style.flexWrap = 'wrap';
-    title.style.gap = '8px';
+    // Reset errors
+    errBanner.classList.remove('visible');
+    errBanner.textContent = '';
 
-    const titleText = document.createElement('span');
-    titleText.style.fontWeight = '600';
-    titleText.style.fontSize = '0.92rem';
-    titleText.style.color = 'var(--primary)';
-    titleText.textContent = prog.type === 'individual'
-      ? 'Participant Details:'
-      : `Team Members (${prog.fixed ? `Exactly ${prog.max} required` : `Min ${prog.min}, Max ${prog.max}`}):`;
-    title.appendChild(titleText);
+    // Populate participant form fields
+    partsContainer.innerHTML = '';
+    subsContainer.innerHTML = '';
 
-    // If group and not fixed, add "+ Add Member" button
-    if (prog.type === 'group' && !prog.fixed) {
+    const isSaved = selectedEventsState.has(progIdx);
+    const existingData = selectedEventsState.get(progIdx);
+
+    // Show/hide sheet remove button
+    if (removeBtn) {
+      removeBtn.style.display = isSaved ? 'inline-flex' : 'none';
+    }
+
+    // Render Participants section header
+    const pHeader = document.createElement('div');
+    pHeader.style.display = 'flex';
+    pHeader.style.justifyContent = 'space-between';
+    pHeader.style.alignItems = 'center';
+    pHeader.style.marginBottom = '10px';
+    pHeader.style.flexWrap = 'wrap';
+    pHeader.style.gap = '8px';
+
+    const pTitle = document.createElement('span');
+    pTitle.style.fontWeight = '700';
+    pTitle.style.fontSize = '0.92rem';
+    pTitle.style.color = 'var(--primary)';
+    pTitle.textContent = isIndiv ? 'Participant Details (മത്സരാർത്ഥിയുടെ വിവരങ്ങൾ):' : 'Team Members (ടീം അംഗങ്ങൾ):';
+    pHeader.appendChild(pTitle);
+
+    // If group non-fixed, add Member button
+    if (!isIndiv && !prog.fixed) {
       const addMemberBtn = document.createElement('button');
       addMemberBtn.type = 'button';
       addMemberBtn.className = 'btn btn-outline btn-sm add-member-btn';
-      addMemberBtn.style.padding = '4px 12px';
-      addMemberBtn.style.fontSize = '0.82rem';
+      addMemberBtn.style.padding = '4px 10px';
+      addMemberBtn.style.fontSize = '0.8rem';
       addMemberBtn.textContent = `+ Add Member (Max ${prog.max})`;
       addMemberBtn.addEventListener('click', () => {
-        const currentCount = partsDiv.querySelectorAll('.participant-entry-card').length;
-        if (currentCount < prog.max) {
-          addParticipantCard(partsDiv, prog, currentCount + 1, false);
-          updateAddMemberButtonState(partsDiv, addMemberBtn, prog.max);
+        const count = partsContainer.querySelectorAll('.participant-entry-card').length;
+        if (count < prog.max) {
+          renderParticipantCard(partsContainer, prog, count + 1, false, null);
+          updateAddMemberButtonState(partsContainer, addMemberBtn, prog.max);
         }
       });
-      title.appendChild(addMemberBtn);
+      pHeader.appendChild(addMemberBtn);
     }
 
-    partsDiv.appendChild(title);
+    partsContainer.appendChild(pHeader);
 
-    // Initial participant fields
-    // For fixed or individual: exact count
-    // For group non-fixed: start with min (1)
-    const initialCount = prog.fixed ? prog.max : prog.min;
-    for (let i = 1; i <= initialCount; i++) {
-      addParticipantCard(partsDiv, prog, i, false);
-    }
+    const cardsWrapper = document.createElement('div');
+    cardsWrapper.className = 'sheet-cards-list';
+    partsContainer.appendChild(cardsWrapper);
 
-    // Check button state if non-fixed
-    const addMemberBtn = title.querySelector('.add-member-btn');
-    if (addMemberBtn) {
-      updateAddMemberButtonState(partsDiv, addMemberBtn, prog.max);
-    }
-
-    // Optional Substitutes Section (Requirement 2 & Rule 15)
-    if (prog.substitutes) {
-      buildSubstitutesSection(subsDiv, prog);
-    }
-  }
-
-  function updateAddMemberButtonState(partsDiv, btn, max) {
-    const currentCount = partsDiv.querySelectorAll('.participant-entry-card').length;
-    if (currentCount >= max) {
-      btn.disabled = true;
-      btn.style.opacity = '0.5';
-      btn.textContent = `Limit reached (${max}/${max})`;
+    // Populate participants cards
+    if (isSaved && existingData && existingData.participantsDetail && existingData.participantsDetail.length > 0) {
+      existingData.participantsDetail.forEach((p, pIdx) => {
+        renderParticipantCard(cardsWrapper, prog, pIdx + 1, false, p);
+      });
     } else {
-      btn.disabled = false;
-      btn.style.opacity = '1';
-      btn.textContent = `+ Add Member (${currentCount}/${max})`;
+      const initialCount = prog.fixed ? prog.max : prog.min;
+      for (let i = 1; i <= initialCount; i++) {
+        renderParticipantCard(cardsWrapper, prog, i, false, null);
+      }
+    }
+
+    const addMemberBtn = pHeader.querySelector('.add-member-btn');
+    if (addMemberBtn) {
+      updateAddMemberButtonState(cardsWrapper, addMemberBtn, prog.max);
+    }
+
+    // Rule 7: Substitutes Section (Group items with substitutes: true)
+    if (prog.substitutes) {
+      subsContainer.style.display = 'block';
+      buildSheetSubstitutesSection(subsContainer, prog, isSaved && existingData ? existingData.substitutes : []);
+    } else {
+      subsContainer.style.display = 'none';
+    }
+
+    // Snapshot form state for unsaved changes detection
+    initialSheetStateSnapshot = serializeSheetForm();
+    isSheetOpen = true;
+
+    // Push browser history state for mobile back button
+    history.pushState({ editSheetOpen: true, progIdx }, '');
+
+    showOverlay('editEventOverlay');
+
+    // Focus first input
+    const firstInput = partsContainer.querySelector('input');
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 150);
     }
   }
 
-  /* ===== CREATE PARTICIPANT CARD ===== */
-  function addParticipantCard(parentContainer, prog, index, isSubstitute = false) {
+  function renderParticipantCard(parentContainer, prog, index, isSubstitute, initialVal) {
     const card = document.createElement('div');
     card.className = 'participant-entry-card';
     card.setAttribute('data-is-substitute', isSubstitute ? 'true' : 'false');
@@ -491,40 +590,33 @@
     header.className = 'participant-entry-header';
 
     const labelSpan = document.createElement('span');
-    labelSpan.innerHTML = isSubstitute 
-      ? `🔄 <strong>Substitute ${index}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Optional)</span>`
+    labelSpan.innerHTML = isSubstitute
+      ? `🔄 <strong>Substitute ${index}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Rule 7 - Optional)</span>`
       : `👤 <strong>Participant ${index}</strong>`;
     header.appendChild(labelSpan);
 
-    // If group non-fixed and member > min, allow removing member
+    // Remove button if group non-fixed & count > min, or if substitute
     if (!isSubstitute && prog.type === 'group' && !prog.fixed && index > prog.min) {
       const remBtn = document.createElement('button');
       remBtn.type = 'button';
-      remBtn.style.background = 'none';
-      remBtn.style.border = 'none';
-      remBtn.style.color = '#dc2626';
-      remBtn.style.cursor = 'pointer';
-      remBtn.style.fontSize = '0.82rem';
+      remBtn.className = 'p-card-remove-btn';
+      remBtn.style.cssText = 'background:none; border:none; color:#dc2626; cursor:pointer; font-size:0.8rem;';
       remBtn.textContent = '✕ Remove';
       remBtn.addEventListener('click', () => {
         card.remove();
         renumberParticipants(parentContainer);
-        const addBtn = parentContainer.querySelector('.add-member-btn');
+        const addBtn = parentContainer.parentElement.querySelector('.add-member-btn');
         if (addBtn) updateAddMemberButtonState(parentContainer, addBtn, prog.max);
       });
       header.appendChild(remBtn);
     } else if (isSubstitute) {
       const remBtn = document.createElement('button');
       remBtn.type = 'button';
-      remBtn.style.background = 'none';
-      remBtn.style.border = 'none';
-      remBtn.style.color = '#dc2626';
-      remBtn.style.cursor = 'pointer';
-      remBtn.style.fontSize = '0.82rem';
+      remBtn.style.cssText = 'background:none; border:none; color:#dc2626; cursor:pointer; font-size:0.8rem;';
       remBtn.textContent = '✕ Remove';
       remBtn.addEventListener('click', () => {
-        card.remove();
         const subBox = parentContainer.closest('.substitutes-box');
+        card.remove();
         if (subBox) {
           renumberSubstitutes(subBox);
           const addSubBtn = subBox.querySelector('.add-sub-btn');
@@ -536,60 +628,67 @@
 
     card.appendChild(header);
 
-    // Grid for input fields: Name, DOB, Gender
+    // Inputs Grid
     const grid = document.createElement('div');
     grid.className = 'participant-fields-grid';
 
     // 1. Full Name
     const nameCol = document.createElement('div');
+    const existingName = initialVal && initialVal.name ? escapeHTML(initialVal.name) : '';
     nameCol.innerHTML = `
-      <label class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Full Name <span style="color:#dc2626;">*</span></label>
-      <input type="text" class="form-control p-name" placeholder="Name as in ID proof" ${!isSubstitute ? 'required' : ''}>
+      <label class="form-label" style="font-size: 0.8rem; margin-bottom: 3px;">Full Name <span style="color:#dc2626;">*</span></label>
+      <input type="text" class="form-control p-name" placeholder="Name as in ID proof" value="${existingName}" ${!isSubstitute ? 'required' : ''}>
     `;
     grid.appendChild(nameCol);
 
     // 2. Date of Birth
     const dobCol = document.createElement('div');
+    const existingDob = initialVal && initialVal.dob ? initialVal.dob : '';
     dobCol.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
         <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
-        <span class="age-badge" style="font-size: 0.78rem; font-weight: 600; color: var(--primary); display: none;"></span>
+        <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
-      <input type="date" class="form-control p-dob" ${!isSubstitute ? 'required' : ''}>
+      <input type="date" class="form-control p-dob" value="${existingDob}" ${!isSubstitute ? 'required' : ''}>
     `;
     grid.appendChild(dobCol);
 
     // 3. Gender
     const genderCol = document.createElement('div');
+    const isAsk = prog.gender === 'ask';
+    const isFemaleOnly = prog.gender === 'female_only';
+    const isMaleOnly = prog.gender === 'male_only';
+    const reqStar = (isAsk || isFemaleOnly || isMaleOnly) ? '<span style="color:#dc2626;">*</span>' : '';
+
     let genderHtml = `
-      <label class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Gender ${prog.gender === 'ask' || prog.gender === 'female_only' || prog.gender === 'male_only' ? '<span style="color:#dc2626;">*</span>' : ''}</label>
-      <select class="form-control p-gender" ${prog.gender === 'ask' ? 'required' : ''}>
+      <label class="form-label" style="font-size: 0.8rem; margin-bottom: 3px;">Gender ${reqStar}</label>
+      <select class="form-control p-gender" ${isAsk ? 'required' : ''}>
     `;
 
-    if (prog.gender === 'female_only') {
+    const savedGender = initialVal && initialVal.gender ? initialVal.gender : '';
+
+    if (isFemaleOnly) {
       genderHtml += `<option value="Female" selected>Female</option>`;
-    } else if (prog.gender === 'male_only') {
+    } else if (isMaleOnly) {
       genderHtml += `<option value="Male" selected>Male</option>`;
-    } else if (prog.gender === 'ask') {
+    } else if (isAsk) {
       genderHtml += `
         <option value="">Select</option>
-        <option value="Female">Female</option>
-        <option value="Male">Male</option>
+        <option value="Female" ${savedGender === 'Female' ? 'selected' : ''}>Female</option>
+        <option value="Male" ${savedGender === 'Male' ? 'selected' : ''}>Male</option>
       `;
     } else {
-      // optional
       genderHtml += `
         <option value="">Select (Optional)</option>
-        <option value="Female">Female</option>
-        <option value="Male">Male</option>
-        <option value="Other">Other</option>
+        <option value="Female" ${savedGender === 'Female' ? 'selected' : ''}>Female</option>
+        <option value="Male" ${savedGender === 'Male' ? 'selected' : ''}>Male</option>
+        <option value="Other" ${savedGender === 'Other' ? 'selected' : ''}>Other</option>
       `;
     }
     genderHtml += `</select>`;
     genderCol.innerHTML = genderHtml;
 
-    // Disable select if forced
-    if (prog.gender === 'female_only' || prog.gender === 'male_only') {
+    if (isFemaleOnly || isMaleOnly) {
       const sel = genderCol.querySelector('.p-gender');
       if (sel) sel.disabled = true;
     }
@@ -597,15 +696,15 @@
     grid.appendChild(genderCol);
     card.appendChild(grid);
 
-    // Inline error container for this participant
+    // Inline Card Error Container
     const pErr = document.createElement('div');
     pErr.className = 'form-error-msg p-card-error';
     card.appendChild(pErr);
 
-    // Dynamic Live Age Calculation & Validation
+    // Live age badge & validation
     const dobInput = dobCol.querySelector('.p-dob');
     const ageBadge = dobCol.querySelector('.age-badge');
-    const validateDobLive = () => {
+    const updateAgeLive = () => {
       const val = dobInput.value;
       if (!val) {
         ageBadge.style.display = 'none';
@@ -620,25 +719,33 @@
         ageBadge.style.display = 'none';
         return;
       }
-
       ageBadge.style.display = 'inline-block';
       ageBadge.textContent = `Age: ${age} yrs`;
 
-      if (age < MIN_AGE || age > MAX_AGE) {
+      if (age < MIN_AGE) {
         ageBadge.style.color = '#dc2626';
         dobInput.classList.add('has-error');
-        pErr.textContent = `Age must be between ${MIN_AGE} and ${MAX_AGE} years. (Current calculated age: ${age} yrs).`;
+        pErr.textContent = `Age must be completed 15 years as of 9 January 2027 (Calculated: ${age} yrs).`;
+        pErr.classList.add('visible');
+      } else if (age >= MAX_AGE) {
+        ageBadge.style.color = '#dc2626';
+        dobInput.classList.add('has-error');
+        pErr.textContent = `Age must be under 40 on 9 January 2027 (Calculated: ${age} yrs).`;
         pErr.classList.add('visible');
       } else {
-        ageBadge.style.color = '#15803d'; // green
+        ageBadge.style.color = '#15803d';
         dobInput.classList.remove('has-error');
         pErr.classList.remove('visible');
         pErr.textContent = '';
       }
     };
 
-    dobInput.addEventListener('input', validateDobLive);
-    dobInput.addEventListener('change', validateDobLive);
+    dobInput.addEventListener('input', updateAgeLive);
+    dobInput.addEventListener('change', updateAgeLive);
+
+    if (existingDob) {
+      updateAgeLive();
+    }
 
     parentContainer.appendChild(card);
   }
@@ -659,49 +766,17 @@
     });
   }
 
-  /* ===== SUBSTITUTES SECTION (Rule 15 - Max 2) ===== */
-  function buildSubstitutesSection(container, prog) {
-    const box = document.createElement('div');
-    box.className = 'substitutes-box';
-
-    const header = document.createElement('div');
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-    header.style.marginBottom = '10px';
-    header.style.flexWrap = 'wrap';
-    header.style.gap = '8px';
-
-    const title = document.createElement('span');
-    title.style.fontWeight = '600';
-    title.style.fontSize = '0.88rem';
-    title.style.color = 'var(--primary)';
-    title.innerHTML = `🔁 Substitutes (Max 2 per Rule 15)`;
-    header.appendChild(title);
-
-    const addSubBtn = document.createElement('button');
-    addSubBtn.type = 'button';
-    addSubBtn.className = 'btn btn-outline btn-sm add-sub-btn';
-    addSubBtn.style.padding = '3px 10px';
-    addSubBtn.style.fontSize = '0.8rem';
-    addSubBtn.textContent = '+ Add Substitute (0/2)';
-
-    header.appendChild(addSubBtn);
-    box.appendChild(header);
-
-    const subList = document.createElement('div');
-    subList.className = 'substitutes-list';
-    box.appendChild(subList);
-
-    addSubBtn.addEventListener('click', () => {
-      const count = subList.querySelectorAll('.participant-entry-card').length;
-      if (count < 2) {
-        addParticipantCard(subList, prog, count + 1, true);
-        updateAddSubButtonState(box, addSubBtn);
-      }
-    });
-
-    container.appendChild(box);
+  function updateAddMemberButtonState(partsContainer, btn, max) {
+    const currentCount = partsContainer.querySelectorAll('.participant-entry-card').length;
+    if (currentCount >= max) {
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.textContent = `Limit reached (${max}/${max})`;
+    } else {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = `+ Add Member (${currentCount}/${max})`;
+    }
   }
 
   function updateAddSubButtonState(box, btn) {
@@ -717,17 +792,545 @@
     }
   }
 
-  /* ===== CLEAR ALL ITEMS ===== */
-  function clearItems() {
-    const container = document.getElementById('itemsContainer');
-    if (!container || container.children.length === 0) return;
-    if (!confirm("Clear all selected programs and participant entries?")) return;
-    container.innerHTML = "";
-    hideContainerError();
-    refreshProgramDropdowns();
+  /* ===== SUBSTITUTES SECTION (Rule 7 - Max 2) ===== */
+  function buildSheetSubstitutesSection(container, prog, initialSubs) {
+    container.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = 'substitutes-box';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.marginBottom = '8px';
+    header.style.flexWrap = 'wrap';
+    header.style.gap = '8px';
+
+    const title = document.createElement('span');
+    title.style.fontWeight = '700';
+    title.style.fontSize = '0.88rem';
+    title.style.color = 'var(--primary)';
+    title.innerHTML = `🔁 Substitutes (Max 2 per Rule 7)`;
+    header.appendChild(title);
+
+    const addSubBtn = document.createElement('button');
+    addSubBtn.type = 'button';
+    addSubBtn.className = 'btn btn-outline btn-sm add-sub-btn';
+    addSubBtn.style.padding = '3px 10px';
+    addSubBtn.style.fontSize = '0.78rem';
+    addSubBtn.textContent = '+ Add Substitute (0/2)';
+
+    header.appendChild(addSubBtn);
+    box.appendChild(header);
+
+    const subList = document.createElement('div');
+    subList.className = 'substitutes-list';
+    box.appendChild(subList);
+
+    addSubBtn.addEventListener('click', () => {
+      const count = subList.querySelectorAll('.participant-entry-card').length;
+      if (count < 2) {
+        renderParticipantCard(subList, prog, count + 1, true, null);
+        updateAddSubButtonState(box, addSubBtn);
+      }
+    });
+
+    if (Array.isArray(initialSubs) && initialSubs.length > 0) {
+      initialSubs.forEach((sub, sIdx) => {
+        renderParticipantCard(subList, prog, sIdx + 1, true, sub);
+      });
+      updateAddSubButtonState(box, addSubBtn);
+    }
+
+    container.appendChild(box);
   }
 
-  /* ===== ERROR UI HELPERS ===== */
+  /* ===== SHEET SERIALIZATION FOR UNSAVED CHANGES ===== */
+  function serializeSheetForm() {
+    const sheet = document.getElementById('editEventSheet');
+    if (!sheet) return '';
+    const inputs = sheet.querySelectorAll('.p-name, .p-dob, .p-gender');
+    const values = [];
+    inputs.forEach(input => {
+      values.push(input.value.trim());
+    });
+    return JSON.stringify(values);
+  }
+
+  function hasUnsavedSheetChanges() {
+    if (!isSheetOpen) return false;
+    const current = serializeSheetForm();
+    return current !== initialSheetStateSnapshot;
+  }
+
+  function attemptCloseSheet() {
+    if (hasUnsavedSheetChanges()) {
+      showUnsavedModal();
+    } else {
+      closeEditSheet(false);
+    }
+  }
+
+  function closeEditSheet(popHistory = false) {
+    isSheetOpen = false;
+    currentEditingProgIdx = null;
+    initialSheetStateSnapshot = null;
+    hideOverlay('editEventOverlay');
+    hideOverlay('unsavedChangesOverlay');
+
+    if (popHistory && window.history.state && window.history.state.editSheetOpen) {
+      history.back();
+    }
+  }
+
+  /* ===== UNSAVED CHANGES MODAL (3 BUTTONS) ===== */
+  function showUnsavedModal() {
+    showOverlay('unsavedChangesOverlay');
+  }
+
+  function hideUnsavedModal() {
+    hideOverlay('unsavedChangesOverlay');
+  }
+
+  /* ===== SAVE SHEET EVENT & RULE 9 VALIDATION ===== */
+  function saveSheetEvent() {
+    const progIdx = currentEditingProgIdx;
+    if (progIdx === null || progIdx === undefined) return false;
+
+    const prog = programs[progIdx];
+    const sheet = document.getElementById('editEventSheet');
+    const errBanner = document.getElementById('sheetErrorBanner');
+    if (!sheet || !prog || !errBanner) return false;
+
+    errBanner.classList.remove('visible');
+    errBanner.textContent = '';
+    sheet.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+    sheet.querySelectorAll('.p-card-error').forEach(el => {
+      el.classList.remove('visible');
+      el.textContent = '';
+    });
+
+    const isIndiv = prog.type === 'individual';
+    const regCards = Array.from(sheet.querySelectorAll('#sheetParticipantsContainer .participant-entry-card'));
+    const subCards = Array.from(sheet.querySelectorAll('#sheetSubstitutesContainer .participant-entry-card'));
+
+    const errors = [];
+
+    // Check count for regular members
+    if (prog.fixed && regCards.length !== prog.max) {
+      errors.push(`${prog.name} requires exactly ${prog.max} participants. (Currently has ${regCards.length}).`);
+    } else if (!prog.fixed && (regCards.length < prog.min || regCards.length > prog.max)) {
+      errors.push(`${prog.name} requires between ${prog.min} and ${prog.max} participants.`);
+    }
+
+    const participantsDetail = [];
+    const substitutesDetail = [];
+
+    // Track duplicate names within this event
+    const eventPersonSet = new Set();
+
+    // 1. Validate regular participants
+    regCards.forEach((card, cIdx) => {
+      const nameInput = card.querySelector('.p-name');
+      const dobInput = card.querySelector('.p-dob');
+      const genderSelect = card.querySelector('.p-gender');
+      const cardErr = card.querySelector('.p-card-error');
+
+      const pName = nameInput ? nameInput.value.trim() : '';
+      const pDob = dobInput ? dobInput.value.trim() : '';
+      let pGender = genderSelect ? genderSelect.value : '';
+
+      if (prog.gender === 'female_only') pGender = 'Female';
+      if (prog.gender === 'male_only') pGender = 'Male';
+
+      let cardHasErr = false;
+
+      if (!pName) {
+        nameInput.classList.add('has-error');
+        cardErr.textContent = 'Participant name is required.';
+        cardErr.classList.add('visible');
+        errors.push(`Participant ${cIdx + 1}: Name is required.`);
+        cardHasErr = true;
+      }
+
+      if (!pDob) {
+        dobInput.classList.add('has-error');
+        cardErr.textContent = 'Date of birth is required.';
+        cardErr.classList.add('visible');
+        errors.push(`Participant ${cIdx + 1}: Date of birth is required.`);
+        cardHasErr = true;
+      } else {
+        const age = calculateAgeOnEventDate(pDob);
+        if (age === null || isNaN(age)) {
+          dobInput.classList.add('has-error');
+          cardErr.textContent = 'Invalid date of birth.';
+          cardErr.classList.add('visible');
+          errors.push(`Participant ${cIdx + 1}: Invalid date of birth.`);
+          cardHasErr = true;
+        } else if (age < MIN_AGE) {
+          dobInput.classList.add('has-error');
+          cardErr.textContent = `Age must be completed 15 years on 9 Jan 2027 (Age: ${age} yrs).`;
+          cardErr.classList.add('visible');
+          errors.push(`Participant ${pName || (cIdx + 1)}: Age is ${age} (Must be at least 15 on 9 Jan 2027).`);
+          cardHasErr = true;
+        } else if (age >= MAX_AGE) {
+          dobInput.classList.add('has-error');
+          cardErr.textContent = `Age must be under 40 on 9 Jan 2027 (Age: ${age} yrs).`;
+          cardErr.classList.add('visible');
+          errors.push(`Participant ${pName || (cIdx + 1)}: Age is ${age} (Must be under 40 on 9 Jan 2027).`);
+          cardHasErr = true;
+        }
+      }
+
+      if (prog.gender === 'ask' && !pGender) {
+        genderSelect.classList.add('has-error');
+        cardErr.textContent = 'Gender selection is required.';
+        cardErr.classList.add('visible');
+        errors.push(`Participant ${cIdx + 1}: Gender selection is required.`);
+        cardHasErr = true;
+      }
+
+      if (pName && pDob) {
+        const personKey = getPersonNormalizedKey(pName, pDob);
+        if (eventPersonSet.has(personKey)) {
+          nameInput.classList.add('has-error');
+          dobInput.classList.add('has-error');
+          cardErr.textContent = `Duplicate: "${pName}" is already added in this program.`;
+          cardErr.classList.add('visible');
+          errors.push(`Duplicate: "${pName}" appears more than once in this program.`);
+          cardHasErr = true;
+        } else {
+          eventPersonSet.add(personKey);
+        }
+      }
+
+      if (!cardHasErr) {
+        participantsDetail.push({
+          name: pName,
+          dob: pDob,
+          gender: pGender || 'Not Specified',
+          role: 'Participant'
+        });
+      }
+    });
+
+    // 2. Validate substitutes (Rule 7)
+    subCards.forEach((card, sIdx) => {
+      const nameInput = card.querySelector('.p-name');
+      const dobInput = card.querySelector('.p-dob');
+      const genderSelect = card.querySelector('.p-gender');
+      const cardErr = card.querySelector('.p-card-error');
+
+      const sName = nameInput ? nameInput.value.trim() : '';
+      const sDob = dobInput ? dobInput.value.trim() : '';
+      let sGender = genderSelect ? genderSelect.value : '';
+
+      if (prog.gender === 'female_only') sGender = 'Female';
+      if (prog.gender === 'male_only') sGender = 'Male';
+
+      // Substitutes are optional: only validate if any field entered
+      if (sName || sDob || sGender) {
+        let subHasErr = false;
+
+        if (!sName) {
+          nameInput.classList.add('has-error');
+          cardErr.textContent = 'Substitute name is required.';
+          cardErr.classList.add('visible');
+          errors.push(`Substitute ${sIdx + 1}: Name is required.`);
+          subHasErr = true;
+        }
+
+        if (!sDob) {
+          dobInput.classList.add('has-error');
+          cardErr.textContent = 'Substitute date of birth is required.';
+          cardErr.classList.add('visible');
+          errors.push(`Substitute ${sIdx + 1}: Date of birth is required.`);
+          subHasErr = true;
+        } else {
+          const age = calculateAgeOnEventDate(sDob);
+          if (age === null || isNaN(age)) {
+            dobInput.classList.add('has-error');
+            cardErr.textContent = 'Invalid date of birth.';
+            cardErr.classList.add('visible');
+            errors.push(`Substitute ${sIdx + 1}: Invalid date of birth.`);
+            subHasErr = true;
+          } else if (age < MIN_AGE) {
+            dobInput.classList.add('has-error');
+            cardErr.textContent = `Age must be completed 15 years on 9 Jan 2027 (Age: ${age} yrs).`;
+            cardErr.classList.add('visible');
+            errors.push(`Substitute ${sName || (sIdx + 1)}: Age is ${age} (Must be at least 15 on 9 Jan 2027).`);
+            subHasErr = true;
+          } else if (age >= MAX_AGE) {
+            dobInput.classList.add('has-error');
+            cardErr.textContent = `Age must be under 40 on 9 Jan 2027 (Age: ${age} yrs).`;
+            cardErr.classList.add('visible');
+            errors.push(`Substitute ${sName || (sIdx + 1)}: Age is ${age} (Must be under 40 on 9 Jan 2027).`);
+            subHasErr = true;
+          }
+        }
+
+        if (sName && sDob) {
+          const personKey = getPersonNormalizedKey(sName, sDob);
+          if (eventPersonSet.has(personKey)) {
+            nameInput.classList.add('has-error');
+            cardErr.textContent = `Duplicate: "${sName}" is already added as a member/substitute in this program.`;
+            cardErr.classList.add('visible');
+            errors.push(`Duplicate: "${sName}" is already added in this program.`);
+            subHasErr = true;
+          } else {
+            eventPersonSet.add(personKey);
+          }
+        }
+
+        if (!subHasErr) {
+          substitutesDetail.push({
+            name: sName,
+            dob: sDob,
+            gender: sGender || 'Not Specified',
+            role: 'Substitute'
+          });
+        }
+      }
+    });
+
+    // 3. RULE 9 VALIDATION (Cross-Event Limits: max 2 individual, max 2 group)
+    // Normalized Name + DOB. Substitutes count toward limits!
+    const personRegistry = new Map();
+
+    // Populate registry with all OTHER saved events
+    selectedEventsState.forEach((evData, evIdx) => {
+      if (evIdx === progIdx) return; // Skip currently edited event
+      const evType = evData.type;
+
+      // Regular members
+      (evData.participantsDetail || []).forEach(p => {
+        const key = getPersonNormalizedKey(p.name, p.dob);
+        if (!key) return;
+        if (!personRegistry.has(key)) {
+          personRegistry.set(key, { name: p.name, indiv: 0, group: 0, indivEvents: [], groupEvents: [] });
+        }
+        const record = personRegistry.get(key);
+        if (evType === 'individual') {
+          record.indiv++;
+          record.indivEvents.push(evData.program);
+        } else {
+          record.group++;
+          record.groupEvents.push(evData.program);
+        }
+      });
+
+      // Substitutes (counted toward group limits)
+      (evData.substitutes || []).forEach(s => {
+        const key = getPersonNormalizedKey(s.name, s.dob);
+        if (!key) return;
+        if (!personRegistry.has(key)) {
+          personRegistry.set(key, { name: s.name, indiv: 0, group: 0, indivEvents: [], groupEvents: [] });
+        }
+        const record = personRegistry.get(key);
+        record.group++;
+        record.groupEvents.push(evData.program + " (Sub)");
+      });
+    });
+
+    // Check currently entered participants against limits
+    participantsDetail.forEach(p => {
+      const key = getPersonNormalizedKey(p.name, p.dob);
+      if (!key) return;
+      const existing = personRegistry.get(key) || { indiv: 0, group: 0, indivEvents: [], groupEvents: [] };
+
+      if (isIndiv) {
+        if (existing.indiv + 1 > 2) {
+          errors.push(`നിബന്ധന 9 ലംഘനം: "${p.name}" ഇതിനകം 2 വ്യക്തിഗത ഇനങ്ങളിൽ രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട് (${existing.indivEvents.join(', ')}). പരമാവധി 2 എണ്ണത്തിൽ മാത്രമേ പങ്കെടുക്കാവൂ.`);
+        }
+      } else {
+        if (existing.group + 1 > 2) {
+          errors.push(`നിബന്ധന 9 ലംഘനം: "${p.name}" ഇതിനകം 2 ഗ്രൂപ്പ് ഇനങ്ങളിൽ രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട് (${existing.groupEvents.join(', ')}). പരമാവധി 2 എണ്ണത്തിൽ മാത്രമേ പങ്കെടുക്കാവൂ.`);
+        }
+      }
+    });
+
+    // Check currently entered substitutes against group limits
+    substitutesDetail.forEach(s => {
+      const key = getPersonNormalizedKey(s.name, s.dob);
+      if (!key) return;
+      const existing = personRegistry.get(key) || { indiv: 0, group: 0, indivEvents: [], groupEvents: [] };
+      if (existing.group + 1 > 2) {
+        errors.push(`നിബന്ധന 9 ലംഘനം: പകരക്കാരനായ "${s.name}" ഇതിനകം 2 ഗ്രൂപ്പ് ഇനങ്ങളിൽ ഉൾപ്പെട്ടിട്ടുണ്ട് (${existing.groupEvents.join(', ')}).`);
+      }
+    });
+
+    // If validation failed, display error banner and stay in sheet
+    if (errors.length > 0) {
+      errBanner.innerHTML = `
+        <strong>⚠️ Please fix the following before saving:</strong>
+        <ul style="margin: 6px 0 0 16px; padding: 0;">
+          ${errors.map(e => `<li>${escapeHTML(e)}</li>`).join('')}
+        </ul>
+      `;
+      errBanner.classList.add('visible');
+      errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return false;
+    }
+
+    // Validation Succeeded: Save into State
+    selectedEventsState.set(progIdx, {
+      progIdx,
+      program: prog.name,
+      type: prog.type,
+      participantsDetail,
+      substitutes: substitutesDetail
+    });
+
+    // Close sheet, hide unsaved dialog, update UI
+    hideOverlay('unsavedChangesOverlay');
+    closeEditSheet(true);
+    renderEventCards();
+    return true;
+  }
+
+  /* ===== REMOVE & CLEAR ACTIONS ===== */
+  function removeSavedEvent(progIdx) {
+    const prog = programs[progIdx];
+    const name = prog ? prog.name : 'this event';
+    if (!confirm(`Remove "${name}" from registration? / ഈ ഇനം ഒഴിവാക്കണോ?`)) return;
+
+    selectedEventsState.delete(progIdx);
+    renderEventCards();
+    closeEditSheet(true);
+  }
+
+  function clearAllSavedEvents() {
+    if (selectedEventsState.size === 0) return;
+    if (!confirm("Are you sure you want to clear all selected programs and participant entries?")) return;
+
+    selectedEventsState.clear();
+    renderEventCards();
+    closeEditSheet(true);
+  }
+
+  /* ===== EVENT EDIT SHEET EVENT LISTENERS ===== */
+  function initEditSheetHandlers() {
+    // Sheet close button
+    const closeBtn = document.getElementById('sheetCloseBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', attemptCloseSheet);
+    }
+
+    // Sheet cancel button
+    const cancelBtn = document.getElementById('sheetCancelBtn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', attemptCloseSheet);
+    }
+
+    // Sheet save button
+    const saveBtn = document.getElementById('sheetSaveBtn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        saveSheetEvent();
+      });
+    }
+
+    // Sheet remove button
+    const removeBtn = document.getElementById('sheetRemoveBtn');
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        if (currentEditingProgIdx !== null) {
+          removeSavedEvent(currentEditingProgIdx);
+        }
+      });
+    }
+
+    // Backdrop click on edit sheet overlay
+    const overlay = document.getElementById('editEventOverlay');
+    if (overlay) {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          attemptCloseSheet();
+        }
+      });
+    }
+
+    // Unsaved Modal 3 buttons:
+    const unsavedSaveBtn = document.getElementById('unsavedSaveBtn');
+    if (unsavedSaveBtn) {
+      unsavedSaveBtn.addEventListener('click', () => {
+        const saved = saveSheetEvent();
+        if (saved) {
+          hideUnsavedModal();
+        } else {
+          hideUnsavedModal(); // Close dialog so user can see errors on sheet
+        }
+      });
+    }
+
+    const unsavedDiscardBtn = document.getElementById('unsavedDiscardBtn');
+    if (unsavedDiscardBtn) {
+      unsavedDiscardBtn.addEventListener('click', () => {
+        hideUnsavedModal();
+        closeEditSheet(true);
+      });
+    }
+
+    const unsavedKeepBtn = document.getElementById('unsavedKeepBtn');
+    if (unsavedKeepBtn) {
+      unsavedKeepBtn.addEventListener('click', () => {
+        hideUnsavedModal();
+      });
+    }
+
+    // ESC key closes active modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const unsaved = document.getElementById('unsavedChangesOverlay');
+        if (unsaved && unsaved.classList.contains('active')) {
+          hideUnsavedModal();
+          return;
+        }
+
+        const sheetOverlay = document.getElementById('editEventOverlay');
+        if (sheetOverlay && sheetOverlay.classList.contains('active')) {
+          attemptCloseSheet();
+          return;
+        }
+
+        const previewModal = document.getElementById('previewOverlay');
+        if (previewModal && previewModal.classList.contains('active')) {
+          hideOverlay('previewOverlay');
+          return;
+        }
+      }
+    });
+  }
+
+  /* ==========================================================================
+     STICKY SUMMARY BAR (ENGLISH-ONLY)
+     ========================================================================== */
+  function initStickySummaryBar() {
+    const reviewBtn = document.getElementById('summaryReviewBtn');
+    if (reviewBtn) {
+      reviewBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Trigger standard form submit check
+        const form = document.getElementById('regForm');
+        if (form) {
+          if (typeof form.requestSubmit === 'function') {
+            form.requestSubmit();
+          } else {
+            onSubmit(e);
+          }
+        }
+      });
+    }
+
+    const clearBtn = document.getElementById('summaryClearBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', clearAllSavedEvents);
+    }
+  }
+
+  /* ==========================================================================
+     ERROR UI HELPERS
+     ========================================================================== */
   function clearAllErrors() {
     document.querySelectorAll('.form-control.has-error, .parish-trigger-btn.has-error').forEach(el => el.classList.remove('has-error'));
     document.querySelectorAll('.form-error-msg').forEach(el => {
@@ -753,16 +1356,7 @@
       errDiv.textContent = errorMsg;
       errDiv.classList.add('visible');
     }
-    return (fieldId === 'parish' ? (document.getElementById('parishTriggerBtn') || field) : field);
-  }
-
-  function setCustomError(element, errorDiv, errorMsg) {
-    if (element) element.classList.add('has-error');
-    if (errorDiv) {
-      errorDiv.textContent = errorMsg;
-      errorDiv.classList.add('visible');
-    }
-    return element;
+    return field || errDiv;
   }
 
   function showContainerError(msg) {
@@ -776,16 +1370,14 @@
   function hideContainerError() {
     const errDiv = document.getElementById('itemsContainerError');
     if (errDiv) {
-      errDiv.textContent = '';
       errDiv.classList.remove('visible');
+      errDiv.textContent = '';
     }
   }
 
-  /* ===== SUBMISSION STATE & MODAL MANAGEMENT ===== */
-  let isSubmitting = false;
-  let lastSubmissionPayload = null;
-  let pendingSubmissionPayload = null;
-
+  /* ==========================================================================
+     MODALS OVERLAY HELPERS
+     ========================================================================== */
   function showOverlay(overlayId) {
     const el = document.getElementById(overlayId);
     if (el) {
@@ -798,14 +1390,16 @@
     const el = document.getElementById(overlayId);
     if (el) {
       el.classList.remove('active');
-      // If no other overlay is open, restore scroll
-      const activeOverlays = document.querySelectorAll('.reg-modal-overlay.active');
+      const activeOverlays = document.querySelectorAll('.reg-modal-overlay.active, .edit-event-sheet-overlay.active');
       if (activeOverlays.length === 0) {
         document.body.style.overflow = '';
       }
     }
   }
 
+  /* ==========================================================================
+     COMPACT SUBMISSION PREVIEW MODAL
+     ========================================================================== */
   function showPreviewModal(payload) {
     pendingSubmissionPayload = payload;
     const bodyEl = document.getElementById('previewModalBody');
@@ -829,7 +1423,7 @@
         const subChips = item.substitutes.map(s => {
           return `<span class="preview-participant-chip" style="border-style: dashed; background: rgba(212, 160, 23, 0.08);">🔄 ${escapeHTML(s.name)} (Sub)</span>`;
         }).join('');
-        subHtml = `<div class="preview-substitutes-wrap"><strong>പകരക്കാർ:</strong> ${subChips}</div>`;
+        subHtml = `<div class="preview-substitutes-wrap"><strong>പകരക്കാർ (Rule 7):</strong> ${subChips}</div>`;
       }
 
       return `
@@ -847,7 +1441,6 @@
     }).join('');
 
     bodyEl.innerHTML = `
-      <!-- Official Parish Details Card -->
       <div class="preview-section-card">
         <div class="preview-official-grid">
           <div class="preview-field-item">
@@ -869,13 +1462,11 @@
         </div>
       </div>
 
-      <!-- Summary Counts Pill -->
       <div class="preview-programs-summary-pill">
         <span>🎯 ഇനങ്ങൾ: <strong>${payload.items.length}</strong></span>
         <span>👥 മത്സരാർത്ഥികൾ: <strong>${totalParticipants}</strong></span>
       </div>
 
-      <!-- Programs List -->
       <div class="preview-programs-container">
         ${programsHtml}
       </div>
@@ -904,8 +1495,7 @@
     showOverlay('failureOverlay');
   }
 
-  /* ===== Reliable submit: retry + "did it save?" check =====
-     Safe because the server returns the ORIGINAL Reg ID for the same submissionId. */
+  /* ===== BACKEND SUBMISSION VIA GOOGLE APPS SCRIPT ===== */
   function parseReply(text) {
     let parsed;
     try { parsed = JSON.parse(text); }
@@ -946,7 +1536,6 @@
       } catch (err) {
         if (err.serverReported || (err.message && err.message.includes("Invalid response"))) throw err;
         lastErr = err;
-        // The reply may have been lost even though the data was saved: ask the server
         const saved = await checkSaved(postUrl, payload.submissionId);
         if (saved) return saved;
         await new Promise(r => setTimeout(r, 1500 * attempt));
@@ -973,6 +1562,7 @@
 
     submitWithRecovery(postUrl, payload)
       .then((parsed) => {
+        submissionSucceeded = true;
         hideOverlay('waitOverlay');
         showSuccessModal(parsed.regId.trim(), payload.parish, payload.items.length);
 
@@ -988,28 +1578,14 @@
           parishTriggerText.classList.add('placeholder');
         }
 
-        const container = document.getElementById('itemsContainer');
-        if (container) container.innerHTML = "";
-
+        selectedEventsState.clear();
+        renderEventCards();
         clearAllErrors();
-        refreshProgramDropdowns();
       })
       .catch((err) => {
         hideOverlay('waitOverlay');
-        console.error("Kalamela Registration Submission Error:", err);
-
-        let shortReason = "Network problem. Check your internet connection.";
-        if (err.name === 'AbortError') {
-          shortReason = "No response from the server (timed out).";
-        } else if (err.serverReported) {
-          shortReason = `Server error: ${err.message}`;
-        } else if (err.message && err.message.startsWith('HTTP')) {
-          shortReason = `Server error: ${err.message}`;
-        } else if (err.message && err.message.includes('Invalid response')) {
-          shortReason = "Server error: Invalid response received.";
-        }
-
-        showFailureModal(shortReason);
+        const msg = err && err.message ? err.message : "A connection problem occurred. Please check your internet connection.";
+        showFailureModal(msg);
       })
       .finally(() => {
         isSubmitting = false;
@@ -1020,9 +1596,13 @@
       });
   }
 
-  /* ===== SUBMIT FORM HANDLER ===== */
+  /* ==========================================================================
+     FORM SUBMISSION HANDLER
+     ========================================================================== */
   function onSubmit(e) {
-    e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
     if (isSubmitting) return;
     clearAllErrors();
 
@@ -1062,242 +1642,13 @@
       recordError(setFieldError('phone', 'Please enter a valid 10-digit mobile phone number.'), 'Valid 10-digit phone number is required.');
     }
 
-    // 2. Program Blocks
-    const blocks = Array.from(document.querySelectorAll('.item-block'));
-    if (blocks.length === 0) {
-      showContainerError('Please add at least one program to register.');
-      recordError(document.getElementById('addProgramBtn'), 'Please add at least one program.');
+    // 2. Program Selection Verification
+    if (selectedEventsState.size === 0) {
+      showContainerError('Please select and add participants for at least one program (കുറഞ്ഞത് ഒരു മത്സര ഇനമെങ്കിലും തിരഞ്ഞെടുക്കുക).');
+      recordError(document.getElementById('programPickerCard'), 'Please select at least one program.');
     }
 
-    // Maps to track participant limits across the whole form:
-    // Person key -> { name, individualCount: 0, groupCount: 0, individualItems: [], groupItems: [] }
-    const personParticipation = new Map();
-
-    const items = [];
-
-    blocks.forEach((block, bIdx) => {
-      const select = block.querySelector('.program-select');
-      const progIdx = select.value;
-      const blockErr = block.querySelector('.item-error-msg');
-
-      if (!progIdx) {
-        recordError(setCustomError(select, blockErr, 'Please select a program for this item.'), `Item ${bIdx + 1}: Select a program.`);
-        return;
-      }
-
-      const prog = programs[progIdx];
-
-      // Regular participants
-      const regularCards = Array.from(block.querySelectorAll('.participants-container .participant-entry-card'));
-      const participantsDetail = [];
-      const participantNames = [];
-
-      // Track duplicate persons INSIDE this group item
-      const itemPersonSet = new Set();
-
-      // Check required counts
-      if (prog.fixed && regularCards.length !== prog.max) {
-        recordError(setCustomError(select, blockErr, `${prog.name} requires exactly ${prog.max} participants. Currently has ${regularCards.length}.`), `${prog.name}: Must have exactly ${prog.max} participants.`);
-      } else if (!prog.fixed && (regularCards.length < prog.min || regularCards.length > prog.max)) {
-        recordError(setCustomError(select, blockErr, `${prog.name} requires between ${prog.min} and ${prog.max} participants.`), `${prog.name}: Count out of range.`);
-      }
-
-      regularCards.forEach((card, cIdx) => {
-        const nameInput = card.querySelector('.p-name');
-        const dobInput = card.querySelector('.p-dob');
-        const genderSelect = card.querySelector('.p-gender');
-        const cardErr = card.querySelector('.p-card-error');
-
-        const pName = nameInput ? nameInput.value.trim() : '';
-        const pDob = dobInput ? dobInput.value.trim() : '';
-        let pGender = genderSelect ? genderSelect.value : '';
-
-        // For forced gender, enforce value
-        if (prog.gender === 'female_only') pGender = 'Female';
-        if (prog.gender === 'male_only') pGender = 'Male';
-
-        let cardHasError = false;
-
-        if (!pName) {
-          nameInput.classList.add('has-error');
-          cardErr.textContent = 'Participant name is required.';
-          cardErr.classList.add('visible');
-          recordError(nameInput, `${prog.name} - Participant ${cIdx + 1}: Name is required.`);
-          cardHasError = true;
-        }
-
-        if (!pDob) {
-          dobInput.classList.add('has-error');
-          cardErr.textContent = 'Date of birth is required.';
-          cardErr.classList.add('visible');
-          recordError(dobInput, `${prog.name} - Participant ${cIdx + 1}: Date of birth is required.`);
-          cardHasError = true;
-        } else {
-          // Age validation: 15–40 years
-          const age = calculateAgeOnEventDate(pDob);
-          if (age === null || isNaN(age)) {
-            dobInput.classList.add('has-error');
-            cardErr.textContent = 'Invalid date of birth.';
-            cardErr.classList.add('visible');
-            recordError(dobInput, `${prog.name} - Participant ${cIdx + 1}: Invalid date of birth.`);
-            cardHasError = true;
-          } else if (age < MIN_AGE || age > MAX_AGE) {
-            dobInput.classList.add('has-error');
-            cardErr.textContent = `Age must be between ${MIN_AGE} and ${MAX_AGE} years. (Current calculated age: ${age} yrs).`;
-            cardErr.classList.add('visible');
-            recordError(dobInput, `${prog.name} - ${pName || `Participant ${cIdx + 1}`}: Age is ${age} (Must be between ${MIN_AGE} and ${MAX_AGE}).`);
-            cardHasError = true;
-          }
-        }
-
-        if (prog.gender === 'ask' && !pGender) {
-          genderSelect.classList.add('has-error');
-          cardErr.textContent = 'Gender selection is required for this competition.';
-          cardErr.classList.add('visible');
-          recordError(genderSelect, `${prog.name} - Participant ${cIdx + 1}: Gender is required.`);
-          cardHasError = true;
-        }
-
-        if (pName && pDob) {
-          const personKey = normalizeKey(pName, pDob);
-
-          // Check duplicate within the same group item
-          if (prog.type === 'group') {
-            if (itemPersonSet.has(personKey)) {
-              nameInput.classList.add('has-error');
-              cardErr.textContent = `Duplicate entry: "${pName}" is already listed in this group item.`;
-              cardErr.classList.add('visible');
-              recordError(nameInput, `${prog.name}: "${pName}" cannot appear twice in the same group.`);
-              cardHasError = true;
-            } else {
-              itemPersonSet.add(personKey);
-            }
-          }
-
-          // Track form-wide limits: max 2 individual & max 2 group
-          if (!personParticipation.has(personKey)) {
-            personParticipation.set(personKey, {
-              name: pName,
-              dob: pDob,
-              individualCount: 0,
-              groupCount: 0,
-              individualItems: [],
-              groupItems: [],
-              elements: []
-            });
-          }
-
-          const record = personParticipation.get(personKey);
-          record.elements.push(nameInput);
-
-          if (prog.type === 'individual') {
-            record.individualCount++;
-            record.individualItems.push(prog.name);
-            if (record.individualCount > 2) {
-              nameInput.classList.add('has-error');
-              cardErr.textContent = `Rule violation: "${pName}" is registered in more than 2 individual items (${record.individualItems.join(', ')}).`;
-              cardErr.classList.add('visible');
-              recordError(nameInput, `"${pName}" exceeds individual item limit (max 2).`);
-              cardHasError = true;
-            }
-          } else {
-            record.groupCount++;
-            record.groupItems.push(prog.name);
-            if (record.groupCount > 2) {
-              nameInput.classList.add('has-error');
-              cardErr.textContent = `Rule violation: "${pName}" is registered in more than 2 group items (${record.groupItems.join(', ')}).`;
-              cardErr.classList.add('visible');
-              recordError(nameInput, `"${pName}" exceeds group item limit (max 2).`);
-              cardHasError = true;
-            }
-          }
-        }
-
-        if (!cardHasError) {
-          participantNames.push(pName);
-          participantsDetail.push({
-            name: pName,
-            dob: pDob,
-            gender: pGender || 'Not Specified',
-            role: 'Participant'
-          });
-        }
-      });
-
-      // Substitutes (optional)
-      const subCards = Array.from(block.querySelectorAll('.substitutes-container .participant-entry-card'));
-      const substitutesDetail = [];
-
-      subCards.forEach((card, sIdx) => {
-        const nameInput = card.querySelector('.p-name');
-        const dobInput = card.querySelector('.p-dob');
-        const genderSelect = card.querySelector('.p-gender');
-        const cardErr = card.querySelector('.p-card-error');
-
-        const sName = nameInput ? nameInput.value.trim() : '';
-        const sDob = dobInput ? dobInput.value.trim() : '';
-        let sGender = genderSelect ? genderSelect.value : '';
-
-        // If card was touched / partially filled, validate it
-        if (sName || sDob || sGender) {
-          let subHasError = false;
-
-          if (!sName) {
-            nameInput.classList.add('has-error');
-            cardErr.textContent = 'Substitute name is required.';
-            cardErr.classList.add('visible');
-            recordError(nameInput, `${prog.name} - Substitute ${sIdx + 1}: Name is required.`);
-            subHasError = true;
-          }
-
-          if (!sDob) {
-            dobInput.classList.add('has-error');
-            cardErr.textContent = 'Date of birth is required.';
-            cardErr.classList.add('visible');
-            recordError(dobInput, `${prog.name} - Substitute ${sIdx + 1}: Date of birth is required.`);
-            subHasError = true;
-          } else {
-            const age = calculateAgeOnEventDate(sDob);
-            if (age === null || isNaN(age)) {
-              dobInput.classList.add('has-error');
-              cardErr.textContent = 'Invalid date of birth.';
-              cardErr.classList.add('visible');
-              recordError(dobInput, `${prog.name} - Substitute ${sIdx + 1}: Invalid date of birth.`);
-              subHasError = true;
-            } else if (age < MIN_AGE || age > MAX_AGE) {
-              dobInput.classList.add('has-error');
-              cardErr.textContent = `Age must be between ${MIN_AGE} and ${MAX_AGE} years. (Age: ${age} yrs).`;
-              cardErr.classList.add('visible');
-              recordError(dobInput, `${prog.name} - Substitute ${sName || (sIdx + 1)}: Age is ${age} (Must be between ${MIN_AGE} and ${MAX_AGE}).`);
-              subHasError = true;
-            }
-          }
-
-          if (prog.gender === 'female_only') sGender = 'Female';
-          if (prog.gender === 'male_only') sGender = 'Male';
-
-          if (!subHasError) {
-            substitutesDetail.push({
-              name: sName,
-              dob: sDob,
-              gender: sGender || 'Not Specified',
-              role: 'Substitute'
-            });
-          }
-        }
-      });
-
-      items.push({
-        program: prog.name,
-        // Backward-compatible pipe-joined string of participant names
-        participants: participantNames.join(" | "),
-        // Extra rich fields for 2026-27 Jwala Kalamela
-        participantsDetail: participantsDetail,
-        substitutes: substitutesDetail
-      });
-    });
-
-    // 3. Declaration Checkbox (Requirement 4)
+    // 3. Declaration Checkbox
     const declarationCheck = document.getElementById('declarationCheck');
     const declarationError = document.getElementById('declarationCheckError');
     if (declarationCheck && !declarationCheck.checked) {
@@ -1308,7 +1659,7 @@
       recordError(declarationCheck, 'Please accept the mandatory declaration confirming Central Assembly status and ID proof.');
     }
 
-    // If any validation errors exist, display banner, scroll, and abort
+    // If any validation errors exist, display banner and abort
     if (errorsList.length > 0) {
       const banner = document.getElementById('formErrorBanner');
       if (banner) {
@@ -1330,7 +1681,14 @@
       return;
     }
 
-    // 4. Open Compact Submission Preview Modal instead of raw confirm()
+    // 4. Build backend-compatible items payload from selectedEventsState
+    const items = Array.from(selectedEventsState.values()).map(ev => ({
+      program: ev.program,
+      participants: (ev.participantsDetail || []).map(p => p.name).join(" | "),
+      participantsDetail: ev.participantsDetail || [],
+      substitutes: ev.substitutes || []
+    }));
+
     const submissionId = (window.crypto && crypto.randomUUID)
       ? crypto.randomUUID()
       : Date.now() + "-" + Math.random().toString(36).slice(2, 10);
@@ -1344,10 +1702,13 @@
       items
     };
 
+    // Open Compact Submission Preview Modal
     showPreviewModal(payload);
   }
 
-  /* ===== MODAL & OVERLAY EVENT BINDINGS ===== */
+  /* ==========================================================================
+     SUBMISSION MODALS EVENT BINDINGS
+     ========================================================================== */
   function initSubmissionModals() {
     // Preview overlay buttons
     const editFormBtn = document.getElementById('editFormBtn');
@@ -1403,7 +1764,6 @@
         }
 
         if (!copiedSuccessfully) {
-          // Fallback: select text for manual copy
           const range = document.createRange();
           range.selectNodeContents(regIdEl);
           const sel = window.getSelection();
@@ -1460,211 +1820,142 @@
         hideOverlay('failureOverlay');
       });
     }
-
-    // Escape key closes open overlays (except waitOverlay)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        const previewModal = document.getElementById('previewOverlay');
-        const successModal = document.getElementById('successOverlay');
-        const failureModal = document.getElementById('failureOverlay');
-        if (previewModal && previewModal.classList.contains('active')) {
-          hideOverlay('previewOverlay');
-        } else if (successModal && successModal.classList.contains('active')) {
-          hideOverlay('successOverlay');
-        } else if (failureModal && failureModal.classList.contains('active')) {
-          hideOverlay('failureOverlay');
-        }
-      }
-    });
   }
 
-  // Backward compatibility for any remaining inline reference
-  window.closeSuccessModal = function () {
-    hideOverlay('successOverlay');
-  };
-
-  /* ===== SEARCHABLE PARISH DROPDOWN COMPONENT ===== */
+  /* ==========================================================================
+     SEARCHABLE PARISH DROPDOWN COMPONENT
+     ========================================================================== */
   function initParishSelect() {
     const wrapper = document.getElementById('parishSelectWrapper');
     const triggerBtn = document.getElementById('parishTriggerBtn');
     const triggerText = document.getElementById('parishTriggerText');
+    const hiddenInput = document.getElementById('parish');
     const panel = document.getElementById('parishDropdownPanel');
     const searchInput = document.getElementById('parishSearchInput');
     const optionsList = document.getElementById('parishOptionsList');
     const closeBtn = document.getElementById('parishSheetCloseBtn');
-    const parishInput = document.getElementById('parish');
-    const parishError = document.getElementById('parishError');
 
-    if (!wrapper || !triggerBtn || !panel || !optionsList || !parishInput) return;
+    if (!wrapper || !triggerBtn || !hiddenInput || !panel || !searchInput || !optionsList) return;
 
-    const parishes = (window.PARISH_LIST && Array.isArray(window.PARISH_LIST)) ? window.PARISH_LIST : [];
     let isOpen = false;
+    let activeIndex = -1;
+    let filteredParishes = [];
 
-    function renderList(query = '') {
-      const q = query.trim().toLowerCase();
+    const parishData = Array.isArray(window.PARISHES_LIST) ? window.PARISHES_LIST : [];
+
+    function renderList(query) {
       optionsList.innerHTML = '';
+      const cleanQuery = (query || '').trim().toLowerCase();
 
-      const filtered = parishes.filter(p => {
-        if (!q) return true;
-        return p.name.toLowerCase().includes(q);
+      filteredParishes = parishData.filter(p => {
+        return p.name.toLowerCase().includes(cleanQuery) ||
+               (p.malayalam && p.malayalam.includes(cleanQuery));
       });
 
-      if (filtered.length === 0) {
+      if (filteredParishes.length === 0) {
         const noRes = document.createElement('li');
         noRes.className = 'parish-no-results';
-        noRes.textContent = 'No matching parish found (ഇടവക കണ്ടെത്താനായില്ല)';
+        noRes.textContent = 'No matching parishes found';
         optionsList.appendChild(noRes);
         return;
       }
 
-      filtered.forEach(p => {
+      filteredParishes.forEach((item, idx) => {
         const li = document.createElement('li');
         li.className = 'parish-option-item';
         li.setAttribute('role', 'option');
-        li.textContent = p.name;
-        if (parishInput.value === p.name) {
+        li.setAttribute('data-index', String(idx));
+
+        if (hiddenInput.value === item.name) {
           li.classList.add('selected');
           li.setAttribute('aria-selected', 'true');
+        } else {
+          li.setAttribute('aria-selected', 'false');
         }
 
-        li.addEventListener('click', (e) => {
-          e.stopPropagation();
-          selectParish(p.name);
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'parish-opt-name';
+        nameSpan.textContent = item.name;
+
+        const malSpan = document.createElement('span');
+        malSpan.className = 'parish-opt-mal';
+        malSpan.textContent = item.malayalam || '';
+
+        li.appendChild(nameSpan);
+        li.appendChild(malSpan);
+
+        li.addEventListener('click', () => {
+          selectParish(item);
         });
 
         optionsList.appendChild(li);
       });
     }
 
-    function selectParish(name) {
-      parishInput.value = name;
-      triggerText.textContent = name;
-      triggerText.classList.remove('placeholder');
-
-      triggerBtn.classList.remove('has-error');
-      if (parishError) {
-        parishError.classList.remove('visible');
-        parishError.textContent = '';
-      }
-
-      closeDropdown();
-      triggerBtn.focus();
-    }
-
-    function openDropdown() {
-      if (isOpen) return;
+    function openPicker() {
       isOpen = true;
       panel.classList.add('open');
       triggerBtn.classList.add('is-active');
       triggerBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('parish-sheet-open');
 
-      if (searchInput) {
-        searchInput.value = '';
-      }
+      searchInput.value = '';
       renderList('');
+      activeIndex = -1;
 
-      // Lock body scroll on mobile only
-      if (window.innerWidth <= 640) {
-        document.body.style.overflow = 'hidden';
-      }
+      setTimeout(() => {
+        searchInput.focus();
+      }, 100);
     }
 
-    function closeDropdown() {
+    function closePicker() {
       if (!isOpen) return;
       isOpen = false;
       panel.classList.remove('open');
       triggerBtn.classList.remove('is-active');
       triggerBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      document.body.classList.remove('parish-sheet-open');
+      triggerBtn.focus();
     }
 
-    // Toggle on trigger click
+    function selectParish(item) {
+      hiddenInput.value = item.name;
+      triggerText.textContent = item.name;
+      triggerText.classList.remove('placeholder');
+
+      triggerBtn.classList.remove('has-error');
+      const err = document.getElementById('parishError');
+      if (err) {
+        err.classList.remove('visible');
+        err.textContent = '';
+      }
+
+      closePicker();
+    }
+
     triggerBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (isOpen) {
-        closeDropdown();
-      } else {
-        openDropdown();
-      }
+      if (isOpen) closePicker();
+      else openPicker();
     });
 
-    // Close button (Mobile Sheet header)
     if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closeDropdown();
-      });
+      closeBtn.addEventListener('click', closePicker);
     }
 
-    // Backdrop click on mobile
-    panel.addEventListener('click', (e) => {
-      if (e.target === panel) {
-        closeDropdown();
-      }
+    searchInput.addEventListener('input', () => {
+      renderList(searchInput.value);
     });
 
-    // Search filter
-    if (searchInput) {
-      searchInput.addEventListener('input', () => {
-        renderList(searchInput.value);
-      });
-    }
-
-    // Close when clicking outside on desktop
+    // Close on outside click
     document.addEventListener('click', (e) => {
-      if (!isOpen) return;
-      if (!wrapper.contains(e.target)) {
-        closeDropdown();
-      }
-    });
-
-    // Keyboard support: Escape to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        closeDropdown();
-        triggerBtn.focus();
+      if (isOpen && !wrapper.contains(e.target)) {
+        closePicker();
       }
     });
 
     // Initial render
     renderList('');
-  }
-
-  /* ===== STICKY FLOATING "GO TO FORM" BAR ===== */
-  function initStickyFormBar() {
-    const bar = document.getElementById('stickyFormBar');
-    const form = document.getElementById('regForm');
-    const jumpBtn = document.getElementById('stickyFormJumpBtn');
-    if (!bar || !form) return;
-
-    const onScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const formRect = form.getBoundingClientRect();
-      const heroThreshold = 180;
-
-      // Show bar when scrolled past hero, but hide once form top is within upper half of viewport
-      const formReached = formRect.top <= (window.innerHeight * 0.45);
-
-      if (scrollY > heroThreshold && !formReached) {
-        bar.classList.add('visible');
-        document.body.classList.add('sticky-bar-active');
-      } else {
-        bar.classList.remove('visible');
-        document.body.classList.remove('sticky-bar-active');
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    onScroll();
-
-    if (jumpBtn) {
-      jumpBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
   }
 
 })();
