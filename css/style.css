@@ -2365,44 +2365,42 @@ body.sticky-bar-active .back-to-top {
 }
 
 .kalamela-rules-content {
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.5;
 }
 
-.kalamela-rules-content ul {
-  padding-left: 20px;
-  list-style-type: disc;
-  margin: 10px 0;
+.kalamela-rules-card {
+  padding: 18px 24px !important;
+  margin-bottom: 20px !important;
 }
 
-.kalamela-rules-content li {
-  margin-bottom: 8px;
+@media (max-width: 600px) {
+  .kalamela-rules-card {
+    padding: 12px 14px !important;
+    margin-bottom: 16px !important;
+  }
 }
 
 .kalamela-points-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 14px 0;
-  font-size: 0.95rem;
+  margin: 10px 0 12px;
+  font-size: 0.88rem;
   font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
 }
 
 .kalamela-points-table th, .kalamela-points-table td {
   border: 1px solid var(--border-light);
-  padding: 8px 12px;
+  padding: 6px 10px;
   text-align: left;
 }
 
 @media (max-width: 600px) {
-  .registration-form-card {
-    padding: 24px 18px !important;
-  }
-
   .kalamela-points-table th, .kalamela-points-table td {
-    padding: 8px 8px;
-    font-size: 0.88rem;
+    padding: 6px 6px;
+    font-size: 0.82rem;
   }
 }
 
@@ -2410,38 +2408,40 @@ body.sticky-bar-active .back-to-top {
   background: var(--bg-subtle);
   color: var(--primary);
   font-weight: 700;
+  font-size: 0.86rem;
   font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
 }
 
 .kalamela-points-table td {
   font-family: 'Gayathri', 'Manjari', sans-serif;
+  font-size: 0.86rem;
 }
 
-/* Kalamela Fee Card */
+/* Compact Fee Card */
 .kalamela-fee-card {
   background: var(--bg-subtle);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 20px 24px;
-  margin: 12px 0 20px;
+  padding: 12px 16px;
+  margin: 8px 0 12px;
 }
 
 .kalamela-fee-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px dashed var(--border-light);
 }
 
 .kalamela-fee-icon {
-  font-size: 1.8rem;
+  font-size: 1.25rem;
   line-height: 1;
 }
 
 .kalamela-fee-title {
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--primary);
   margin: 0;
@@ -2449,26 +2449,28 @@ body.sticky-bar-active .back-to-top {
 }
 
 .kalamela-fee-desc {
-  font-size: 0.92rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   font-family: 'Gayathri', 'Manjari', sans-serif;
 }
 
 .kalamela-fee-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .kalamela-fee-item {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
-  padding: 12px 16px;
+  padding: 8px 6px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
 }
 
 .kalamela-fee-item-total {
@@ -2477,15 +2479,16 @@ body.sticky-bar-active .back-to-top {
 }
 
 .kalamela-fee-label {
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   font-weight: 700;
+  line-height: 1.25;
   font-family: 'Gayathri', 'Manjari', sans-serif;
 }
 
 .kalamela-fee-amount {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   color: var(--primary);
 }
 
@@ -2494,33 +2497,33 @@ body.sticky-bar-active .back-to-top {
 }
 
 .kalamela-fee-note {
-  margin-top: 14px;
-  font-size: 0.92rem;
+  margin-top: 8px;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  padding-top: 10px;
+  line-height: 1.45;
+  padding-top: 6px;
   border-top: 1px solid rgba(235, 229, 213, 0.6);
   font-family: 'Gayathri', 'Manjari', sans-serif;
 }
 
-/* Kalamela Numbered Rules List */
+/* Compact Numbered Rules List */
 .kalamela-rules-list {
   list-style: none !important;
   padding: 0 !important;
-  margin: 18px 0 10px !important;
+  margin: 10px 0 6px !important;
   font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
 }
 
 .kalamela-rules-list li {
   display: flex !important;
   align-items: flex-start !important;
-  gap: 10px !important;
-  font-size: 0.98rem;
+  gap: 8px !important;
+  font-size: 0.88rem;
   color: var(--text-primary);
-  line-height: 1.75;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(235, 229, 213, 0.65);
+  line-height: 1.5;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(235, 229, 213, 0.5);
   font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
 }
 
@@ -2533,10 +2536,10 @@ body.sticky-bar-active .back-to-top {
 .kalamela-rules-list .rule-num {
   font-weight: 700;
   color: var(--primary);
-  min-width: 28px;
+  min-width: 22px;
   flex-shrink: 0;
-  font-size: 0.95rem;
-  line-height: 1.75;
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .kalamela-rules-list .rule-text {
