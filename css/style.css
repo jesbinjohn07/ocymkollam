@@ -3858,197 +3858,186 @@ body.sticky-bar-active .back-to-top {
   color: #8c6006;
 }
 
-/* Event Tabs Navigation (Individual vs Group) */
-.event-tabs-nav {
+.event-group-section {
+  margin-bottom: 20px;
+}
+
+.event-group-header {
   display: flex;
-  gap: 6px;
-  background: var(--bg-subtle);
-  padding: 4px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-light);
-  margin-bottom: 12px;
-}
-
-.event-tab-btn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 9px 12px;
-  border-radius: var(--radius-full);
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.event-tab-btn.active {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(23, 58, 94, 0.25);
-}
-
-.tab-count-pill {
-  font-size: 0.72rem;
-  padding: 1px 7px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.08);
-  font-weight: 700;
-}
-
-.event-tab-btn.active .tab-count-pill {
-  background: rgba(212, 160, 23, 0.35);
-  color: #ffd700;
-}
-
-/* Event 1-Line Compact Rows List */
-.event-rows-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.event-row-item {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 9px 12px;
-  min-height: 48px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.event-row-item:hover {
-  border-color: rgba(23, 58, 94, 0.4);
-  background: #fafaf9;
-}
-
-.event-row-item:active {
-  transform: scale(0.99);
-}
-
-.event-row-left {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.event-row-title-wrap {
-  display: flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid rgba(235, 229, 213, 0.7);
 }
 
-.event-row-title {
-  font-size: 0.92rem;
+.event-group-title {
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--primary);
   margin: 0;
-  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
-  line-height: 1.3;
-}
-
-.event-row-rule {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  padding: 1px 6px;
-  border-radius: var(--radius-full);
-  white-space: nowrap;
-}
-
-.event-row-note {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-style: italic;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.event-row-right {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  gap: 8px;
+  font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
 }
 
-.event-row-add-btn {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: rgba(23, 58, 94, 0.05);
-  border: 1px solid rgba(23, 58, 94, 0.2);
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  transition: all var(--transition-fast);
-}
-
-.event-row-item:hover .event-row-add-btn {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-}
-
-/* Event Row - Saved State */
-.event-row-item.is-saved {
-  background: linear-gradient(135deg, rgba(23, 58, 94, 0.02), rgba(212, 160, 23, 0.08));
-  border-color: #d4a017;
-  border-left: 3px solid #d4a017;
-}
-
-.event-row-saved-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: #16a34a;
-  color: #fff;
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: var(--radius-full);
-}
-
-.event-row-p-summary {
-  font-size: 0.75rem;
-  color: var(--text-primary);
+.event-group-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 200px;
 }
 
-@media (max-width: 420px) {
-  .event-row-p-summary {
-    max-width: 120px;
+.event-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .event-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
-.event-row-btn {
-  padding: 3px 8px;
-  font-size: 0.74rem;
+/* Event Card Base */
+.event-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 84px;
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.event-card:hover {
+  border-color: rgba(23, 58, 94, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
+}
+
+.event-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.event-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.event-card-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.35;
+  margin: 0;
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
+}
+
+.event-card-rule-pill {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.event-card-note {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.event-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.event-card-action-hint {
+  font-size: 0.82rem;
+  color: var(--secondary-dark);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Event Card - Saved State */
+.event-card.is-saved {
+  background: linear-gradient(135deg, rgba(23, 58, 94, 0.03), rgba(212, 160, 23, 0.09));
+  border-color: #d4a017;
+  box-shadow: 0 2px 8px rgba(212, 160, 23, 0.12);
+}
+
+.event-card.is-saved .event-card-title {
+  color: var(--primary);
+}
+
+.event-card-saved-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+.event-card-participants-preview {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.event-card-p-chip {
+  background: rgba(23, 58, 94, 0.07);
+  border: 1px solid rgba(23, 58, 94, 0.15);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-card-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-card-btn {
+  padding: 4px 10px;
+  font-size: 0.78rem;
   font-weight: 600;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-light);
@@ -4057,25 +4046,25 @@ body.sticky-bar-active .back-to-top {
   transition: all var(--transition-fast);
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
-.event-row-btn.btn-row-edit {
+.event-card-btn.btn-card-edit {
   color: var(--primary);
   border-color: rgba(23, 58, 94, 0.3);
 }
 
-.event-row-btn.btn-row-edit:hover {
+.event-card-btn.btn-card-edit:hover {
   background: var(--primary);
   color: #fff;
 }
 
-.event-row-btn.btn-row-remove {
+.event-card-btn.btn-card-remove {
   color: #dc2626;
   border-color: rgba(220, 38, 38, 0.3);
 }
 
-.event-row-btn.btn-row-remove:hover {
+.event-card-btn.btn-card-remove:hover {
   background: #dc2626;
   color: #fff;
 }
