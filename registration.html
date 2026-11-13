@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ജ്വാല – യുവജന കലാമേള | Kalamela Registration</title>
@@ -12,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_8">
+  <link rel="stylesheet" href="css/style.css?v=20261113_12">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -265,14 +266,25 @@
               <span>📋</span> Parish Official Contact Details
             </h3>
 
+            <!-- 1. Group * (Required dropdown) -->
             <div class="form-group">
-              <label for="fullName" class="form-label">Full Name <span style="color: #dc2626;">*</span></label>
-              <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
-              <div class="form-error-msg" id="fullNameError">Please enter the official's full name.</div>
+              <label for="group" class="form-label">Group <span style="color: #dc2626;">*</span></label>
+              <select id="group" class="form-control" required>
+                <option value="">Select Group</option>
+                <option value="KOLLAM">KOLLAM</option>
+                <option value="NALLILA">NALLILA</option>
+                <option value="THALAVOOR">THALAVOOR</option>
+                <option value="KALLADA">KALLADA</option>
+                <option value="THEVALAKKARA">THEVALAKKARA</option>
+                <option value="PUTHOOR">PUTHOOR</option>
+                <option value="KUNDRA">KUNDRA</option>
+              </select>
+              <div class="form-error-msg" id="groupError">Please select your group.</div>
             </div>
 
+            <!-- 2. Parish * (Existing selector, unchanged) -->
             <div class="form-group">
-              <label id="parishLabel" class="form-label">Parish Name <span style="color: #dc2626;">*</span></label>
+              <label id="parishLabel" class="form-label">Parish <span style="color: #dc2626;">*</span></label>
               <!-- Hidden input keeping id="parish" for seamless submission and backward compatibility -->
               <input type="hidden" id="parish" name="parish" required>
               
@@ -311,25 +323,82 @@
               <div class="form-error-msg" id="parishError">Please select your parish.</div>
             </div>
 
+            <!-- 3. Name of Vicar * (Text, required, min 2 chars) -->
             <div class="form-group">
-              <label for="position" class="form-label">Official Position <span style="color: #dc2626;">*</span></label>
-              <select id="position" class="form-control" required>
-                <option value="">Select Position</option>
-                <option value="Secretary">Secretary</option>
-                <option value="Vice President">Vice President</option>
-                <option value="President">President</option>
-                <option value="Member">Member</option>
-              </select>
-              <div class="form-error-msg" id="positionError">Please select an official position.</div>
+              <label for="vicarName" class="form-label">Name of Vicar <span style="color: #dc2626;">*</span></label>
+              <input type="text" id="vicarName" class="form-control" placeholder="Enter Vicar's full name" required>
+              <div class="form-error-msg" id="vicarNameError">Please enter the Vicar's name (at least 2 characters).</div>
             </div>
 
+            <!-- 4. Vicar's Mobile Number * (Required, 10 digits starting with 6, 7, 8 or 9) -->
+            <div class="form-group">
+              <label for="vicarPhone" class="form-label">Vicar's Mobile Number <span style="color: #dc2626;">*</span></label>
+              <input type="tel" id="vicarPhone" class="form-control" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" required>
+              <div class="form-error-msg" id="vicarPhoneError">Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.</div>
+            </div>
+
+            <!-- 5. Central-Diocese unit registration? * (Required radio buttons: Yes / No) -->
+            <div class="form-group">
+              <label class="form-label">Have you completed the Central-Diocese unit registration? <span style="color: #dc2626;">*</span></label>
+              <div class="radio-options-group" role="radiogroup" aria-label="Central-Diocese unit registration status">
+                <label class="radio-card-option" for="centralRegYes">
+                  <input type="radio" id="centralRegYes" name="centralRegistered" value="Yes" required>
+                  <span class="radio-label-text">Yes</span>
+                </label>
+                <label class="radio-card-option" for="centralRegNo">
+                  <input type="radio" id="centralRegNo" name="centralRegistered" value="No" required>
+                  <span class="radio-label-text">No</span>
+                </label>
+              </div>
+              <div class="central-reg-note" id="centralRegNote" style="display: none;">
+                ℹ️ Registration can also be completed on the competition day.
+              </div>
+              <div class="form-error-msg" id="centralRegisteredError">Please indicate whether Central-Diocese unit registration is completed.</div>
+            </div>
+
+            <!-- 6. Name of official filling the form * (Existing fullName field) -->
+            <div class="form-group">
+              <label for="fullName" class="form-label">Name of official filling the form <span style="color: #dc2626;">*</span></label>
+              <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+              <div class="form-error-msg" id="fullNameError">Please enter the official's full name.</div>
+            </div>
+
+            <!-- 7. Designation * (Required radio buttons with 'Others' custom text) -->
+            <div class="form-group">
+              <label class="form-label">Designation <span style="color: #dc2626;">*</span></label>
+              <div class="radio-options-group" role="radiogroup" aria-label="Official Designation">
+                <label class="radio-card-option" for="desigVP">
+                  <input type="radio" id="desigVP" name="designationRadio" value="Vice President" required>
+                  <span class="radio-label-text">Vice President</span>
+                </label>
+                <label class="radio-card-option" for="desigSec">
+                  <input type="radio" id="desigSec" name="designationRadio" value="Secretary" required>
+                  <span class="radio-label-text">Secretary</span>
+                </label>
+                <label class="radio-card-option" for="desigJointSec">
+                  <input type="radio" id="desigJointSec" name="designationRadio" value="Joint Secretary" required>
+                  <span class="radio-label-text">Joint Secretary</span>
+                </label>
+                <label class="radio-card-option" for="desigOthers">
+                  <input type="radio" id="desigOthers" name="designationRadio" value="Others" required>
+                  <span class="radio-label-text">Others</span>
+                </label>
+              </div>
+              <div class="other-designation-wrap" id="otherDesignationWrap" style="display: none; margin-top: 10px;">
+                <label for="otherDesignation" class="form-label" style="font-size: 0.85rem;">Please specify <span style="color: #dc2626;">*</span></label>
+                <input type="text" id="otherDesignation" class="form-control" placeholder="Specify your designation">
+                <div class="form-error-msg" id="otherDesignationError">Please specify your designation (at least 2 characters).</div>
+              </div>
+              <div class="form-error-msg" id="designationError">Please select your designation.</div>
+            </div>
+
+            <!-- 8. Contact Number * (Existing phone field) -->
             <div class="form-group" style="margin-bottom: 0;">
-              <label for="phone" class="form-label">Mobile Phone Number <span style="color: #dc2626;">*</span></label>
-              <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
-              <div class="form-error-msg" id="phoneError">Please enter a valid 10-digit mobile number.</div>
+              <label for="phone" class="form-label">Contact Number <span style="color: #dc2626;">*</span></label>
+              <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" required>
+              <div class="form-error-msg" id="phoneError">Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.</div>
             </div>
           </div>
-
           <!-- Program Selection Card -->
           <!-- Program & Participant Selection (Card Grid Event Picker) -->
             <div class="registration-form-card program-picker-card" id="programPickerCard">
@@ -350,8 +419,22 @@
               <!-- Top Validation Error Message for Program Selection -->
               <div class="form-error-msg" id="itemsContainerError" style="margin-bottom: 10px;"></div>
 
+              <!-- Category Segmented Switcher Toggle (Individual vs Group) -->
+              <div class="event-toggle-nav" role="tablist" aria-label="Event Categories">
+                <button type="button" class="event-toggle-btn active" id="btnToggleIndiv" role="tab" aria-selected="true" aria-controls="sectionIndivEvents">
+                  <span class="event-toggle-icon">👤</span>
+                  <span class="event-toggle-label">വ്യക്തിഗതം (Individual)</span>
+                  <span class="event-toggle-badge" id="badgeIndivCount">0/12</span>
+                </button>
+                <button type="button" class="event-toggle-btn" id="btnToggleGroup" role="tab" aria-selected="false" aria-controls="sectionGroupEvents">
+                  <span class="event-toggle-icon">👥</span>
+                  <span class="event-toggle-label">ഗ്രൂപ്പ് (Group)</span>
+                  <span class="event-toggle-badge" id="badgeGroupCount">0/7</span>
+                </button>
+              </div>
+
               <!-- Group 1: Individual Items (12) -->
-              <div class="event-group-section">
+              <div class="event-group-section" id="sectionIndivEvents" role="tabpanel" aria-labelledby="btnToggleIndiv">
                 <div class="event-group-header">
                   <h4 class="event-group-title"><span>👤</span> വ്യക്തിഗത ഇനങ്ങൾ (Individual)</h4>
                   <span class="event-group-count">12 ഇനങ്ങൾ</span>
@@ -362,7 +445,7 @@
               </div>
 
               <!-- Group 2: Group Items (7) -->
-              <div class="event-group-section" style="margin-top: 24px;">
+              <div class="event-group-section" id="sectionGroupEvents" role="tabpanel" aria-labelledby="btnToggleGroup" style="display: none;">
                 <div class="event-group-header">
                   <h4 class="event-group-title"><span>👥</span> ഗ്രൂപ്പ് ഇനങ്ങൾ (Group)</h4>
                   <span class="event-group-count">7 ഇനങ്ങൾ</span>
@@ -673,9 +756,9 @@
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="js/config.js"></script>
-  <script src="js/parishes.js"></script>
-  <script src="js/kalamela-data.js?v=20261113_8"></script>
+  <script src="js/parishes.js?v=20261113_12"></script>
+  <script src="js/kalamela-data.js?v=20261113_12"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_8"></script>
+  <script src="js/registration.js?v=20261113_12"></script>
 </body>
 </html>

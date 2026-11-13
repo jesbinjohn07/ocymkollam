@@ -1,10 +1,20 @@
 ﻿/* ==========================================================================
-   OCYM Kollam Diocese - Parish Directory
+   OCYM Kollam Diocese - Parish Directory & Group List
    Parish list for searchable dropdown on registration.html
    Structure: { name: string, group: string }
    Uses atomic Unicode Chillu characters (ൺ, ർ, ൻ, ൽ, ൾ) for clean rendering
    across all browsers and mobile operating systems.
    ========================================================================== */
+
+window.GROUP_LIST = [
+  "KOLLAM",
+  "NALLILA",
+  "THALAVOOR",
+  "KALLADA",
+  "THEVALAKKARA",
+  "PUTHOOR",
+  "KUNDRA"
+];
 
 window.PARISH_LIST = [
   { name: "അന്തമൺ സെഹിയോൻ", group: "" },
@@ -72,3 +82,5 @@ window.PARISH_LIST = [
   { name: "ശൂരനാട് ശാലേം സെൻ്റ് മേരീസ്", group: "" },
   { name: "പെരുങ്ങാലം സെൻ്റ് .ജോർജ്ജ് ചാപ്പൽ", group: "" }
 ];
+
+window.PARISHES_LIST = window.PARISH_LIST;

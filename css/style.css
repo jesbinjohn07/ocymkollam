@@ -3891,6 +3891,116 @@ body.sticky-bar-active .back-to-top {
   color: #8c6006;
 }
 
+/* ==========================================================================
+   Category Segmented Toggle Switcher (Individual vs Group)
+   ========================================================================== */
+.event-toggle-nav {
+  display: flex;
+  background: var(--bg-subtle, #f4f0e6);
+  border: 1.5px solid var(--border-light, #e2dac7);
+  border-radius: var(--radius-full, 9999px);
+  padding: 4px;
+  gap: 6px;
+  margin-bottom: 18px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.event-toggle-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-full, 9999px);
+  font-family: 'Gayathri', 'Manjari', 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary, #4b5563);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.event-toggle-btn:hover:not(.active) {
+  color: var(--primary, #173a5e);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.event-toggle-btn.active {
+  background: var(--primary, #173a5e);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(23, 58, 94, 0.25);
+}
+
+.event-toggle-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.event-toggle-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.event-toggle-btn.active .event-toggle-badge {
+  background: rgba(212, 160, 23, 0.28);
+  color: #fde047;
+  border: 1px solid rgba(253, 224, 71, 0.4);
+}
+
+.event-toggle-badge.has-saved {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  font-weight: 800;
+  box-shadow: 0 1px 4px rgba(22, 163, 74, 0.3);
+}
+
+@media (max-width: 440px) {
+  .event-toggle-nav {
+    padding: 3px;
+    margin-bottom: 14px;
+    gap: 4px;
+  }
+  .event-toggle-btn {
+    padding: 8px 6px;
+    font-size: 0.88rem;
+    gap: 5px;
+    min-height: 42px;
+  }
+  .event-toggle-icon {
+    font-size: 0.98rem;
+  }
+  .event-toggle-badge {
+    font-size: 0.72rem;
+    padding: 1px 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .event-toggle-btn {
+    font-size: 0.8rem;
+    padding: 6px 4px;
+    gap: 3px;
+  }
+  .event-toggle-icon {
+    font-size: 0.88rem;
+  }
+  .event-toggle-badge {
+    font-size: 0.68rem;
+    padding: 1px 5px;
+  }
+}
+
 .event-group-section {
   margin-bottom: 20px;
 }
@@ -3992,11 +4102,11 @@ body.sticky-bar-active .back-to-top {
 }
 
 .event-card-note {
-  font-size: 0.76rem;
-  color: var(--text-muted);
+  font-size: 0.78rem;
+  color: #475569;
   line-height: 1.35;
-  margin-bottom: 8px;
-  font-style: italic;
+  margin-bottom: 6px;
+  font-style: normal;
 }
 
 .event-card-bottom {
@@ -4625,5 +4735,100 @@ body.sticky-bar-active .back-to-top {
 
   .points-col-item .place-points {
     font-size: 0.8rem;
+  }
+}
+
+/* ==========================================================================
+   Parish Official Extended Fields (Group, Vicar, Central Reg, Designation)
+   ========================================================================== */
+.radio-options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.radio-card-option {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-light, #e2dac7);
+  border-radius: var(--radius-md, 8px);
+  background: #ffffff;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.radio-card-option:hover {
+  border-color: var(--secondary, #d4a017);
+  background: rgba(212, 160, 23, 0.04);
+}
+
+.radio-card-option input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary, #173a5e);
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.radio-card-option .radio-label-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dark, #202124);
+  line-height: 1.3;
+}
+
+.radio-card-option:has(input[type="radio"]:checked),
+.radio-card-option.is-checked {
+  border-color: var(--primary, #173a5e);
+  background: rgba(23, 58, 94, 0.05);
+  box-shadow: 0 0 0 1px var(--primary, #173a5e);
+}
+
+.central-reg-note {
+  background: rgba(212, 160, 23, 0.12);
+  border: 1px solid rgba(212, 160, 23, 0.45);
+  color: #8c6006;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 8px;
+  line-height: 1.4;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.other-designation-wrap {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@media (max-width: 440px) {
+  .radio-card-option {
+    padding: 9px 12px;
+    gap: 10px;
+    min-height: 44px;
+  }
+  .radio-card-option .radio-label-text {
+    font-size: 0.9rem;
+  }
+  .central-reg-note {
+    font-size: 0.82rem;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .radio-card-option {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .radio-card-option .radio-label-text {
+    font-size: 0.86rem;
   }
 }

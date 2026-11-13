@@ -331,6 +331,8 @@
     initSubmissionModals();
     initEditSheetHandlers();
     initStickySummaryBar();
+    initCategoryToggle();
+    initContactFields();
 
     // 5. Unsaved changes beforeunload protection
     window.addEventListener('beforeunload', (e) => {
@@ -379,14 +381,14 @@
       card.setAttribute('data-prog-idx', String(idx));
       card.setAttribute('aria-label', `${prog.name} (${isSaved ? 'Saved' : 'Not configured'})`);
 
-      // Rule badge label
+      // Rule badge label (compact for mobile readability)
       let ruleLabel = '';
       if (isIndiv) {
-        ruleLabel = '1 മത്സരാർത്ഥി (1 Person)';
+        ruleLabel = '1 പേർ (Single)';
       } else if (prog.fixed) {
-        ruleLabel = `കൃത്യം ${prog.max} അംഗങ്ങൾ (Exact ${prog.max})`;
+        ruleLabel = `കൃത്യം ${prog.max} അംഗങ്ങൾ`;
       } else {
-        ruleLabel = `പരമാവധി ${prog.max} അംഗങ്ങൾ (Max ${prog.max})`;
+        ruleLabel = `പരമാവധി ${prog.max} അംഗങ്ങൾ`;
       }
 
       // Card Top
@@ -462,6 +464,135 @@
     updateSummaryBar();
   }
 
+  /* ==========================================================================
+     PARISH OFFICIAL EXTENDED FIELDS (GROUP, VICAR, CENTRAL REG, DESIGNATION)
+     ========================================================================== */
+  function initContactFields() {
+    // 1. Populate window.GROUP_LIST into #group dropdown if options not yet populated
+    const groupSelect = document.getElementById('group');
+    if (groupSelect && Array.isArray(window.GROUP_LIST) && window.GROUP_LIST.length > 0) {
+      if (groupSelect.options.length <= 1) {
+        window.GROUP_LIST.forEach(grp => {
+          const opt = document.createElement('option');
+          opt.value = grp;
+          opt.textContent = grp;
+          groupSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // 2. Central-Diocese Unit Registration Radio Listeners
+    const centralRegRadios = document.querySelectorAll('input[name="centralRegistered"]');
+    const centralRegNote = document.getElementById('centralRegNote');
+    const centralRegErr = document.getElementById('centralRegisteredError');
+
+    centralRegRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (centralRegErr) {
+          centralRegErr.classList.remove('visible');
+          centralRegErr.textContent = '';
+        }
+        document.querySelectorAll('input[name="centralRegistered"]').forEach(r => {
+          const parent = r.closest('.radio-card-option');
+          if (parent) parent.classList.toggle('is-checked', r.checked);
+        });
+        if (centralRegNote) {
+          centralRegNote.style.display = (radio.value === 'No' && radio.checked) ? 'block' : 'none';
+        }
+      });
+    });
+
+    // 3. Designation Radio Listeners
+    const desigRadios = document.querySelectorAll('input[name="designationRadio"]');
+    const otherWrap = document.getElementById('otherDesignationWrap');
+    const otherInput = document.getElementById('otherDesignation');
+    const desigErr = document.getElementById('designationError');
+    const otherErr = document.getElementById('otherDesignationError');
+
+    desigRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (desigErr) {
+          desigErr.classList.remove('visible');
+          desigErr.textContent = '';
+        }
+        document.querySelectorAll('input[name="designationRadio"]').forEach(r => {
+          const parent = r.closest('.radio-card-option');
+          if (parent) parent.classList.toggle('is-checked', r.checked);
+        });
+        if (radio.value === 'Others' && radio.checked) {
+          if (otherWrap) otherWrap.style.display = 'block';
+          if (otherInput) otherInput.focus();
+        } else if (radio.checked) {
+          if (otherWrap) otherWrap.style.display = 'none';
+          if (otherInput) {
+            otherInput.value = '';
+            otherInput.classList.remove('has-error');
+          }
+          if (otherErr) {
+            otherErr.classList.remove('visible');
+            otherErr.textContent = '';
+          }
+        }
+      });
+    });
+
+    // 4. Live error clearing on text and select inputs
+    ['group', 'vicarName', 'vicarPhone', 'fullName', 'phone', 'otherDesignation'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          el.classList.remove('has-error');
+          const err = document.getElementById(id + 'Error');
+          if (err) {
+            err.classList.remove('visible');
+            err.textContent = '';
+          }
+        });
+        el.addEventListener('change', () => {
+          el.classList.remove('has-error');
+          const err = document.getElementById(id + 'Error');
+          if (err) {
+            err.classList.remove('visible');
+            err.textContent = '';
+          }
+        });
+      }
+    });
+  }
+
+  /* ===== CATEGORY SEGMENTED TOGGLE (INDIVIDUAL / GROUP) ===== */
+  function initCategoryToggle() {
+    const btnIndiv = document.getElementById('btnToggleIndiv');
+    const btnGroup = document.getElementById('btnToggleGroup');
+    const sectionIndiv = document.getElementById('sectionIndivEvents');
+    const sectionGroup = document.getElementById('sectionGroupEvents');
+
+    if (!btnIndiv || !btnGroup || !sectionIndiv || !sectionGroup) return;
+
+    function switchCategory(type) {
+      if (type === 'individual') {
+        btnIndiv.classList.add('active');
+        btnIndiv.setAttribute('aria-selected', 'true');
+        btnGroup.classList.remove('active');
+        btnGroup.setAttribute('aria-selected', 'false');
+
+        sectionIndiv.style.display = 'block';
+        sectionGroup.style.display = 'none';
+      } else {
+        btnGroup.classList.add('active');
+        btnGroup.setAttribute('aria-selected', 'true');
+        btnIndiv.classList.remove('active');
+        btnIndiv.setAttribute('aria-selected', 'false');
+
+        sectionGroup.style.display = 'block';
+        sectionIndiv.style.display = 'none';
+      }
+    }
+
+    btnIndiv.addEventListener('click', () => switchCategory('individual'));
+    btnGroup.addEventListener('click', () => switchCategory('group'));
+  }
+
   function updateSummaryBar() {
     if (window.SHOW_REGISTRATION === false) {
       const stickyBar = document.getElementById('stickySummaryBar');
@@ -471,6 +602,30 @@
     }
 
     const count = selectedEventsState.size;
+
+    // Update live counts on category toggle buttons
+    let indivSelected = 0;
+    let groupSelected = 0;
+    selectedEventsState.forEach((val, idx) => {
+      const p = programs[idx];
+      if (p) {
+        if (p.type === 'individual') indivSelected++;
+        else groupSelected++;
+      }
+    });
+
+    const badgeIndiv = document.getElementById('badgeIndivCount');
+    if (badgeIndiv) {
+      badgeIndiv.textContent = indivSelected + '/12';
+      badgeIndiv.classList.toggle('has-saved', indivSelected > 0);
+    }
+
+    const badgeGroup = document.getElementById('badgeGroupCount');
+    if (badgeGroup) {
+      badgeGroup.textContent = groupSelected + '/7';
+      badgeGroup.classList.toggle('has-saved', groupSelected > 0);
+    }
+
     const stickyBar = document.getElementById('stickySummaryBar');
     if (stickyBar) {
       stickyBar.style.display = 'block';
@@ -1403,6 +1558,14 @@
       const trigger = document.getElementById('parishTriggerBtn');
       if (trigger) trigger.classList.add('has-error');
     }
+    if (fieldId === 'centralRegistered') {
+      const firstRadio = document.getElementById('centralRegYes');
+      if (firstRadio) firstRadio.classList.add('has-error');
+    }
+    if (fieldId === 'designation') {
+      const firstRadio = document.getElementById('desigVP');
+      if (firstRadio) firstRadio.classList.add('has-error');
+    }
     if (errDiv) {
       errDiv.textContent = errorMsg;
       errDiv.classList.add('visible');
@@ -1495,20 +1658,36 @@
       <div class="preview-section-card">
         <div class="preview-official-grid">
           <div class="preview-field-item">
-            <span class="preview-field-label">ഇടവക (Parish)</span>
+            <span class="preview-field-label">Group</span>
+            <span class="preview-field-val">🚩 ${escapeHTML(payload.group)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">Parish</span>
             <span class="preview-field-val">⛪ ${escapeHTML(payload.parish)}</span>
           </div>
           <div class="preview-field-item">
-            <span class="preview-field-label">ഫോൺ (Phone)</span>
-            <span class="preview-field-val">📞 ${escapeHTML(payload.phone)}</span>
+            <span class="preview-field-label">Name of Vicar</span>
+            <span class="preview-field-val">✝️ ${escapeHTML(payload.vicarName)}</span>
           </div>
           <div class="preview-field-item">
-            <span class="preview-field-label">ഭാരവാഹി (Official)</span>
+            <span class="preview-field-label">Vicar's Mobile</span>
+            <span class="preview-field-val">📞 ${escapeHTML(payload.vicarPhone)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">Central-Diocese Reg.</span>
+            <span class="preview-field-val">${payload.centralRegistered === 'Yes' ? '✅ Yes' : '⏳ No (Will complete on competition day)'}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">Official Name</span>
             <span class="preview-field-val">👤 ${escapeHTML(payload.fullName)}</span>
           </div>
           <div class="preview-field-item">
-            <span class="preview-field-label">സ്ഥാനം (Position)</span>
+            <span class="preview-field-label">Designation</span>
             <span class="preview-field-val">📋 ${escapeHTML(payload.position)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">Contact Number</span>
+            <span class="preview-field-val">📱 ${escapeHTML(payload.phone)}</span>
           </div>
         </div>
       </div>
@@ -1526,13 +1705,13 @@
     showOverlay('previewOverlay');
   }
 
-  function showSuccessModal(regId, parishName, programCount) {
+  function showSuccessModal(regId, parishName, programCount, groupName) {
     const idEl = document.getElementById('successRegId');
     if (idEl) idEl.textContent = regId;
 
     const summaryEl = document.getElementById('successSummaryPill');
     if (summaryEl) {
-      summaryEl.innerHTML = `<strong>Parish:</strong> ${escapeHTML(parishName)} &bull; <strong>Programs:</strong> ${programCount}`;
+      summaryEl.innerHTML = `<strong>Group:</strong> ${escapeHTML(groupName || '')} &bull; <strong>Parish:</strong> ${escapeHTML(parishName)} &bull; <strong>Programs:</strong> ${programCount}`;
     }
 
     showOverlay('successOverlay');
@@ -1615,7 +1794,7 @@
       .then((parsed) => {
         submissionSucceeded = true;
         hideOverlay('waitOverlay');
-        showSuccessModal(parsed.regId.trim(), payload.parish, payload.items.length);
+        showSuccessModal(parsed.regId.trim(), payload.parish, payload.items.length, payload.group);
 
         // Reset form ONLY on confirmed success
         const form = document.getElementById('regForm');
@@ -1628,6 +1807,21 @@
           parishTriggerText.textContent = 'Select Parish Name';
           parishTriggerText.classList.add('placeholder');
         }
+
+        // Reset new fields
+        const groupSelect = document.getElementById('group');
+        if (groupSelect) groupSelect.value = '';
+        const vicarNameInput = document.getElementById('vicarName');
+        if (vicarNameInput) vicarNameInput.value = '';
+        const vicarPhoneInput = document.getElementById('vicarPhone');
+        if (vicarPhoneInput) vicarPhoneInput.value = '';
+        const centralNote = document.getElementById('centralRegNote');
+        if (centralNote) centralNote.style.display = 'none';
+        const otherWrap = document.getElementById('otherDesignationWrap');
+        if (otherWrap) otherWrap.style.display = 'none';
+        const otherInput = document.getElementById('otherDesignation');
+        if (otherInput) otherInput.value = '';
+        document.querySelectorAll('.radio-card-option').forEach(el => el.classList.remove('is-checked'));
 
         selectedEventsState.clear();
         renderEventCards();
@@ -1670,30 +1864,74 @@
       }
     }
 
-    // 1. Official Contact Details
-    const fullNameInput = document.getElementById('fullName');
-    const parishInput = document.getElementById('parish');
-    const positionSelect = document.getElementById('position');
-    const phoneInput = document.getElementById('phone');
-
-    const fullName = fullNameInput ? fullNameInput.value.trim() : '';
-    const parish = parishInput ? parishInput.value.trim() : '';
-    const position = positionSelect ? positionSelect.value : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-
-    if (!fullName) {
-      recordError(setFieldError('fullName', 'Please enter your full name.'), 'Full Name is required.');
+    // 1. Group * (required dropdown)
+    const groupSelect = document.getElementById('group');
+    const group = groupSelect ? groupSelect.value.trim() : '';
+    if (!group) {
+      recordError(setFieldError('group', 'Please select your group.'), 'Group is required.');
     }
+
+    // 2. Parish * (existing selector, unchanged)
+    const parishInput = document.getElementById('parish');
+    const parish = parishInput ? parishInput.value.trim() : '';
     if (!parish) {
       recordError(setFieldError('parish', 'Please select your parish.'), 'Parish Name is required.');
     }
-    if (!position) {
-      recordError(setFieldError('position', 'Please select official position.'), 'Official Position is required.');
+
+    // 3. Name of Vicar * (text, required, min 2 chars)
+    const vicarNameInput = document.getElementById('vicarName');
+    const vicarName = vicarNameInput ? vicarNameInput.value.trim() : '';
+    if (!vicarName || vicarName.length < 2) {
+      recordError(setFieldError('vicarName', "Please enter the Vicar's name (at least 2 characters)."), "Vicar's Name is required.");
     }
 
-    const phonePattern = /^[0-9]{10}$/;
-    if (!phonePattern.test(phone)) {
-      recordError(setFieldError('phone', 'Please enter a valid 10-digit mobile phone number.'), 'Valid 10-digit phone number is required.');
+    // 4. Vicar's Mobile Number * (required, exactly 10 digits starting with 6, 7, 8 or 9; spaces stripped)
+    const vicarPhoneInput = document.getElementById('vicarPhone');
+    const rawVicarPhone = vicarPhoneInput ? vicarPhoneInput.value.trim() : '';
+    const cleanVicarPhone = rawVicarPhone.replace(/\s+/g, '');
+    const phonePattern = /^[6-9][0-9]{9}$/;
+    if (!phonePattern.test(cleanVicarPhone)) {
+      recordError(setFieldError('vicarPhone', "Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9."), "Valid Vicar's Mobile Number is required.");
+    }
+
+    // 5. Central-Diocese unit registration? * (required radio buttons: Yes / No)
+    const centralRegRadio = document.querySelector('input[name="centralRegistered"]:checked');
+    const centralRegistered = centralRegRadio ? centralRegRadio.value : '';
+    if (!centralRegistered) {
+      recordError(setFieldError('centralRegistered', 'Please indicate whether Central-Diocese unit registration is completed.'), 'Central-Diocese registration status is required.');
+    }
+
+    // 6. Name of official filling the form * (existing fullName field, at least 2 chars)
+    const fullNameInput = document.getElementById('fullName');
+    const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+    if (!fullName || fullName.length < 2) {
+      recordError(setFieldError('fullName', 'Please enter your full name (at least 2 characters).'), 'Official Full Name is required.');
+    }
+
+    // 7. Designation * (required radio buttons: Vice President, Secretary, Joint Secretary, Others)
+    const desigRadio = document.querySelector('input[name="designationRadio"]:checked');
+    const desigChoice = desigRadio ? desigRadio.value : '';
+    let position = '';
+    if (!desigChoice) {
+      recordError(setFieldError('designation', 'Please select your designation.'), 'Designation is required.');
+    } else if (desigChoice === 'Others') {
+      const otherInput = document.getElementById('otherDesignation');
+      const otherText = otherInput ? otherInput.value.trim() : '';
+      if (!otherText || otherText.length < 2) {
+        recordError(setFieldError('otherDesignation', 'Please specify your designation (at least 2 characters).'), 'Designation details are required.');
+      } else {
+        position = 'Others: ' + otherText;
+      }
+    } else {
+      position = desigChoice;
+    }
+
+    // 8. Contact Number * (existing phone field, exactly 10 digits starting with 6, 7, 8 or 9; spaces stripped)
+    const phoneInput = document.getElementById('phone');
+    const rawPhone = phoneInput ? phoneInput.value.trim() : '';
+    const cleanPhone = rawPhone.replace(/\s+/g, '');
+    if (!phonePattern.test(cleanPhone)) {
+      recordError(setFieldError('phone', 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.'), 'Valid Contact Number is required.');
     }
 
     // 2. Program Selection Verification
@@ -1749,10 +1987,14 @@
 
     const payload = {
       submissionId,
-      fullName,
+      group,
       parish,
+      vicarName,
+      vicarPhone: cleanVicarPhone,
+      centralRegistered,
+      fullName,
       position,
-      phone,
+      phone: cleanPhone,
       items
     };
 
