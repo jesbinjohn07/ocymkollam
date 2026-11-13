@@ -3963,19 +3963,31 @@ select.p-gender {
 }
 
 .event-toggle-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 0.78rem;
   font-weight: 700;
-  padding: 2px 8px;
+  line-height: 1;
+  min-height: 22px;
+  min-width: 40px;
+  padding: 0 8px;
   border-radius: var(--radius-full, 9999px);
   background: rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
   color: inherit;
+  box-sizing: border-box;
+  flex-shrink: 0;
   transition: all var(--transition-fast, 0.2s ease);
 }
 
 .event-toggle-btn.active .event-toggle-badge {
   background: rgba(212, 160, 23, 0.28);
   color: #fde047;
-  border: 1px solid rgba(253, 224, 71, 0.4);
+  border-color: rgba(253, 224, 71, 0.4);
 }
 
 .event-toggle-badge.has-saved {
@@ -4001,8 +4013,10 @@ select.p-gender {
     font-size: 0.98rem;
   }
   .event-toggle-badge {
-    font-size: 0.72rem;
-    padding: 1px 6px;
+    font-size: 0.74rem;
+    min-height: 20px;
+    min-width: 36px;
+    padding: 0 6px;
   }
 }
 
@@ -4017,7 +4031,9 @@ select.p-gender {
   }
   .event-toggle-badge {
     font-size: 0.68rem;
-    padding: 1px 5px;
+    min-height: 19px;
+    min-width: 32px;
+    padding: 0 5px;
   }
 }
 
