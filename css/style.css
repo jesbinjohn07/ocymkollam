@@ -1974,6 +1974,79 @@ footer {
   animation: arrowBounce 1.6s infinite ease-in-out;
 }
 
+/* Sticky Floating "Go to Form" Bar */
+.sticky-form-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-light);
+  box-shadow: 0 -4px 24px rgba(23, 58, 94, 0.12);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(115%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.sticky-form-bar.visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.sticky-form-bar-inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: center;
+}
+
+.sticky-form-btn {
+  width: 100%;
+  padding: 13px 24px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.35);
+  text-decoration: none;
+  font-family: 'Gayathri', 'Poppins', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.sticky-form-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 160, 23, 0.45);
+}
+
+.sticky-btn-arrow {
+  display: inline-block;
+  font-size: 1.15rem;
+  font-weight: 900;
+  animation: stickyArrowBounce 1.4s infinite ease-in-out;
+}
+
+@keyframes stickyArrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* Move back-to-top button up when sticky bar is active */
+body.sticky-bar-active .back-to-top {
+  bottom: 78px !important;
+}
+
 @keyframes arrowBounce {
   0%, 100% {
     transform: translateY(0);

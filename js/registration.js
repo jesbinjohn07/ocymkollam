@@ -279,6 +279,7 @@
 
     initParishSelect();
     initSubmissionModals();
+    initStickyFormBar();
   });
 
   /* ===== ADD PROGRAM BLOCK ===== */
@@ -1514,6 +1515,42 @@
 
     // Initial render
     renderList('');
+  }
+
+  /* ===== STICKY FLOATING "GO TO FORM" BAR ===== */
+  function initStickyFormBar() {
+    const bar = document.getElementById('stickyFormBar');
+    const form = document.getElementById('regForm');
+    const jumpBtn = document.getElementById('stickyFormJumpBtn');
+    if (!bar || !form) return;
+
+    const onScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const formRect = form.getBoundingClientRect();
+      const heroThreshold = 180;
+
+      // Show bar when scrolled past hero, but hide once form top is within upper half of viewport
+      const formReached = formRect.top <= (window.innerHeight * 0.45);
+
+      if (scrollY > heroThreshold && !formReached) {
+        bar.classList.add('visible');
+        document.body.classList.add('sticky-bar-active');
+      } else {
+        bar.classList.remove('visible');
+        document.body.classList.remove('sticky-bar-active');
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+
+    if (jumpBtn) {
+      jumpBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
   }
 
 })();
