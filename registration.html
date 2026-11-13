@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,10 +7,10 @@
   
   <meta name="description" content="Register parish participants for ജ്വാല – യുവജന കലാമേള (Jwala – Yuvajana Kalamela 2026–27) under OCYM Kollam Diocese.">
   
-  <!-- Google Fonts: Poppins, Inter & Noto Sans Malayalam -->
+  <!-- Google Fonts: Poppins, Inter, Noto Sans Malayalam, Anek Malayalam, Gayathri, Manjari & Noto Serif Malayalam -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="images/logo.png">
@@ -61,20 +61,64 @@
   <main style="padding-top: 130px; min-height: 80vh;">
     <section class="section section-light">
       <div class="container" style="max-width: 840px;">
-        <div class="section-header reveal reveal-slide-up">
-          <span class="section-subtitle">യുവജന പ്രസ്ഥാനം കൊല്ലം ഭദ്രാസനം</span>
-          <h2 class="section-title">ജ്വാല – യുവജന കലാമേള</h2>
-          <p class="section-desc" style="font-size: 1.05rem; font-weight: 500; color: var(--primary); letter-spacing: 0.05em; text-transform: uppercase;">Registration</p>
+        <div class="section-header reveal reveal-slide-up" style="text-align: center; margin-bottom: 34px;">
+          <div class="kalamela-hero-badge">
+            <span class="badge-dot"></span>
+            <span>യുവജന പ്രസ്ഥാനം കൊല്ലം ഭദ്രാസനം</span>
+          </div>
+          <h2 class="section-title kalamela-main-title">
+            <span class="kalamela-title-accent">ജ്വാല</span>
+            <span class="kalamela-sub-title">യുവജന കലാമേള</span>
+          </h2>
+          <div class="kalamela-reg-pill">
+            <span class="reg-pill-line"></span>
+            <span class="reg-pill-text">REGISTRATION 2026–27</span>
+            <span class="reg-pill-line"></span>
+          </div>
         </div>
 
         <!-- Collapsible Rules & Points Card -->
         <div class="registration-form-card reveal reveal-slide-up" style="padding: 24px 32px; margin-bottom: 28px;">
-          <details class="kalamela-rules-details" id="kalamelaRulesDetails" style="margin-top: 0; padding-top: 0; border-top: none;">
-            <summary class="kalamela-rules-summary">
-              <span>📜 മത്സര നിബന്ധനകളും വിവരങ്ങളും</span>
+          <details class="kalamela-rules-details" id="kalamelaRulesDetails" open style="margin-top: 0; padding-top: 0; border-top: none;">
+            <summary class="kalamela-rules-summary" aria-label="Toggle competition rules">
+              <span class="rules-summary-title">📜 മത്സര നിബന്ധനകളും വിവരങ്ങളും</span>
+              <span class="rules-toggle-pill">
+                <span class="toggle-text">വിവരങ്ങൾ</span>
+                <span class="rules-chevron" aria-hidden="true">▼</span>
+              </span>
             </summary>
             <div class="kalamela-rules-content">
-              <div class="kalamela-table-wrapper" style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 14px 0;">
+
+              <!-- (1) Registration Fee Card -->
+              <div class="kalamela-fee-card" id="kalamela-fee-card">
+                <div class="kalamela-fee-header">
+                  <span class="kalamela-fee-icon">💳</span>
+                  <div>
+                    <h4 class="kalamela-fee-title">രജിസ്ട്രേഷൻ ഫീസ് (Registration Fees)</h4>
+                    <p class="kalamela-fee-desc">യൂണിറ്റ് തല രജിസ്ട്രേഷൻ ഫീസ് വിവരങ്ങൾ</p>
+                  </div>
+                </div>
+                <div class="kalamela-fee-grid">
+                  <div class="kalamela-fee-item">
+                    <span class="kalamela-fee-label">മെത്രാസന രജിസ്ട്രേഷൻ</span>
+                    <span class="kalamela-fee-amount fee-diocese-val" id="feeDiocese">₹250</span>
+                  </div>
+                  <div class="kalamela-fee-item">
+                    <span class="kalamela-fee-label">കേന്ദ്ര രജിസ്ട്രേഷൻ</span>
+                    <span class="kalamela-fee-amount fee-central-val" id="feeCentral">₹350</span>
+                  </div>
+                  <div class="kalamela-fee-item kalamela-fee-item-total">
+                    <span class="kalamela-fee-label">ആകെ ഫീസ് (Total)</span>
+                    <span class="kalamela-fee-amount fee-total-val" id="feeTotal">₹600</span>
+                  </div>
+                </div>
+                <div class="kalamela-fee-note">
+                  ℹ️ പ്രവർത്തന വർഷത്തിൽ (2026-27) കേന്ദ്ര-മെത്രാസന രജിസ്ട്രേഷനുകൾ (₹600) പൂർത്തിയാക്കിയ യൂണിറ്റുകൾക്ക് മാത്രമേ മത്സരത്തിൽ പങ്കെടുക്കുവാൻ അർഹതയുള്ളൂ.
+                </div>
+              </div>
+
+              <!-- (2) Points Table -->
+              <div class="kalamela-table-wrapper" style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 18px 0 14px;">
                 <table class="kalamela-points-table" style="min-width: 320px; margin: 0;">
                   <thead>
                     <tr>
@@ -87,29 +131,43 @@
                   <tbody>
                     <tr>
                       <td>വ്യക്തിഗത ഇനങ്ങൾ</td>
-                      <td>10 പോയിൻ്റ്</td>
-                      <td>5 പോയിൻ്റ്</td>
-                      <td>3 പോയിൻ്റ്</td>
+                      <td>10 പോയിന്റ്</td>
+                      <td>5 പോയിന്റ്</td>
+                      <td>3 പോയിന്റ്</td>
                     </tr>
                     <tr>
                       <td>ഗ്രൂപ്പ് ഇനങ്ങൾ</td>
-                      <td>15 പോയിൻ്റ്</td>
-                      <td>10 പോയിൻ്റ്</td>
-                      <td>5 പോയിൻ്റ്</td>
+                      <td>15 പോയിന്റ്</td>
+                      <td>10 പോയിന്റ്</td>
+                      <td>5 പോയിന്റ്</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <ul>
-                <li><strong>പ്രായപരിധി:</strong> മത്സര തീയതിയായ 2027 ജനുവരി 9-ൽ 15 വയസ്സ് പൂർത്തിയായവരും 40 വയസ്സ് കഴിയാത്തവരുമായിരിക്കണം.</li>
-                <li><strong>പങ്കാളിത്ത പരിധി:</strong> ഒരാൾക്ക് പരമാവധി 2 വ്യക്തിഗത ഇനങ്ങളിലും 2 ഗ്രൂപ്പ് ഇനങ്ങളിലും മാത്രമേ പങ്കെടുക്കുവാൻ സാധിക്കൂ.</li>
-                <li><strong>കേന്ദ്ര കലാമേള യോഗ്യത:</strong> ഭദ്രാസനതലത്തിൽ ഒന്നും രണ്ടും സ്ഥാനങ്ങൾ ലഭിക്കുന്നവർക്ക് മാത്രമേ കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കുവാൻ അർഹതയുണ്ടായിരിക്കുകയുള്ളൂ. പങ്കെടുക്കുന്ന ടീമുകൾ അതത് യൂണിറ്റിലെ അംഗങ്ങൾ മാത്രമായിരിക്കണം.</li>
-                <li><strong>ഭാഷയും ശൈലിയും:</strong> എല്ലാ മത്സരങ്ങളും മലയാളത്തിലായിരിക്കും. മതപരവും ഭക്തിസാന്ദ്രവുമായ പരാമർശങ്ങൾ അനുവദനീയമാണ്. വിധികർത്താക്കളുടെയും സംഘാടകരുടെയും തീരുമാനം അന്തിമമായിരിക്കും.</li>
-                <li><strong>ബാഹ്യസഹായം:</strong> മത്സര സമയത്ത് മത്സരാർത്ഥികൾക്ക് ബാഹ്യസഹായങ്ങൾ ഒന്നും നൽകാൻ പാടുള്ളതല്ല.</li>
-                <li><strong>സംയോജിത ടീം:</strong> പരിചമുട്ട് കളി, മൈം, മാർഗംകളി, തെരുവ് നാടകം തുടങ്ങിയ ഇനങ്ങളിൽ ഭദ്രാസനതലത്തിൽ യൂണിറ്റുകൾ പങ്കെടുക്കാതിരുന്നാൽ ഭദ്രാസനാടിസ്ഥാനത്തിൽ ഒരു ടീമിനെ രൂപീകരിക്കാവുന്നതാണ്.</li>
-                <li><strong>പകരക്കാർ:</strong> മാർഗംകളി, പരിചമുട്ട് കളി, മൈം, തെരുവ് നാടകം, സമൂഹഗാനം, സോപോകരണ സമൂഹഗാനം എന്നീ ഇനങ്ങൾക്ക് പരമാവധി 2 പകരക്കാരെ ഉൾപ്പെടുത്താവുന്നതാണ്.</li>
-              </ul>
+              <!-- (3) 19 Numbered Rules -->
+              <ol class="kalamela-rules-list" id="kalamelaRulesList">
+                <li><span class="rule-num">1.</span><span class="rule-text">പ്രവർത്തന വർഷത്തിൽ(2026-27) കേന്ദ്ര-മെത്രാസന രജിസ്ട്രേഷനുകൾ പൂർത്തിയാക്കിയ യൂണിറ്റുകൾക്ക് മാത്രമേ മത്സരത്തിൽ പങ്കെടുക്കുവാൻ അർഹതയുള്ളൂ.</span></li>
+                <li><span class="rule-num">2.</span><span class="rule-text">ഒരു മത്സരത്തിലേക്ക് യൂണിറ്റ് തലത്തിൽ നിന്ന് ഒരു ടീമിന് മാത്രം പങ്കെടുക്കാവുന്നതാണ്.ഒന്നിലധികം ടീമുകൾ ഒരു മത്സരത്തിലേക്ക് വരുന്ന പക്ഷം യൂണിറ്റ് തലത്തിൽ മത്സരം നടത്തി ഒരു ടീമിനെ അയക്കേണ്ടതാണ്.</span></li>
+                <li><span class="rule-num">3.</span><span class="rule-text">മത്സരത്തിൽ പങ്കെടുക്കുന്നവരുടെ രജിസ്ട്രേഷൻ വെബ്സൈറ്റ് വഴി ആയിരിക്കും.</span></li>
+                <li><span class="rule-num">4.</span><span class="rule-text">15 നും 40 നും ഇടയിൽ പ്രായമുള്ള യുവതി- യുവാക്കൾക്ക് മത്സരത്തിൽ പങ്കെടുക്കാവുന്നതാണ്.</span></li>
+                <li><span class="rule-num">5.</span><span class="rule-text">മത്സരത്തിൽ പങ്കെടുക്കുന്നവർ സർക്കാർ അംഗീകൃത തിരിച്ചറിയൽ രേഖ കൈവശം കരുതേണ്ടതാണ്.</span></li>
+                <li><span class="rule-num">6.</span><span class="rule-text">എല്ലാ മത്സരങ്ങളും മലയാള ഭാഷയിൽ ആയിരിക്കും. എന്നാൽ മത്സരങ്ങളിൽ സഭാപരമായോ/ ആരാധന പരമായോ/ വേദപുസ്തകപരമായോ/ വിശ്വാസപരമായി പൊതുവായതോ പദങ്ങൾ ഉപയോഗിക്കുന്നതിൽ തെറ്റില്ല.</span></li>
+                <li><span class="rule-num">7.</span><span class="rule-text">ഗ്രൂപ്പ് മത്സരയിനങ്ങൾക്ക് ആവശ്യമെങ്കിൽ മാത്രം യൂണിറ്റുകൾക്ക് രണ്ട് പകരക്കാരെ കൂടി നിശ്ചയിച്ച് ടീമിൽ ഉൾപ്പെടുത്താവുന്നതാണ്.</span></li>
+                <li><span class="rule-num">8.</span><span class="rule-text">സംഗീതത്തിന് മാത്രമേ യുവതികൾക്ക് പ്രത്യേക മത്സരം ഉണ്ടായിരിക്കുകയുള്ളൂ. മറ്റ് മത്സരങ്ങൾക്ക് യുവാക്കളോടൊപ്പം പങ്കെടുക്കാവുന്നതാണ്.</span></li>
+                <li><span class="rule-num">9.</span><span class="rule-text">ഒരു മത്സരാർത്ഥിക്ക് രണ്ട് വ്യക്തിഗത ഇനങ്ങളിലും രണ്ട് ഗ്രൂപ്പിനങ്ങളിലും മാത്രമായിരിക്കും പരമാവധി പങ്കെടുക്കാനാവുക.</span></li>
+                <li><span class="rule-num">10.</span><span class="rule-text">മെത്രാസന തലത്തിൽ ഒന്നും രണ്ടും സ്ഥാനം നേടുന്ന ടീമിന് മാത്രമേ മെത്രാസനത്തെ പ്രതിനിധീകരിച്ച് കേന്ദ്രതല കലാ മത്സരത്തിൽ പങ്കെടുക്കുവാൻ കഴിയുകയുള്ളൂ. കേന്ദ്രതല മത്സരങ്ങളിലുള്ള പങ്കാളിത്തം ബെസ്റ്റ് യൂണിറ്റ് മാനദണ്ഡമായി പരിഗണിക്കുന്നതാണ്.</span></li>
+                <li><span class="rule-num">11.</span><span class="rule-text">ഒന്നും രണ്ടും സ്ഥാനം നേടുന്ന ടീമുകൾക്ക് കേന്ദ്രമത്സരത്തിൽ പങ്കെടുക്കാൻ കഴിയുന്നില്ല എങ്കിൽ തൊട്ടു താഴെ സ്ഥാനത്തുള്ളവർക്ക് ഭദ്രാസനത്തെ പ്രതിനിധീകരിച്ച് കേന്ദ്ര മത്സരത്തിൽ പങ്കെടുക്കാൻ അവസരം നൽകുന്നതാണ്.</span></li>
+                <li><span class="rule-num">12.</span><span class="rule-text">വ്യക്തിഗത ഇനങ്ങളിൽ 1,2,3 സ്ഥാനങ്ങൾ നേടുന്നവർക്ക് യഥാക്രമം 10,5,3 പോയിന്റുകളും, ഗ്രൂപ്പിനങ്ങളിൽ 1,2,3 സ്ഥാനങ്ങൾക്ക് 15,10,5 പോയിന്റുകളും ലഭിക്കുന്നതാണ്.</span></li>
+                <li><span class="rule-num">13.</span><span class="rule-text">യുവജനപ്രസ്ഥാനം മെത്രാസന കമ്മിറ്റി അംഗങ്ങൾക്കും, കേന്ദ്ര അസംബ്ലി അംഗങ്ങൾക്കും മത്സരത്തിൽ പങ്കെടുക്കാൻ കഴിയുന്നതല്ല.</span></li>
+                <li><span class="rule-num">14.</span><span class="rule-text">ഓരോ മത്സരത്തെ സംബന്ധിച്ച വിശദാംശങ്ങളും, സമയനിബന്ധനകളും സംബന്ധിച്ച കേന്ദ്ര യുവജന പ്രസ്ഥാനത്തിന്റെ സർക്കുലർ ഇതിൽ ഉള്ളടക്കം ചെയ്യുന്നു. മത്സരങ്ങളും നിയമാവലികളും സംബന്ധിച്ച വിവരങ്ങൾ സോഷ്യൽ മീഡിയ പ്ലാറ്റ്ഫോം വഴിയും ലഭ്യമാക്കിയിട്ടുണ്ട്.</span></li>
+                <li><span class="rule-num">15.</span><span class="rule-text">കേന്ദ്ര യുവജനപ്രസ്ഥാനം യുവജന കലാമേളയിലേക്ക് നിശ്ചയിച്ചിട്ടുള്ള നിയമാവലി അനുസരിച്ചായിരിക്കും മത്സരങ്ങൾ ക്രമീകരിക്കുക.</span></li>
+                <li><span class="rule-num">16.</span><span class="rule-text">മാർഗംകളിയിൽ നിലവിളക്ക് ഉൾപ്പെടെ ഗ്രൂപ്പ് മത്സരഇനങ്ങളിൽ ആവശ്യമായ എല്ലാ കാര്യങ്ങളും അതാത് ടീം തന്നെ നിർവഹിക്കേണ്ടതാണ്.ആയതിന് ഭദ്രാസനത്തിന് ഉത്തരവാദിത്വം ഉണ്ടായിരിക്കുന്നതല്ല.</span></li>
+                <li><span class="rule-num">17.</span><span class="rule-text">കൃത്യമായി പരിശീലനം നടത്താതെയും,കലാമത്സര നിബന്ധനകൾ പാലിക്കാതെയും മത്സരത്തിൽ പങ്കെടുക്കുന്ന ടീമുകളെ അയോഗ്യരാക്കുന്നതാണ്.</span></li>
+                <li><span class="rule-num">18.</span><span class="rule-text">മത്സര ദിവസവും കേന്ദ്ര-മെത്രാസന രജിസ്ട്രേഷൻ(600 രൂപ) നടത്താനുള്ള സൗകര്യം ഒരുക്കിയിട്ടുണ്ട്. അപ്രകാരം രജിസ്ട്രേഷൻ നടത്തിയ ശേഷം മത്സരത്തിൽ പങ്കെടുക്കാം.</span></li>
+                <li><span class="rule-num">19.</span><span class="rule-text">മെത്രാസന കലാ മത്സരം സംബന്ധിച്ച് വിധികർത്താക്കളും, മെത്രാസന യുവജനപ്രസ്ഥാനം കമ്മിറ്റിയും എടുക്കുന്ന തീരുമാനം അന്തിമമായിരിക്കും.</span></li>
+              </ol>
+
             </div>
           </details>
         </div>
@@ -401,6 +459,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/parishes.js"></script>
+  <script src="js/kalamela-data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/registration.js"></script>
 </body>

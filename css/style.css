@@ -33,8 +33,9 @@
   --border-light: #EBE5D5;
   --border-focus: #173A5E;
 
-  /* Typography - Poppins with Noto Sans Malayalam fallback */
-  --font-family: 'Poppins', 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Typography - Poppins with Gayathri & Anek Malayalam for Malayalam text */
+  --font-family-malayalam: 'Gayathri', 'Anek Malayalam', 'Manjari', 'Noto Sans Malayalam', sans-serif;
+  --font-family: 'Poppins', 'Gayathri', 'Anek Malayalam', 'Manjari', 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Spacing & Layout */
   --radius-sm: 8px;
@@ -1955,6 +1956,89 @@ footer {
   margin-bottom: 20px;
 }
 
+/* Kalamela Header & Titles Enhancements */
+.kalamela-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.12), rgba(23, 58, 94, 0.06));
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #8c6006;
+  font-family: 'Gayathri', 'Manjari', 'Noto Sans Malayalam', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  margin-bottom: 14px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 8px rgba(212, 160, 23, 0.08);
+}
+
+.kalamela-hero-badge .badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 6px rgba(212, 160, 23, 0.8);
+}
+
+.kalamela-main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 14px;
+  line-height: 1.18;
+  font-family: 'Anek Malayalam', 'Noto Serif Malayalam', 'Noto Sans Malayalam', sans-serif;
+}
+
+.kalamela-title-accent {
+  font-family: 'Anek Malayalam', 'Noto Serif Malayalam', sans-serif;
+  font-size: clamp(2.8rem, 7.5vw, 4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #b8860b 0%, #d4a017 38%, #eab308 70%, #d4a017 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  letter-spacing: 0.04em;
+  filter: drop-shadow(0 3px 12px rgba(212, 160, 23, 0.28));
+}
+
+.kalamela-sub-title {
+  font-family: 'Anek Malayalam', 'Noto Serif Malayalam', 'Noto Sans Malayalam', sans-serif;
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+}
+
+.kalamela-reg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.kalamela-reg-pill .reg-pill-line {
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--secondary));
+  border-radius: 2px;
+}
+
+.kalamela-reg-pill .reg-pill-line:last-child {
+  background: linear-gradient(90deg, var(--secondary), transparent);
+}
+
+.kalamela-reg-pill .reg-pill-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
 /* Kalamela Collapsible Rules */
 .kalamela-rules-details {
   margin-top: 0;
@@ -1963,14 +2047,34 @@ footer {
 
 .kalamela-rules-summary {
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary);
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 1.12rem;
   user-select: none;
   list-style: none;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  padding: 12px 18px;
+  margin: -6px -8px 0;
+  background: linear-gradient(135deg, rgba(23, 58, 94, 0.04), rgba(212, 160, 23, 0.08));
+  border: 1px solid rgba(212, 160, 23, 0.28);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.kalamela-rules-summary:hover {
+  background: linear-gradient(135deg, rgba(23, 58, 94, 0.08), rgba(212, 160, 23, 0.14));
+  border-color: rgba(212, 160, 23, 0.45);
+  box-shadow: 0 4px 14px rgba(212, 160, 23, 0.1);
+}
+
+.kalamela-rules-summary:focus-visible {
+  outline: 2px solid var(--secondary) !important;
+  outline-offset: 2px;
 }
 
 .kalamela-rules-summary::-webkit-details-marker {
@@ -1978,14 +2082,48 @@ footer {
 }
 
 .kalamela-rules-summary::before {
-  content: '▶';
-  font-size: 0.75rem;
-  color: var(--accent);
+  display: none !important;
+}
+
+.rules-summary-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.rules-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Gayathri', 'Manjari', 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #8c6304;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+  transition: all var(--transition-fast);
+}
+
+.rules-chevron {
+  font-size: 0.72rem;
+  display: inline-block;
   transition: transform var(--transition-fast);
 }
 
-.kalamela-rules-details[open] .kalamela-rules-summary::before {
-  transform: rotate(90deg);
+.kalamela-rules-details[open] .rules-chevron {
+  transform: rotate(180deg);
+}
+
+.kalamela-rules-details[open] .rules-toggle-pill {
+  background: rgba(23, 58, 94, 0.1);
+  color: var(--primary);
+  border-color: rgba(23, 58, 94, 0.25);
 }
 
 .kalamela-rules-content {
@@ -2009,7 +2147,8 @@ footer {
   width: 100%;
   border-collapse: collapse;
   margin: 14px 0;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
 }
 
 .kalamela-points-table th, .kalamela-points-table td {
@@ -2025,14 +2164,145 @@ footer {
 
   .kalamela-points-table th, .kalamela-points-table td {
     padding: 8px 8px;
-    font-size: 0.8rem;
+    font-size: 0.88rem;
   }
 }
 
 .kalamela-points-table th {
   background: var(--bg-subtle);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
+}
+
+.kalamela-points-table td {
+  font-family: 'Gayathri', 'Manjari', sans-serif;
+}
+
+/* Kalamela Fee Card */
+.kalamela-fee-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin: 12px 0 20px;
+}
+
+.kalamela-fee-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.kalamela-fee-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.kalamela-fee-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+  font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
+}
+
+.kalamela-fee-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+  font-family: 'Gayathri', 'Manjari', sans-serif;
+}
+
+.kalamela-fee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.kalamela-fee-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kalamela-fee-item-total {
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.12), rgba(23, 58, 94, 0.05));
+  border-color: var(--secondary);
+}
+
+.kalamela-fee-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-family: 'Gayathri', 'Manjari', sans-serif;
+}
+
+.kalamela-fee-amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.kalamela-fee-item-total .kalamela-fee-amount {
+  color: #b8860b;
+}
+
+.kalamela-fee-note {
+  margin-top: 14px;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-top: 10px;
+  border-top: 1px solid rgba(235, 229, 213, 0.6);
+  font-family: 'Gayathri', 'Manjari', sans-serif;
+}
+
+/* Kalamela Numbered Rules List */
+.kalamela-rules-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 18px 0 10px !important;
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
+}
+
+.kalamela-rules-list li {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  line-height: 1.75;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(235, 229, 213, 0.65);
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
+}
+
+.kalamela-rules-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.kalamela-rules-list .rule-num {
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 28px;
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.kalamela-rules-list .rule-text {
+  flex: 1;
 }
 
 /* Participant Card inside Program Item */

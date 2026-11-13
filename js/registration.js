@@ -264,6 +264,19 @@
       regForm.addEventListener("submit", onSubmit);
     }
 
+    const declarationCheck = document.getElementById("declarationCheck");
+    if (declarationCheck) {
+      declarationCheck.addEventListener("change", () => {
+        if (declarationCheck.checked) {
+          const err = document.getElementById("declarationCheckError");
+          if (err) {
+            err.classList.remove("visible");
+            err.textContent = "";
+          }
+        }
+      });
+    }
+
     initParishSelect();
     initSubmissionModals();
   });
@@ -1208,7 +1221,10 @@
     const declarationCheck = document.getElementById('declarationCheck');
     const declarationError = document.getElementById('declarationCheckError');
     if (declarationCheck && !declarationCheck.checked) {
-      if (declarationError) declarationError.classList.add('visible');
+      if (declarationError) {
+        declarationError.textContent = 'You must confirm this declaration to proceed with registration.';
+        declarationError.classList.add('visible');
+      }
       recordError(declarationCheck, 'Please accept the mandatory declaration confirming Central Assembly status and ID proof.');
     }
 
