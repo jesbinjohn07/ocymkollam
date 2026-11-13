@@ -57,7 +57,7 @@
       note: "ഒരു മത്സരാർത്ഥി മാത്രം, വാദ്യോപകരണങ്ങൾ ഉപയോഗിക്കാൻ പാടില്ല"
     },
     {
-      name: "സ്ട്രിംഗ് ഇൻസ്ട്രുമെൻ്റ് (വയലിൻ – ഈസ്റ്റേൺ)",
+      name: "സ്ട്രിംഗ് ഇൻസ്ട്രുമെന്റ് (വയലിൻ – ഈസ്റ്റേൺ)",
       type: "individual",
       min: 1,
       max: 1,
@@ -66,7 +66,7 @@
       note: "വയലിൻ – ഈസ്റ്റേൺ ശൈലി"
     },
     {
-      name: "സ്ട്രിംഗ് ഇൻസ്ട്രുമെൻ്റ് (ഗിറ്റാർ – വെസ്റ്റേൺ)",
+      name: "സ്ട്രിംഗ് ഇൻസ്ട്രുമെന്റ് (ഗിറ്റാർ – വെസ്റ്റേൺ)",
       type: "individual",
       min: 1,
       max: 1,
@@ -483,8 +483,8 @@
   function initContactFields() {
     // 1. Populate window.GROUP_LIST into #group dropdown if options not yet populated
     const groupSelect = document.getElementById('group');
-    if (groupSelect && Array.isArray(window.GROUP_LIST) && window.GROUP_LIST.length > 0) {
-      if (groupSelect.options.length <= 1) {
+    if (groupSelect) {
+      if (Array.isArray(window.GROUP_LIST) && window.GROUP_LIST.length > 0 && groupSelect.options.length <= 1) {
         window.GROUP_LIST.forEach(grp => {
           const opt = document.createElement('option');
           opt.value = grp;
@@ -492,6 +492,17 @@
           groupSelect.appendChild(opt);
         });
       }
+
+      // Keep placeholder color in sync with selection
+      const syncGroupColor = () => {
+        if (!groupSelect.value) {
+          groupSelect.classList.add('is-placeholder');
+        } else {
+          groupSelect.classList.remove('is-placeholder');
+        }
+      };
+      groupSelect.addEventListener('change', syncGroupColor);
+      syncGroupColor();
     }
 
     // 2. Central-Diocese Unit Registration Radio Listeners
@@ -1823,7 +1834,10 @@
 
         // Reset new fields
         const groupSelect = document.getElementById('group');
-        if (groupSelect) groupSelect.value = '';
+        if (groupSelect) {
+          groupSelect.value = '';
+          groupSelect.classList.add('is-placeholder');
+        }
         const vicarNameInput = document.getElementById('vicarName');
         if (vicarNameInput) vicarNameInput.value = '';
         const vicarPhoneInput = document.getElementById('vicarPhone');

@@ -11,9 +11,9 @@
   <!-- Google Fonts: Poppins, Inter, Noto Sans Malayalam, Anek Malayalam, Gayathri, Manjari & Noto Serif Malayalam -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_18">
+  <link rel="stylesheet" href="css/style.css?v=20261113_23">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -166,7 +166,7 @@
                 <div class="kalamela-points-section" style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(212, 160, 23, 0.35);">
                   <div class="kalamela-points-header" style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 1.15rem;">🏆</span>
-                    <h4 style="margin: 0; font-size: 0.98rem; font-weight: 700; color: var(--primary); font-family: 'Gayathri', 'Anek Malayalam', sans-serif;">പോയിന്റ് വിവരങ്ങൾ (Points Breakdown)</h4>
+                    <h4 style="margin: 0; font-size: 0.98rem; font-weight: 700; color: var(--primary); font-family: 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;">പോയിന്റ് വിവരങ്ങൾ (Points Breakdown)</h4>
                   </div>
 
                   <!-- Desktop Points Table -->
@@ -277,7 +277,7 @@
             <!-- 1. Group * (Required dropdown) -->
             <div class="form-group">
               <label for="group" class="form-label">Group <span style="color: #dc2626;">*</span></label>
-              <select id="group" class="form-control" required>
+              <select id="group" class="form-control is-placeholder" required>
                 <option value="">Select Group</option>
                 <option value="KOLLAM">KOLLAM</option>
                 <option value="NALLILA">NALLILA</option>
@@ -304,7 +304,7 @@
                         aria-expanded="false" 
                         aria-labelledby="parishLabel parishTriggerText">
                   <span class="parish-trigger-text placeholder" id="parishTriggerText">Select Parish Name</span>
-                  <span class="parish-trigger-arrow" aria-hidden="true">▼</span>
+                  <span class="parish-trigger-arrow" aria-hidden="true"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0h10z"/></svg></span>
                 </button>
 
                 <div class="parish-dropdown-panel" id="parishDropdownPanel" role="dialog" aria-modal="true" aria-label="Select Parish">
@@ -469,7 +469,7 @@
             <!-- 1. Mandatory Central Kalamela Participation Assurance Checkbox -->
             <div class="declaration-wrapper" style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-light);">
               <input type="checkbox" id="centralKalamelaCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;" required>
-              <label for="centralKalamelaCheck" class="declaration-label" style="font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif; font-size: 0.92rem; line-height: 1.5;">
+              <label for="centralKalamelaCheck" class="declaration-label">
                 മെത്രാസന തലത്തിൽ വിജയികളായാൽ, കേന്ദ്രതലത്തിൽ 2027 ജനുവരി 9 ന് തുമ്പമണ്ണിൽ വച്ച്  നടക്കുന്ന കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കാമെന്ന് ഉറപ്പു നൽകുന്നു. <span style="color: #dc2626;">*</span>
               </label>
             </div>
@@ -774,9 +774,9 @@
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="js/config.js"></script>
-  <script src="js/parishes.js?v=20261113_18"></script>
-  <script src="js/kalamela-data.js?v=20261113_18"></script>
+  <script src="js/parishes.js?v=20261113_23"></script>
+  <script src="js/kalamela-data.js?v=20261113_23"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_18"></script>
+  <script src="js/registration.js?v=20261113_23"></script>
 </body>
 </html>
