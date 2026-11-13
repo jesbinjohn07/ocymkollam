@@ -3032,7 +3032,7 @@ select.p-gender {
   border: 1px solid var(--border-light);
   background-color: var(--bg-subtle);
   color: var(--text-primary);
-  font-family: 'Noto Sans Malayalam', 'Manjari', system-ui, sans-serif;
+  font-family: 'Anek Malayalam', 'Poppins', sans-serif;
   font-size: 0.95rem;
   line-height: 1.4;
   cursor: pointer;
@@ -3064,7 +3064,7 @@ select.p-gender {
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-right: 12px;
-  font-family: 'Noto Sans Malayalam', 'Manjari', system-ui, sans-serif;
+  font-family: 'Noto Sans Malayalam', 'Anek Malayalam', 'Poppins', sans-serif;
   font-size: 0.95rem;
 }
 
@@ -3073,7 +3073,7 @@ select.p-gender {
 }
 
 .parish-trigger-arrow {
-  color: var(--text-muted);
+  color: #64748b;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3133,8 +3133,8 @@ select.p-gender {
   border: 1px solid var(--border-light);
   background: var(--bg-card);
   color: var(--text-primary);
-  font-family: 'Noto Sans Malayalam', 'Manjari', system-ui, sans-serif;
-  font-size: 0.92rem;
+  font-family: 'Anek Malayalam', 'Poppins', sans-serif;
+  font-size: 0.95rem;
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -3175,8 +3175,6 @@ select.p-gender {
 
 .parish-option-item.selected {
   background-color: rgba(212, 160, 23, 0.12);
-  color: var(--primary);
-  font-weight: 600;
 }
 
 .parish-no-results {

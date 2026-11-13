@@ -1783,7 +1783,7 @@
     let lastErr;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        const res = await fetchWithTimeout(postUrl, { method: "POST", body: JSON.stringify(payload) }, 30000);
+        const res = await fetchWithTimeout(postUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) }, 30000);
         const text = await res.text();
         if (!res.ok) throw new Error("HTTP " + res.status + ": " + (text.slice(0, 100) || "Server returned an error"));
         return parseReply(text);
