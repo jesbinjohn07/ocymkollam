@@ -784,6 +784,7 @@
   /* ===== SUBMISSION STATE & MODAL MANAGEMENT ===== */
   let isSubmitting = false;
   let lastSubmissionPayload = null;
+  let pendingSubmissionPayload = null;
 
   function showOverlay(overlayId) {
     const el = document.getElementById(overlayId);
@@ -803,6 +804,84 @@
         document.body.style.overflow = '';
       }
     }
+  }
+
+  function showPreviewModal(payload) {
+    pendingSubmissionPayload = payload;
+    const bodyEl = document.getElementById('previewModalBody');
+    if (!bodyEl) return;
+
+    const totalParticipants = payload.items.reduce((acc, item) => {
+      return acc + (item.participantsDetail ? item.participantsDetail.length : 0);
+    }, 0);
+
+    const programsHtml = payload.items.map((item, idx) => {
+      const isGroup = (item.substitutes && item.substitutes.length > 0) || (item.participantsDetail && item.participantsDetail.length > 1);
+      const progTypeBadge = isGroup ? 'ഗ്രൂപ്പ് (Group)' : 'വ്യക്തിഗതം (Single)';
+
+      const participantChips = (item.participantsDetail || []).map(p => {
+        const gLabel = p.gender && p.gender !== 'Not Specified' ? ` (${escapeHTML(p.gender)})` : '';
+        return `<span class="preview-participant-chip">👤 ${escapeHTML(p.name)}${gLabel}</span>`;
+      }).join('');
+
+      let subHtml = '';
+      if (item.substitutes && item.substitutes.length > 0) {
+        const subChips = item.substitutes.map(s => {
+          return `<span class="preview-participant-chip" style="border-style: dashed; background: rgba(212, 160, 23, 0.08);">🔄 ${escapeHTML(s.name)} (Sub)</span>`;
+        }).join('');
+        subHtml = `<div class="preview-substitutes-wrap"><strong>പകരക്കാർ:</strong> ${subChips}</div>`;
+      }
+
+      return `
+        <div class="preview-program-row">
+          <div class="preview-prog-header">
+            <span class="preview-prog-name">#${idx + 1}. ${escapeHTML(item.program)}</span>
+            <span class="preview-prog-type">${progTypeBadge}</span>
+          </div>
+          <div class="preview-participants-list">
+            ${participantChips}
+          </div>
+          ${subHtml}
+        </div>
+      `;
+    }).join('');
+
+    bodyEl.innerHTML = `
+      <!-- Official Parish Details Card -->
+      <div class="preview-section-card">
+        <div class="preview-official-grid">
+          <div class="preview-field-item">
+            <span class="preview-field-label">ഇടവക (Parish)</span>
+            <span class="preview-field-val">⛪ ${escapeHTML(payload.parish)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">ഫോൺ (Phone)</span>
+            <span class="preview-field-val">📞 ${escapeHTML(payload.phone)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">ഭാരവാഹി (Official)</span>
+            <span class="preview-field-val">👤 ${escapeHTML(payload.fullName)}</span>
+          </div>
+          <div class="preview-field-item">
+            <span class="preview-field-label">സ്ഥാനം (Position)</span>
+            <span class="preview-field-val">📋 ${escapeHTML(payload.position)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Counts Pill -->
+      <div class="preview-programs-summary-pill">
+        <span>🎯 ഇനങ്ങൾ: <strong>${payload.items.length}</strong></span>
+        <span>👥 മത്സരാർത്ഥികൾ: <strong>${totalParticipants}</strong></span>
+      </div>
+
+      <!-- Programs List -->
+      <div class="preview-programs-container">
+        ${programsHtml}
+      </div>
+    `;
+
+    showOverlay('previewOverlay');
   }
 
   function showSuccessModal(regId, parishName, programCount) {
@@ -1251,27 +1330,59 @@
       return;
     }
 
-    // 4. Confirmation Dialog
-    const confirmMsg = `Are you ready to submit the registration for ${parish} with ${items.length} program(s)?`;
-    if (!confirm(confirmMsg)) return;
-
-    // 5. Submit to Google Apps Script
+    // 4. Open Compact Submission Preview Modal instead of raw confirm()
     const submissionId = (window.crypto && crypto.randomUUID)
       ? crypto.randomUUID()
       : Date.now() + "-" + Math.random().toString(36).slice(2, 10);
 
-    performPostSubmission({
+    const payload = {
       submissionId,
       fullName,
       parish,
       position,
       phone,
       items
-    });
+    };
+
+    showPreviewModal(payload);
   }
 
   /* ===== MODAL & OVERLAY EVENT BINDINGS ===== */
   function initSubmissionModals() {
+    // Preview overlay buttons
+    const editFormBtn = document.getElementById('editFormBtn');
+    if (editFormBtn) {
+      editFormBtn.addEventListener('click', () => {
+        hideOverlay('previewOverlay');
+      });
+    }
+
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+    if (closePreviewBtn) {
+      closePreviewBtn.addEventListener('click', () => {
+        hideOverlay('previewOverlay');
+      });
+    }
+
+    const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
+    if (confirmSubmitBtn) {
+      confirmSubmitBtn.addEventListener('click', () => {
+        hideOverlay('previewOverlay');
+        if (pendingSubmissionPayload) {
+          performPostSubmission(pendingSubmissionPayload);
+        }
+      });
+    }
+
+    const previewOverlay = document.getElementById('previewOverlay');
+    if (previewOverlay) {
+      previewOverlay.addEventListener('click', (e) => {
+        if (e.target === previewOverlay) {
+          hideOverlay('previewOverlay');
+        }
+      });
+    }
+
     // Copy ID button
     const copyBtn = document.getElementById('copyRegIdBtn');
     const copyBtnText = document.getElementById('copyRegIdBtnText');
@@ -1353,9 +1464,12 @@
     // Escape key closes open overlays (except waitOverlay)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const previewModal = document.getElementById('previewOverlay');
         const successModal = document.getElementById('successOverlay');
         const failureModal = document.getElementById('failureOverlay');
-        if (successModal && successModal.classList.contains('active')) {
+        if (previewModal && previewModal.classList.contains('active')) {
+          hideOverlay('previewOverlay');
+        } else if (successModal && successModal.classList.contains('active')) {
           hideOverlay('successOverlay');
         } else if (failureModal && failureModal.classList.contains('active')) {
           hideOverlay('failureOverlay');
