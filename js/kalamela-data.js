@@ -59,12 +59,55 @@ function renderKalamelaRulesAndFees() {
   totalEls.forEach(el => { el.textContent = `₹${window.KALAMELA_FEES.total}`; });
 
   // Render 19 rules into <ol id="kalamelaRulesList"> with explicit numbers
+  // First 3 rules visible, remaining rules expandable via Show More button
   const rulesList = document.getElementById('kalamelaRulesList');
   if (rulesList && Array.isArray(window.KALAMELA_RULES)) {
     rulesList.innerHTML = window.KALAMELA_RULES
-      .map((rule, idx) => `<li><span class="rule-num">${idx + 1}.</span><span class="rule-text">${rule}</span></li>`)
+      .map((rule, idx) => {
+        const extraClass = idx >= 3 ? ' class="kalamela-rule-extra"' : '';
+        return `<li${extraClass}><span class="rule-num">${idx + 1}.</span><span class="rule-text">${rule}</span></li>`;
+      })
       .join('');
   }
+
+  // Bind the Show More / Show Less toggle button
+  initRulesToggle();
+}
+
+/**
+ * Handles the "Show all 19 rules" / "Show less" toggle behavior.
+ */
+function initRulesToggle() {
+  const btn = document.getElementById('btnToggleRules');
+  const list = document.getElementById('kalamelaRulesList');
+  if (!btn || !list || btn.dataset.bound === 'true') return;
+  btn.dataset.bound = 'true';
+
+  btn.addEventListener('click', () => {
+    const isExpanded = list.classList.toggle('expanded');
+    btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    btn.classList.toggle('is-expanded', isExpanded);
+
+    const textSpan = btn.querySelector('.btn-toggle-rules-text');
+    const iconSpan = btn.querySelector('.btn-toggle-rules-icon');
+
+    if (textSpan) {
+      textSpan.textContent = isExpanded
+        ? 'ചുരുക്കുക (Show less)'
+        : 'മുഴുവൻ 19 നിബന്ധനകളും കാണുക (Show all 19 rules)';
+    }
+    if (iconSpan) {
+      iconSpan.textContent = isExpanded ? '▲' : '▼';
+    }
+
+    if (!isExpanded) {
+      // Smoothly scroll back to rules list on collapse so user isn't disoriented
+      const rulesCard = document.getElementById('kalamelaRulesDetails');
+      if (rulesCard) {
+        rulesCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
 }
 
 // Run immediately or on DOMContentLoaded

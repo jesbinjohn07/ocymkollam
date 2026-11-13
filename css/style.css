@@ -2417,6 +2417,85 @@ body.sticky-bar-active .back-to-top {
   font-size: 0.86rem;
 }
 
+/* Responsive Points Breakdown: Desktop Table vs Mobile Cards */
+.kalamela-points-mobile {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .kalamela-table-desktop {
+    display: none !important;
+  }
+
+  .kalamela-points-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 14px 0 12px;
+  }
+
+  .points-card-mobile {
+    background: #fff;
+    border: 1px solid rgba(212, 160, 23, 0.28);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .points-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(235, 229, 213, 0.6);
+  }
+
+  .points-badge-tag {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
+  }
+
+  .points-card-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .points-col-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 6px 4px;
+    background: rgba(212, 160, 23, 0.05);
+    border: 1px solid rgba(212, 160, 23, 0.2);
+    border-radius: var(--radius-sm);
+  }
+
+  .points-col-item.first-place {
+    background: rgba(212, 160, 23, 0.12);
+    border-color: rgba(212, 160, 23, 0.42);
+  }
+
+  .points-col-item .place-rank {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+    font-weight: 600;
+    font-family: 'Gayathri', 'Manjari', sans-serif;
+  }
+
+  .points-col-item .place-points {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: 'Gayathri', 'Anek Malayalam', sans-serif;
+  }
+}
+
 /* Compact Fee Card */
 .kalamela-fee-card {
   background: var(--bg-subtle);
@@ -2544,6 +2623,76 @@ body.sticky-bar-active .back-to-top {
 
 .kalamela-rules-list .rule-text {
   flex: 1;
+}
+
+/* Expandable rules toggle (Show More / Show Less) */
+.kalamela-rules-list li.kalamela-rule-extra {
+  display: none !important;
+}
+
+.kalamela-rules-list.expanded li.kalamela-rule-extra {
+  display: flex !important;
+  animation: fadeInRule 0.22s ease-out;
+}
+
+@keyframes fadeInRule {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kalamela-rules-toggle-wrap {
+  margin-top: 10px;
+  padding-top: 4px;
+  text-align: center;
+}
+
+.btn-toggle-rules {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.08), rgba(23, 58, 94, 0.04));
+  border: 1.5px solid rgba(212, 160, 23, 0.38);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-toggle-rules:hover {
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.16), rgba(23, 58, 94, 0.08));
+  border-color: rgba(212, 160, 23, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-toggle-rules:active {
+  transform: translateY(0);
+}
+
+.btn-toggle-rules.is-expanded {
+  background: rgba(23, 58, 94, 0.06);
+  border-color: rgba(23, 58, 94, 0.25);
+  color: var(--primary);
+}
+
+.btn-toggle-rules-icon {
+  font-size: 0.75rem;
+  color: var(--secondary-dark);
+  transition: transform var(--transition-fast);
 }
 
 /* Participant Card inside Program Item */
