@@ -1902,6 +1902,20 @@ footer {
 /* --------------------------------------------------------------------------
    21. REGISTRATION FORM PAGE STYLING
    -------------------------------------------------------------------------- */
+.registration-page-main {
+  padding-top: 85px;
+  min-height: 80vh;
+}
+
+.registration-section {
+  padding: 24px 0 60px !important;
+}
+
+#regForm,
+#kalamelaRulesDetails {
+  scroll-margin-top: 95px;
+}
+
 .registration-form-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -1910,6 +1924,106 @@ footer {
   box-shadow: var(--shadow-md);
   margin-bottom: 32px;
   position: relative;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.kalamela-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.btn-hero-jump {
+  padding: 10px 22px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(212, 160, 23, 0.18);
+  transition: all var(--transition-fast);
+}
+
+.btn-hero-jump:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 160, 23, 0.28);
+}
+
+.kalamela-scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: 'Gayathri', 'Manjari', 'Noto Sans Malayalam', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.scroll-arrow-bounce {
+  display: inline-block;
+  color: var(--secondary);
+  font-weight: 800;
+  animation: arrowBounce 1.6s infinite ease-in-out;
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (max-width: 600px) {
+  .registration-page-main {
+    padding-top: 72px;
+  }
+  .registration-section {
+    padding: 12px 0 36px !important;
+  }
+  .registration-form-card {
+    padding: 24px 18px !important;
+    margin-bottom: 20px;
+  }
+  .section-header {
+    margin-bottom: 18px !important;
+  }
+  .kalamela-hero-badge {
+    margin-bottom: 8px !important;
+    padding: 5px 14px !important;
+    font-size: 0.85rem !important;
+  }
+  .kalamela-title-accent {
+    font-size: 2.3rem !important;
+  }
+  .kalamela-sub-title {
+    font-size: 1.35rem !important;
+  }
+  .kalamela-reg-pill {
+    margin-top: 2px !important;
+  }
+  .kalamela-hero-actions {
+    margin-top: 14px;
+    gap: 8px;
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-hero-jump {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    padding: 11px 18px;
+    font-size: 0.92rem;
+  }
 }
 
 .reveal.visible {

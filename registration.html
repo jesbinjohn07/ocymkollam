@@ -58,10 +58,10 @@
     </div>
   </header>
 
-  <main style="padding-top: 130px; min-height: 80vh;">
-    <section class="section section-light">
+  <main class="registration-page-main">
+    <section class="section section-light registration-section">
       <div class="container" style="max-width: 840px;">
-        <div class="section-header reveal reveal-slide-up" style="text-align: center; margin-bottom: 34px;">
+        <div class="section-header" style="text-align: center;">
           <div class="kalamela-hero-badge">
             <span class="badge-dot"></span>
             <span>യുവജന പ്രസ്ഥാനം കൊല്ലം ഭദ്രാസനം</span>
@@ -75,10 +75,25 @@
             <span class="reg-pill-text">REGISTRATION 2026–27</span>
             <span class="reg-pill-line"></span>
           </div>
+
+          <!-- Quick Jump & Visual Navigation Actions -->
+          <div class="kalamela-hero-actions">
+            <a href="#regForm" class="btn btn-gold btn-hero-jump">
+              <span>✍️</span> രജിസ്ട്രേഷൻ ഫോം (Fill Form) ↓
+            </a>
+            <a href="#kalamelaRulesDetails" class="btn btn-outline btn-hero-jump">
+              <span>📜</span> ഫീസ് & നിബന്ധനകൾ (Rules)
+            </a>
+          </div>
+
+          <div class="kalamela-scroll-hint">
+            <span>ഇടവക രജിസ്ട്രേഷൻ ഫോം താഴെ നൽകിയിരിക്കുന്നു</span>
+            <span class="scroll-arrow-bounce">↓</span>
+          </div>
         </div>
 
         <!-- Collapsible Rules & Points Card -->
-        <div class="registration-form-card reveal reveal-slide-up" style="padding: 24px 32px; margin-bottom: 28px;">
+        <div class="registration-form-card" style="padding: 24px 32px; margin-bottom: 28px;">
           <details class="kalamela-rules-details" id="kalamelaRulesDetails" open style="margin-top: 0; padding-top: 0; border-top: none;">
             <summary class="kalamela-rules-summary" aria-label="Toggle competition rules">
               <span class="rules-summary-title">📜 മത്സര നിബന്ധനകളും വിവരങ്ങളും</span>
@@ -188,7 +203,7 @@
           <div id="formErrorBanner" class="form-banner-error" role="alert" aria-live="assertive"></div>
 
           <!-- Contact Details Card -->
-          <div class="registration-form-card reveal reveal-slide-up" style="position: relative; z-index: 100;">
+          <div class="registration-form-card" style="position: relative; z-index: 100;">
             <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
               <span>📋</span> Parish Official Contact Details
             </h3>
@@ -259,7 +274,7 @@
           </div>
 
           <!-- Program Selection Card -->
-          <div class="registration-form-card reveal reveal-slide-up">
+          <div class="registration-form-card">
             <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
               <span>🎭</span> Program & Participant Selection
             </h3>
@@ -277,7 +292,7 @@
           </div>
 
           <!-- Mandatory Declaration Checkbox (Requirement 4) -->
-          <div class="registration-form-card reveal reveal-slide-up" style="padding: 24px 32px;">
+          <div class="registration-form-card" style="padding: 24px 32px;">
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <input type="checkbox" id="declarationCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" required>
               <label for="declarationCheck" style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.6; cursor: pointer;">
@@ -288,7 +303,7 @@
           </div>
 
           <!-- Submit Button -->
-          <div style="text-align: center; margin-top: 32px;" class="reveal reveal-slide-up">
+          <div style="text-align: center; margin-top: 32px;" >
             <button type="submit" id="submitBtn" class="btn btn-gold" style="width: 100%; max-width: 400px; padding: 16px;">
               Submit Registration Form
             </button>
