@@ -312,7 +312,20 @@
       regForm.addEventListener("submit", onSubmit);
     }
 
-    // 3. Declaration checkbox live clearing
+    // 3. Declaration checkboxes live clearing
+    const centralKalamelaCheck = document.getElementById("centralKalamelaCheck");
+    if (centralKalamelaCheck) {
+      centralKalamelaCheck.addEventListener("change", () => {
+        if (centralKalamelaCheck.checked) {
+          const err = document.getElementById("centralKalamelaCheckError");
+          if (err) {
+            err.classList.remove("visible");
+            err.textContent = "";
+          }
+        }
+      });
+    }
+
     const declarationCheck = document.getElementById("declarationCheck");
     if (declarationCheck) {
       declarationCheck.addEventListener("change", () => {
@@ -1940,7 +1953,17 @@
       recordError(document.getElementById('programPickerCard'), 'Please select at least one program.');
     }
 
-    // 3. Declaration Checkbox
+    // 3. Declaration Checkboxes
+    const centralKalamelaCheck = document.getElementById('centralKalamelaCheck');
+    const centralKalamelaError = document.getElementById('centralKalamelaCheckError');
+    if (centralKalamelaCheck && !centralKalamelaCheck.checked) {
+      if (centralKalamelaError) {
+        centralKalamelaError.textContent = 'കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കുമെന്ന ഉറപ്പ് നൽകേണ്ടതാണ് (Confirmation is required).';
+        centralKalamelaError.classList.add('visible');
+      }
+      recordError(centralKalamelaCheck, 'മെത്രാസന തലത്തിൽ വിജയികളായാൽ കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കാമെന്ന ഉറപ്പ് നൽകേണ്ടതാണ് (Central Kalamela participation confirmation is mandatory).');
+    }
+
     const declarationCheck = document.getElementById('declarationCheck');
     const declarationError = document.getElementById('declarationCheckError');
     if (declarationCheck && !declarationCheck.checked) {

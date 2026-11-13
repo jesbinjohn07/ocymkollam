@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_17">
+  <link rel="stylesheet" href="css/style.css?v=20261113_18">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -464,15 +464,25 @@
               </div>
             </div>
 
-            <!-- Mandatory Declaration Checkbox (Requirement 4) -->
+            <!-- Mandatory Declaration Checkboxes -->
           <div class="registration-form-card declaration-card">
+            <!-- 1. Mandatory Central Kalamela Participation Assurance Checkbox -->
+            <div class="declaration-wrapper" style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--border-light);">
+              <input type="checkbox" id="centralKalamelaCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;" required>
+              <label for="centralKalamelaCheck" class="declaration-label" style="font-family: 'Gayathri', 'Manjari', 'Anek Malayalam', sans-serif; font-size: 0.92rem; line-height: 1.5;">
+                മെത്രാസന തലത്തിൽ വിജയികളായാൽ, കേന്ദ്രതലത്തിൽ 2027 ജനുവരി 9 ന് തുമ്പമണ്ണിൽ വച്ച്  നടക്കുന്ന കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കാമെന്ന് ഉറപ്പു നൽകുന്നു. <span style="color: #dc2626;">*</span>
+              </label>
+            </div>
+            <div class="form-error-msg" id="centralKalamelaCheckError" style="margin-left: 28px; margin-top: -6px; margin-bottom: 12px;">കേന്ദ്ര കലാമേളയിൽ പങ്കെടുക്കുമെന്ന ഉറപ്പ് നൽകേണ്ടതാണ് (Confirmation is required).</div>
+
+            <!-- 2. Central Assembly / ID Proof Declaration Checkbox -->
             <div class="declaration-wrapper">
-              <input type="checkbox" id="declarationCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" required>
+              <input type="checkbox" id="declarationCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;" required>
               <label for="declarationCheck" class="declaration-label">
                 Participants are not Central Assembly members and will carry Government-approved ID proof / age proof on the competition day. <span style="color: #dc2626;">*</span>
               </label>
             </div>
-            <div class="form-error-msg" id="declarationCheckError" style="margin-left: 30px;">You must confirm this declaration to proceed with registration.</div>
+            <div class="form-error-msg" id="declarationCheckError" style="margin-left: 28px;">You must confirm this declaration to proceed with registration.</div>
           </div>
 
           <!-- Submit Button -->
@@ -764,9 +774,9 @@
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="js/config.js"></script>
-  <script src="js/parishes.js?v=20261113_17"></script>
-  <script src="js/kalamela-data.js?v=20261113_17"></script>
+  <script src="js/parishes.js?v=20261113_18"></script>
+  <script src="js/kalamela-data.js?v=20261113_18"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_17"></script>
+  <script src="js/registration.js?v=20261113_18"></script>
 </body>
 </html>
