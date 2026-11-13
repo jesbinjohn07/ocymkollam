@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261113_2">
+  <link rel="stylesheet" href="css/style.css?v=20261113_3">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -262,7 +262,7 @@
 
           <!-- Contact Details Card -->
           <div class="registration-form-card" style="position: relative; z-index: 100;">
-            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <h3 class="form-card-title">
               <span>📋</span> Parish Official Contact Details
             </h3>
 
@@ -333,27 +333,27 @@
 
           <!-- Program Selection Card -->
           <div class="registration-form-card">
-            <h3 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+            <h3 class="form-card-title">
               <span>🎭</span> Program & Participant Selection
             </h3>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px;">
+            <p class="card-subtitle-compact" style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.45;">
               Add one or more event programs. Participant details (Name, Date of Birth, Gender) must be provided for each entry.
             </p>
 
             <div id="itemsContainer"></div>
             <div class="form-error-msg" id="itemsContainerError" style="margin-bottom: 14px;"></div>
 
-            <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+            <div class="program-action-buttons">
               <button type="button" class="btn btn-primary" id="addProgramBtn">+ Add Program</button>
               <button type="button" class="btn btn-outline" id="clearProgramsBtn">Clear All Items</button>
             </div>
           </div>
 
           <!-- Mandatory Declaration Checkbox (Requirement 4) -->
-          <div class="registration-form-card" style="padding: 24px 32px;">
-            <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div class="registration-form-card declaration-card">
+            <div class="declaration-wrapper">
               <input type="checkbox" id="declarationCheck" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" required>
-              <label for="declarationCheck" style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.6; cursor: pointer;">
+              <label for="declarationCheck" class="declaration-label">
                 Participants are not Central Assembly members and will carry Government-approved ID proof / age proof on the competition day. <span style="color: #dc2626;">*</span>
               </label>
             </div>
@@ -361,8 +361,8 @@
           </div>
 
           <!-- Submit Button -->
-          <div style="text-align: center; margin-top: 32px;" >
-            <button type="submit" id="submitBtn" class="btn btn-gold" style="width: 100%; max-width: 400px; padding: 16px;">
+          <div class="submit-btn-wrap">
+            <button type="submit" id="submitBtn" class="btn btn-gold">
               Submit Registration Form
             </button>
           </div>
@@ -576,8 +576,8 @@
 
   <script src="js/config.js"></script>
   <script src="js/parishes.js"></script>
-  <script src="js/kalamela-data.js?v=20261113_2"></script>
+  <script src="js/kalamela-data.js?v=20261113_3"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261113_2"></script>
+  <script src="js/registration.js?v=20261113_3"></script>
 </body>
 </html>
