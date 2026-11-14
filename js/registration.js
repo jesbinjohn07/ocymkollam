@@ -928,7 +928,11 @@
         <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
         <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
-      <input type="date" class="form-control p-dob" min="${minIso}" max="${maxIso}" value="${dobValue}" ${!isSubstitute ? 'required' : ''}>
+      <div class="dob-field-wrap${dobValue ? ' has-value' : ''}">
+        <input type="date" class="form-control p-dob" min="${minIso}" max="${maxIso}" value="${dobValue}" placeholder="dd/mm/yyyy" ${!isSubstitute ? 'required' : ''}>
+        <span class="dob-placeholder-text">dd/mm/yyyy</span>
+        <span class="dob-calendar-icon" aria-hidden="true">📅</span>
+      </div>
     `;
     grid.appendChild(dobCol);
 
@@ -974,8 +978,19 @@
     card.appendChild(pErr);
 
     // Live age badge & validation
+    const dobWrap = dobCol.querySelector('.dob-field-wrap');
     const dobInput = dobCol.querySelector('.p-dob');
     const ageBadge = dobCol.querySelector('.age-badge');
+
+    const syncDobState = () => {
+      const val = dobInput.value ? dobInput.value.trim() : '';
+      if (val) {
+        if (dobWrap) dobWrap.classList.add('has-value');
+      } else {
+        if (dobWrap) dobWrap.classList.remove('has-value');
+      }
+      updateAgeLive();
+    };
 
     const updateAgeLive = () => {
       const val = dobInput.value.trim();
@@ -1020,11 +1035,11 @@
       }
     };
 
-    dobInput.addEventListener('change', updateAgeLive);
-    dobInput.addEventListener('input', updateAgeLive);
+    dobInput.addEventListener('change', syncDobState);
+    dobInput.addEventListener('input', syncDobState);
 
     if (existingDob) {
-      updateAgeLive();
+      syncDobState();
     }
 
     parentContainer.appendChild(card);

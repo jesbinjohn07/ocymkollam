@@ -2354,6 +2354,18 @@ body.sticky-bar-active .back-to-top {
   opacity: 1;
 }
 
+/* Date of Birth Field Wrapper & Placeholder (Mobile & Desktop) */
+.dob-field-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.dob-placeholder-text,
+.dob-calendar-icon {
+  display: none;
+}
+
 select.form-control {
   appearance: none;
   -webkit-appearance: none;
@@ -4776,6 +4788,43 @@ select.p-gender {
     appearance: none;
     min-height: 44px;
     line-height: 1.35;
+  }
+
+  .dob-placeholder-text {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-family: 'Anek Malayalam', 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
+    line-height: 1;
+  }
+
+  .dob-calendar-icon {
+    display: block;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+    font-size: 0.95rem;
+    opacity: 0.65;
+    z-index: 2;
+    line-height: 1;
+  }
+
+  .dob-field-wrap.has-value .dob-placeholder-text {
+    display: none !important;
+  }
+
+  input[type="date"].p-dob:not(.has-value)::-webkit-datetime-edit {
+    color: transparent;
   }
 
   /* Fast, responsive touch with no 300ms tap delay */
