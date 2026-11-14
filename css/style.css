@@ -2135,9 +2135,12 @@ body.sticky-bar-active .back-to-top {
     border-radius: var(--radius-sm);
   }
   .kalamela-fee-label {
-    font-size: 0.76rem;
-    line-height: 1.35;
+    font-size: 0.73rem;
+    line-height: 1.3;
     white-space: normal;
+  }
+  .kalamela-fee-item-total .kalamela-fee-label {
+    white-space: nowrap;
   }
   .kalamela-fee-amount {
     font-size: 1.15rem;
