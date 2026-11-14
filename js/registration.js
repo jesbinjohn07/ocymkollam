@@ -239,12 +239,43 @@
     return `${cleanName}|${cleanDob}`;
   }
 
+  function formatIsoToDdmmyyyy(isoDate) {
+    if (!isoDate) return '';
+    const parts = String(isoDate).trim().split('-');
+    if (parts.length === 3) {
+      return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+    }
+    return isoDate;
+  }
+
+  function parseDdmmyyyyToIso(dateStr) {
+    if (!dateStr) return null;
+    const clean = String(dateStr).trim();
+    // Match DD/MM/YYYY or DD-MM-YYYY
+    const match = clean.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (!match) return null;
+    const day = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    const year = parseInt(match[3], 10);
+    if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900 || year > 2100) return null;
+    // Validate actual days in month
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day > daysInMonth) return null;
+    const pad = n => String(n).padStart(2, '0');
+    return `${year}-${pad(month)}-${pad(day)}`;
+  }
+
   /**
    * Calculates completed age on competition date (9 January 2027)
    */
   function calculateAgeOnEventDate(dobString) {
     if (!dobString) return null;
-    const parts = dobString.split('-');
+    let iso = dobString;
+    if (dobString.includes('/')) {
+      iso = parseDdmmyyyyToIso(dobString);
+      if (!iso) return null;
+    }
+    const parts = iso.split('-');
     if (parts.length !== 3) return null;
     const birthYear = parseInt(parts[0], 10);
     const birthMonth = parseInt(parts[1], 10);
@@ -887,10 +918,10 @@
     const existingDob = initialVal && initialVal.dob ? initialVal.dob : '';
     dobCol.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
-        <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span> <span style="font-weight:400; font-size:0.72rem; color:var(--text-muted);">(dd/mm/yyyy)</span></label>
+        <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
         <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
-      <input type="date" class="form-control p-dob" value="${existingDob}" ${!isSubstitute ? 'required' : ''}>
+      <input type="text" class="form-control p-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" value="${existingDob ? formatIsoToDdmmyyyy(existingDob) : ''}" ${!isSubstitute ? 'required' : ''}>
     `;
     grid.appendChild(dobCol);
 
@@ -935,11 +966,26 @@
     pErr.className = 'form-error-msg p-card-error';
     card.appendChild(pErr);
 
-    // Live age badge & validation
+    // Live age badge & validation + Auto-format DD/MM/YYYY
     const dobInput = dobCol.querySelector('.p-dob');
     const ageBadge = dobCol.querySelector('.age-badge');
+
+    // Auto-insert slashes for DD/MM/YYYY
+    dobInput.addEventListener('input', (e) => {
+      let v = dobInput.value.replace(/[^\d]/g, '');
+      if (v.length > 8) v = v.slice(0, 8);
+      if (v.length > 4) {
+        dobInput.value = `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
+      } else if (v.length > 2) {
+        dobInput.value = `${v.slice(0, 2)}/${v.slice(2)}`;
+      } else {
+        dobInput.value = v;
+      }
+      updateAgeLive();
+    });
+
     const updateAgeLive = () => {
-      const val = dobInput.value;
+      const val = dobInput.value.trim();
       if (!val) {
         ageBadge.style.display = 'none';
         ageBadge.textContent = '';
@@ -948,9 +994,16 @@
         pErr.textContent = '';
         return;
       }
+      if (val.length < 10) {
+        ageBadge.style.display = 'none';
+        return;
+      }
       const age = calculateAgeOnEventDate(val);
       if (age === null || isNaN(age)) {
         ageBadge.style.display = 'none';
+        dobInput.classList.add('has-error');
+        pErr.textContent = 'Invalid date. Use DD/MM/YYYY format.';
+        pErr.classList.add('visible');
         return;
       }
       ageBadge.style.display = 'inline-block';
@@ -974,7 +1027,6 @@
       }
     };
 
-    dobInput.addEventListener('input', updateAgeLive);
     dobInput.addEventListener('change', updateAgeLive);
 
     if (existingDob) {
@@ -1172,7 +1224,8 @@
       const cardErr = card.querySelector('.p-card-error');
 
       const pName = nameInput ? nameInput.value.trim() : '';
-      const pDob = dobInput ? dobInput.value.trim() : '';
+      const pDobRaw = dobInput ? dobInput.value.trim() : '';
+      const pDob = parseDdmmyyyyToIso(pDobRaw) || pDobRaw;
       let pGender = genderSelect ? genderSelect.value : '';
 
       if (prog.gender === 'female_only') pGender = 'Female';
@@ -1251,7 +1304,8 @@
       const cardErr = card.querySelector('.p-card-error');
 
       const sName = nameInput ? nameInput.value.trim() : '';
-      const sDob = dobInput ? dobInput.value.trim() : '';
+      const sDobRaw = dobInput ? dobInput.value.trim() : '';
+      const sDob = parseDdmmyyyyToIso(sDobRaw) || sDobRaw;
       let sGender = genderSelect ? genderSelect.value : '';
 
       if (prog.gender === 'female_only') sGender = 'Female';

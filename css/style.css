@@ -2127,17 +2127,18 @@ body.sticky-bar-active .back-to-top {
   }
   .kalamela-fee-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 6px !important;
+    gap: 4px !important;
   }
   .kalamela-fee-item {
-    padding: 8px 4px;
+    padding: 8px 3px;
     text-align: center;
     border-radius: var(--radius-sm);
   }
   .kalamela-fee-label {
-    font-size: 0.76rem;
+    font-size: 0.71rem;
     line-height: 1.25;
-    word-break: break-word;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
   .kalamela-fee-amount {
     font-size: 1.15rem;
