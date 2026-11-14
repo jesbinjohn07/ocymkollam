@@ -914,14 +914,21 @@
     grid.appendChild(nameCol);
 
     // 2. Date of Birth
+    const minBirthDate = new Date(COMPETITION_DATE.getFullYear() - MAX_AGE, COMPETITION_DATE.getMonth(), COMPETITION_DATE.getDate() + 1);
+    const maxBirthDate = new Date(COMPETITION_DATE.getFullYear() - MIN_AGE, COMPETITION_DATE.getMonth(), COMPETITION_DATE.getDate());
+    const padDatePart = n => String(n).padStart(2, '0');
+    const minIso = `${minBirthDate.getFullYear()}-${padDatePart(minBirthDate.getMonth() + 1)}-${padDatePart(minBirthDate.getDate())}`;
+    const maxIso = `${maxBirthDate.getFullYear()}-${padDatePart(maxBirthDate.getMonth() + 1)}-${padDatePart(maxBirthDate.getDate())}`;
+
     const dobCol = document.createElement('div');
     const existingDob = initialVal && initialVal.dob ? initialVal.dob : '';
+    const dobValue = existingDob ? (existingDob.includes('/') ? parseDdmmyyyyToIso(existingDob) : existingDob) : '';
     dobCol.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
         <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
         <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
-      <input type="text" class="form-control p-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" value="${existingDob ? formatIsoToDdmmyyyy(existingDob) : ''}" ${!isSubstitute ? 'required' : ''}>
+      <input type="date" class="form-control p-dob" min="${minIso}" max="${maxIso}" value="${dobValue}" ${!isSubstitute ? 'required' : ''}>
     `;
     grid.appendChild(dobCol);
 
@@ -966,23 +973,9 @@
     pErr.className = 'form-error-msg p-card-error';
     card.appendChild(pErr);
 
-    // Live age badge & validation + Auto-format DD/MM/YYYY
+    // Live age badge & validation
     const dobInput = dobCol.querySelector('.p-dob');
     const ageBadge = dobCol.querySelector('.age-badge');
-
-    // Auto-insert slashes for DD/MM/YYYY
-    dobInput.addEventListener('input', (e) => {
-      let v = dobInput.value.replace(/[^\d]/g, '');
-      if (v.length > 8) v = v.slice(0, 8);
-      if (v.length > 4) {
-        dobInput.value = `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
-      } else if (v.length > 2) {
-        dobInput.value = `${v.slice(0, 2)}/${v.slice(2)}`;
-      } else {
-        dobInput.value = v;
-      }
-      updateAgeLive();
-    });
 
     const updateAgeLive = () => {
       const val = dobInput.value.trim();
@@ -1002,7 +995,7 @@
       if (age === null || isNaN(age)) {
         ageBadge.style.display = 'none';
         dobInput.classList.add('has-error');
-        pErr.textContent = 'Invalid date. Use DD/MM/YYYY format.';
+        pErr.textContent = 'Invalid date of birth.';
         pErr.classList.add('visible');
         return;
       }
@@ -1028,6 +1021,7 @@
     };
 
     dobInput.addEventListener('change', updateAgeLive);
+    dobInput.addEventListener('input', updateAgeLive);
 
     if (existingDob) {
       updateAgeLive();
