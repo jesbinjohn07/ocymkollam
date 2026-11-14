@@ -2796,11 +2796,13 @@ select.form-control option[value=""] {
 }
 
 .kalamela-fee-label {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
   font-family: 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .kalamela-fee-amount {

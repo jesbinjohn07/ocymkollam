@@ -887,7 +887,7 @@
     const existingDob = initialVal && initialVal.dob ? initialVal.dob : '';
     dobCol.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
-        <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
+        <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span> <span style="font-weight:400; font-size:0.72rem; color:var(--text-muted);">(dd/mm/yyyy)</span></label>
         <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
       <input type="date" class="form-control p-dob" value="${existingDob}" ${!isSubstitute ? 'required' : ''}>
