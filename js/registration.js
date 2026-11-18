@@ -935,41 +935,6 @@
       </div>
     `;
     grid.appendChild(dobCol);
-
-    // 3. Gender
-    const genderCol = document.createElement('div');
-    const isFemaleOnly = prog.gender === 'female_only';
-    const isMaleOnly = prog.gender === 'male_only';
-    const reqStar = (isFemaleOnly || isMaleOnly) ? '<span style="color:#dc2626;">*</span>' : '';
-
-    let genderHtml = `
-      <label class="form-label" style="font-size: 0.8rem; margin-bottom: 3px;">Gender ${reqStar}</label>
-      <select class="form-control p-gender">
-    `;
-
-    const savedGender = initialVal && initialVal.gender ? initialVal.gender : '';
-
-    if (isFemaleOnly) {
-      genderHtml += `<option value="Female" selected>Female</option>`;
-    } else if (isMaleOnly) {
-      genderHtml += `<option value="Male" selected>Male</option>`;
-    } else {
-      genderHtml += `
-        <option value="">Select (Optional)</option>
-        <option value="Female" ${savedGender === 'Female' ? 'selected' : ''}>Female</option>
-        <option value="Male" ${savedGender === 'Male' ? 'selected' : ''}>Male</option>
-        <option value="Other" ${savedGender === 'Other' ? 'selected' : ''}>Other</option>
-      `;
-    }
-    genderHtml += `</select>`;
-    genderCol.innerHTML = genderHtml;
-
-    if (isFemaleOnly || isMaleOnly) {
-      const sel = genderCol.querySelector('.p-gender');
-      if (sel) sel.disabled = true;
-    }
-
-    grid.appendChild(genderCol);
     card.appendChild(grid);
 
     // Inline Card Error Container
@@ -1144,7 +1109,7 @@
   function serializeSheetForm() {
     const sheet = document.getElementById('editEventSheet');
     if (!sheet) return '';
-    const inputs = sheet.querySelectorAll('.p-name, .p-dob, .p-gender');
+    const inputs = sheet.querySelectorAll('.p-name, .p-dob');
     const values = [];
     inputs.forEach(input => {
       values.push(input.value.trim());
@@ -1229,16 +1194,11 @@
     regCards.forEach((card, cIdx) => {
       const nameInput = card.querySelector('.p-name');
       const dobInput = card.querySelector('.p-dob');
-      const genderSelect = card.querySelector('.p-gender');
       const cardErr = card.querySelector('.p-card-error');
 
       const pName = nameInput ? nameInput.value.trim() : '';
       const pDobRaw = dobInput ? dobInput.value.trim() : '';
       const pDob = parseDdmmyyyyToIso(pDobRaw) || pDobRaw;
-      let pGender = genderSelect ? genderSelect.value : '';
-
-      if (prog.gender === 'female_only') pGender = 'Female';
-      if (prog.gender === 'male_only') pGender = 'Male';
 
       let cardHasErr = false;
 
@@ -1279,8 +1239,6 @@
         }
       }
 
-      // All gender-restricted events (Margamkali, Parichamuttukali, Lalithaganam Male/Female) are locked
-
       if (pName && pDob) {
         const personKey = getPersonNormalizedKey(pName, pDob);
         if (eventPersonSet.has(personKey)) {
@@ -1299,7 +1257,6 @@
         participantsDetail.push({
           name: pName,
           dob: pDob,
-          gender: pGender || 'Not Specified',
           role: 'Participant'
         });
       }
@@ -1309,19 +1266,14 @@
     subCards.forEach((card, sIdx) => {
       const nameInput = card.querySelector('.p-name');
       const dobInput = card.querySelector('.p-dob');
-      const genderSelect = card.querySelector('.p-gender');
       const cardErr = card.querySelector('.p-card-error');
 
       const sName = nameInput ? nameInput.value.trim() : '';
       const sDobRaw = dobInput ? dobInput.value.trim() : '';
       const sDob = parseDdmmyyyyToIso(sDobRaw) || sDobRaw;
-      let sGender = genderSelect ? genderSelect.value : '';
-
-      if (prog.gender === 'female_only') sGender = 'Female';
-      if (prog.gender === 'male_only') sGender = 'Male';
 
       // Substitutes are optional: only validate if any field entered
-      if (sName || sDob || sGender) {
+      if (sName || sDob) {
         let subHasErr = false;
 
         if (!sName) {
@@ -1378,7 +1330,6 @@
           substitutesDetail.push({
             name: sName,
             dob: sDob,
-            gender: sGender || 'Not Specified',
             role: 'Substitute'
           });
         }
@@ -1715,8 +1666,7 @@
       const progTypeBadge = isGroup ? 'ഗ്രൂപ്പ് (Group)' : 'വ്യക്തിഗതം (Single)';
 
       const participantChips = (item.participantsDetail || []).map(p => {
-        const gLabel = p.gender && p.gender !== 'Not Specified' ? ` (${escapeHTML(p.gender)})` : '';
-        return `<span class="preview-participant-chip">👤 ${escapeHTML(p.name)}${gLabel}</span>`;
+        return `<span class="preview-participant-chip">👤 ${escapeHTML(p.name)}</span>`;
       }).join('');
 
       let subHtml = '';

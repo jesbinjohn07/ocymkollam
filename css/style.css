@@ -3056,32 +3056,14 @@ select.form-control option[value=""] {
 
 .participant-fields-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr minmax(110px, 0.9fr);
+  grid-template-columns: 1.4fr 1fr;
   gap: 12px;
-}
-
-.participant-fields-grid > div:last-child {
-  min-width: 110px;
-}
-
-select.p-gender {
-  padding-right: 28px;
 }
 
 @media (max-width: 600px) {
   .participant-fields-grid {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-
-  .participant-fields-grid > div:last-child {
-    min-width: 0;
-  }
-
-  select.p-gender {
-    width: 100%;
-    font-size: 16px !important;
-    min-height: 44px !important;
   }
 }
 
