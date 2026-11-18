@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    OCYM Kollam – Registration Engine (2026-27 Kalamela Edition)
    --------------------------------------------------------------------------
    - State-driven "Select event, then edit" bottom sheet/modal workflow
@@ -2045,10 +2045,10 @@
     const declarationError = document.getElementById('declarationCheckError');
     if (declarationCheck && !declarationCheck.checked) {
       if (declarationError) {
-        declarationError.textContent = 'You must confirm this declaration to proceed with registration.';
+        declarationError.textContent = 'Please confirm that the information provided is correct.';
         declarationError.classList.add('visible');
       }
-      recordError(declarationCheck, 'Please accept the mandatory declaration confirming Central Assembly status and ID proof.');
+      recordError(declarationCheck, 'Please confirm that the information provided is correct.');
     }
 
     // If any validation errors exist, display banner and abort
