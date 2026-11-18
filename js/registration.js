@@ -183,12 +183,12 @@
     {
       name: "ക്വിസ്",
       type: "group",
-      min: 3,
+      min: 1,
       max: 3,
-      fixed: true,
+      fixed: false,
       gender: "any",
       substitutes: false,
-      note: "കൃത്യം 3 അംഗങ്ങൾ"
+      note: "പരമാവധി 3 അംഗങ്ങൾ"
     },
     {
       name: "മൈം",
