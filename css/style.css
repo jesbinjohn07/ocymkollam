@@ -4666,7 +4666,19 @@ select.form-control option[value=""] {
   border-top: 1.5px solid rgba(212, 160, 23, 0.4);
   z-index: 999;
   padding: 10px 16px;
-  transition: transform 0.25s ease;
+  transform: translateY(115%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, visibility 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.sticky-summary-bar.visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .sticky-summary-inner {

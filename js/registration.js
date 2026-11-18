@@ -308,7 +308,10 @@
     if (!isOpen) {
       if (regForm) regForm.style.display = "none";
       if (pickerCard) pickerCard.style.display = "none";
-      if (stickyBar) stickyBar.style.display = "none";
+      if (stickyBar) {
+        stickyBar.style.display = "none";
+        stickyBar.classList.remove("visible");
+      }
       if (rulesCard) rulesCard.style.display = "none";
       if (heroActions) heroActions.style.display = "none";
       if (heroScrollHint) heroScrollHint.style.display = "none";
@@ -323,7 +326,7 @@
       if (heroScrollHint) heroScrollHint.style.display = "flex";
       if (stickyBar) {
         stickyBar.style.display = "block";
-        document.body.classList.add("sticky-bar-active");
+        updateStickyBarVisibility();
       }
     }
     return isOpen;
@@ -651,7 +654,10 @@
   function updateSummaryBar() {
     if (window.SHOW_REGISTRATION === false) {
       const stickyBar = document.getElementById('stickySummaryBar');
-      if (stickyBar) stickyBar.style.display = 'none';
+      if (stickyBar) {
+        stickyBar.style.display = 'none';
+        stickyBar.classList.remove('visible');
+      }
       document.body.classList.remove('sticky-bar-active');
       return;
     }
@@ -684,7 +690,7 @@
     const stickyBar = document.getElementById('stickySummaryBar');
     if (stickyBar) {
       stickyBar.style.display = 'block';
-      document.body.classList.add('sticky-bar-active');
+      updateStickyBarVisibility();
     }
 
     const badge = document.getElementById('pickerCountBadge');
@@ -1549,6 +1555,31 @@
   /* ==========================================================================
      STICKY SUMMARY BAR (ENGLISH-ONLY)
      ========================================================================== */
+  function updateStickyBarVisibility() {
+    if (window.SHOW_REGISTRATION === false) return;
+    const stickyBar = document.getElementById('stickySummaryBar');
+    if (!stickyBar) return;
+
+    const regForm = document.getElementById('regForm');
+    let isFormReached = false;
+    if (regForm) {
+      const rect = regForm.getBoundingClientRect();
+      // Form reached when its top enters the viewport or is above viewport
+      isFormReached = (rect.top <= window.innerHeight - 60);
+    }
+
+    const hasSelectedEvents = (typeof selectedEventsState !== 'undefined' && selectedEventsState.size > 0);
+    const shouldShow = isFormReached || hasSelectedEvents;
+
+    if (shouldShow) {
+      stickyBar.classList.add('visible');
+      document.body.classList.add('sticky-bar-active');
+    } else {
+      stickyBar.classList.remove('visible');
+      document.body.classList.remove('sticky-bar-active');
+    }
+  }
+
   function initStickySummaryBar() {
     const reviewBtn = document.getElementById('summaryReviewBtn');
     if (reviewBtn) {
@@ -1570,6 +1601,31 @@
     if (clearBtn) {
       clearBtn.addEventListener('click', clearAllSavedEvents);
     }
+
+    let scrollRafId = null;
+    const onScrollOrResize = () => {
+      if (scrollRafId) return;
+      scrollRafId = requestAnimationFrame(() => {
+        scrollRafId = null;
+        updateStickyBarVisibility();
+      });
+    };
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    if ('IntersectionObserver' in window) {
+      const regForm = document.getElementById('regForm');
+      if (regForm) {
+        const observer = new IntersectionObserver(() => {
+          updateStickyBarVisibility();
+        }, { rootMargin: '0px 0px -60px 0px', threshold: 0 });
+        observer.observe(regForm);
+      }
+    }
+
+    // Initial evaluation
+    updateStickyBarVisibility();
   }
 
   /* ==========================================================================
