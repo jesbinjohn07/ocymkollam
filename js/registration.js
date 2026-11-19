@@ -929,15 +929,15 @@
     const dobCol = document.createElement('div');
     const existingDob = initialVal && initialVal.dob ? initialVal.dob : '';
     const dobValue = existingDob ? (existingDob.includes('/') ? parseDdmmyyyyToIso(existingDob) : existingDob) : '';
+    const displayDob = dobValue ? formatIsoToDdmmyyyy(dobValue) : 'dd/mm/yyyy';
     dobCol.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
         <label class="form-label" style="font-size: 0.8rem; margin: 0;">Date of Birth <span style="color:#dc2626;">*</span></label>
         <span class="age-badge" style="font-size: 0.76rem; font-weight: 700; color: var(--primary); display: none;"></span>
       </div>
       <div class="dob-field-wrap${dobValue ? ' has-value' : ''}">
-        <input type="date" class="form-control p-dob" min="${minIso}" max="${maxIso}" value="${dobValue}" placeholder="dd/mm/yyyy" ${!isSubstitute ? 'required' : ''}>
-        <span class="dob-placeholder-text">dd/mm/yyyy</span>
-        <span class="dob-calendar-icon" aria-hidden="true">📅</span>
+        <input type="date" class="form-control p-dob" min="${minIso}" max="${maxIso}" value="${dobValue}" ${!isSubstitute ? 'required' : ''}>
+        <span class="dob-display-text">${displayDob}</span>
       </div>
     `;
     grid.appendChild(dobCol);
@@ -951,14 +951,17 @@
     // Live age badge & validation
     const dobWrap = dobCol.querySelector('.dob-field-wrap');
     const dobInput = dobCol.querySelector('.p-dob');
+    const dobDisplayText = dobCol.querySelector('.dob-display-text');
     const ageBadge = dobCol.querySelector('.age-badge');
 
     const syncDobState = () => {
       const val = dobInput.value ? dobInput.value.trim() : '';
       if (val) {
         if (dobWrap) dobWrap.classList.add('has-value');
+        if (dobDisplayText) dobDisplayText.textContent = formatIsoToDdmmyyyy(val);
       } else {
         if (dobWrap) dobWrap.classList.remove('has-value');
+        if (dobDisplayText) dobDisplayText.textContent = 'dd/mm/yyyy';
       }
       updateAgeLive();
     };
@@ -1006,6 +1009,13 @@
       }
     };
 
+    dobInput.addEventListener('click', () => {
+      if (typeof dobInput.showPicker === 'function') {
+        try {
+          dobInput.showPicker();
+        } catch (e) {}
+      }
+    });
     dobInput.addEventListener('change', syncDobState);
     dobInput.addEventListener('input', syncDobState);
 
