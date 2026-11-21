@@ -1703,7 +1703,7 @@
      ERROR UI HELPERS
      ========================================================================== */
   function clearAllErrors() {
-    document.querySelectorAll('.form-control.has-error, .parish-trigger-btn.has-error').forEach(el => el.classList.remove('has-error'));
+    document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
     document.querySelectorAll('.form-error-msg').forEach(el => {
       el.classList.remove('visible');
       el.textContent = '';
@@ -1854,6 +1854,10 @@
             <span class="preview-field-label">Contact Number</span>
             <span class="preview-field-val">📱 ${escapeHTML(payload.phone)}</span>
           </div>
+          ${payload.sakshyapatram ? `<div class="preview-field-item">
+            <span class="preview-field-label">Sakshyapatram</span>
+            <span class="preview-field-val">📎 ${escapeHTML(payload.sakshyapatram.fileName)}</span>
+          </div>` : ''}
         </div>
       </div>
 
@@ -1953,7 +1957,7 @@
 
     showOverlay('waitOverlay');
 
-    const postUrl = "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
+    const postUrl = window.REGISTRATION_POST_URL || "https://script.google.com/macros/s/AKfycbyf_DQeEJaUM2AeAzjmFPY3alip-nYTTwGq4gGI4BfUpmDW_IcYTt5Qxkcna-pFrSI7/exec";
 
     submitWithRecovery(postUrl, payload)
       .then((parsed) => {
@@ -1991,6 +1995,7 @@
         if (otherInput) otherInput.value = '';
         document.querySelectorAll('.radio-card-option').forEach(el => el.classList.remove('is-checked'));
 
+        if (window.Sakshya) window.Sakshya.reset();
         selectedEventsState.clear();
         renderEventCards();
         clearAllErrors();
@@ -2060,6 +2065,19 @@
     const phonePattern = /^[6-9][0-9]{9}$/;
     if (!phonePattern.test(cleanVicarPhone)) {
       recordError(setFieldError('vicarPhone', "Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9."), "Valid Vicar's Mobile Number is required.");
+    }
+
+    // 4b. Vicar's Sakshyapatram (uploaded already; must be finished, or missing only if optional)
+    let sakResult;
+    if (window.Sakshya) {
+      sakResult = window.Sakshya.check();
+    } else if (window.SAKSHYA_REQUIRED !== false) {
+      sakResult = { ok: false, message: 'The upload part of this page did not load. Please refresh the page.', banner: 'Sakshyapatram upload did not load.' };
+    } else {
+      sakResult = { ok: true, payload: null };
+    }
+    if (!sakResult.ok) {
+      recordError(setFieldError('sakshya', sakResult.message), sakResult.banner || sakResult.message);
     }
 
     // 5. Central-Diocese unit registration? * (required radio buttons: Yes / No)
@@ -2176,6 +2194,10 @@
       phone: cleanPhone,
       items
     };
+
+    if (sakResult && sakResult.payload) {
+      payload.sakshyapatram = sakResult.payload;
+    }
 
     // Open Compact Submission Preview Modal
     showPreviewModal(payload);
@@ -2403,6 +2425,10 @@
       if (err) {
         err.classList.remove('visible');
         err.textContent = '';
+      }
+
+      if (window.Sakshya) {
+        window.Sakshya.onParishChange(item.name);
       }
 
       closePicker();

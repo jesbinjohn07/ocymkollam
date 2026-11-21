@@ -5120,3 +5120,47 @@ select.form-control option[value=""] {
     right: 12px !important;
   }
 }
+
+
+/* ==========================================================================
+   Vicar's Sakshyapatram upload
+   ========================================================================== */
+.sakshya-box {
+  border: 1.5px dashed var(--border-focus);
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sakshya-box.has-error { border-color: #dc2626; background: #fef2f2; }
+.sakshya-box[data-state="done"] { border-style: solid; border-color: #15803d; background: #f0fdf4; }
+.sakshya-box[data-state="error"] { border-style: solid; border-color: #dc2626; background: #fef2f2; }
+.sakshya-status { font-size: 0.92rem; font-weight: 500; color: var(--text-primary); word-break: break-word; }
+.sakshya-box[data-state="error"] .sakshya-status { color: #b91c1c; }
+.sakshya-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.sakshya-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--primary);
+  background: var(--bg-card);
+  color: var(--primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sakshya-btn-primary { background: var(--primary); color: var(--text-inverse); }
+.sakshya-btn:hover { opacity: 0.9; }
+.sakshya-btn[hidden], .sakshya-bar[hidden], .sakshya-msg[hidden] { display: none !important; }
+.sakshya-bar { height: 8px; border-radius: 99px; background: var(--border-light); overflow: hidden; }
+.sakshya-bar span {
+  display: block; height: 100%; width: 40%; border-radius: 99px; background: var(--secondary);
+  animation: sakshyaSlide 1.1s ease-in-out infinite;
+}
+@keyframes sakshyaSlide { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .sakshya-bar span { animation: none; width: 100%; } }
+.sakshya-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; }
+.sakshya-msg { font-size: 0.85rem; color: #b91c1c; font-weight: 500; margin-top: 6px; }

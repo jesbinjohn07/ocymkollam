@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261119_01">
+  <link rel="stylesheet" href="css/style.css?v=20261121_02">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -343,6 +343,25 @@
               <label for="vicarPhone" class="form-label">Vicar's Mobile Number <span style="color: #dc2626;">*</span></label>
               <input type="tel" id="vicarPhone" class="form-control" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" required>
               <div class="form-error-msg" id="vicarPhoneError">Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.</div>
+            </div>
+
+            <!-- 4b. Vicar's Sakshyapatram * (uploaded in the background as soon as it is chosen; see js/sakshyapatram.js) -->
+            <div class="form-group" id="sakshyaGroup">
+              <label class="form-label" id="sakshyaLabel">Vicar's Sakshyapatram <span id="sakshyaStar" style="color: #dc2626;">*</span><span id="sakshyaOptional" hidden style="font-weight: 400; color: var(--text-muted);"> (optional)</span></label>
+              <div class="sakshya-box" id="sakshya" data-state="idle">
+                <input type="file" id="sakshyaFile" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+                <div class="sakshya-status" id="sakshyaStatus" role="status" aria-live="polite">No file chosen</div>
+                <div class="sakshya-bar" id="sakshyaBar" hidden aria-hidden="true"><span></span></div>
+                <div class="sakshya-actions">
+                  <button type="button" class="sakshya-btn sakshya-btn-primary" id="sakshyaPick">📎 Choose file (JPG, PNG or PDF)</button>
+                  <button type="button" class="sakshya-btn sakshya-btn-primary" id="sakshyaRetry" hidden>🔁 Retry</button>
+                  <button type="button" class="sakshya-btn" id="sakshyaReplace" hidden>Replace</button>
+                  <button type="button" class="sakshya-btn" id="sakshyaRemove" hidden>Remove</button>
+                </div>
+              </div>
+              <div class="sakshya-hint">Photo or scan of the vicar's Sakshyapatram. JPG, PNG or PDF. Photos are reduced automatically; a PDF can be up to 4 MB. Select your parish first.</div>
+              <div class="sakshya-msg" id="sakshyaMsg" hidden role="alert"></div>
+              <div class="form-error-msg" id="sakshyaError"></div>
             </div>
 
             <!-- 5. Central-Diocese unit registration? * (Required radio buttons: Yes / No) -->
@@ -776,10 +795,11 @@
 
   <button class="back-to-top" aria-label="Back to top">↑</button>
 
-  <script src="js/config.js"></script>
+  <script src="js/config.js?v=20261121_02"></script>
   <script src="js/parishes.js?v=20261113_24"></script>
   <script src="js/kalamela-data.js?v=20261113_24"></script>
   <script src="js/main.js"></script>
-  <script src="js/registration.js?v=20261121_01"></script>
+  <script src="js/sakshyapatram.js?v=20261121_02"></script>
+  <script src="js/registration.js?v=20261121_02"></script>
 </body>
 </html>
