@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    OCYM Kollam – Registration Engine (2026-27 Kalamela Edition)
    --------------------------------------------------------------------------
    - State-driven "Select event, then edit" bottom sheet/modal workflow
@@ -227,9 +227,23 @@
       .replace(/'/g, '&#39;');
   }
 
+  // Phone helper: keeps digits only; drops a leading 91 (when 12 digits) or 0 (when 11 digits).
+  // It never cuts digits off, so a number with a wrong length fails validation instead of being altered.
+  function normalizePhoneDigits(value) {
+    let d = String(value == null ? '' : value).replace(/\D/g, '');
+    if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2);
+    else if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1);
+    return d;
+  }
+
   function normalizePersonName(name) {
     if (!name) return '';
-    return String(name).trim().toLowerCase().replace(/\s+/g, ' ');
+    return String(name)
+      .normalize("NFC")
+      .replace(/[\u200B-\u200D]/g, "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
   }
 
   function getPersonNormalizedKey(name, dob) {
@@ -460,6 +474,7 @@
           <div class="event-card-participants-preview">
             <span class="event-card-saved-badge">✓ സേവ് ചെയ്തു (Saved)</span>
             <span class="event-card-p-chip" title="${namesSummary}">👤 ${pCount} പേർ${sCount > 0 ? ` (+${sCount} sub)` : ''}: ${namesSummary}</span>
+            <span class="event-card-p-chip">📞 ${escapeHTML(savedData.phone || '')}</span>
           </div>
           <div class="event-card-bottom">
             <span style="font-size:0.75rem; color:var(--text-muted);">ടാപ്പ് ചെയ്ത് മാറ്റങ്ങൾ വരുത്താം</span>
@@ -835,6 +850,36 @@
       updateAddMemberButtonState(cardsWrapper, addMemberBtn, prog.max);
     }
 
+    // Contact number for this entry: individual = the participant's number, group = ONE number for the whole team
+    const phoneBox = document.getElementById('sheetPhoneContainer');
+    if (phoneBox) {
+      const phoneLabel = isIndiv
+        ? 'Participant\'s Mobile Number (മത്സരാർത്ഥിയുടെ ഫോൺ നമ്പർ)'
+        : 'Team Contact Number (ടീമിന്റെ ഫോൺ നമ്പർ)';
+      const phoneHint = isIndiv
+        ? 'Number on which this participant can be reached.'
+        : 'One number for the whole team is enough (ടീമിന് ഒരു നമ്പർ മതി).';
+      const existingPhone = isSaved && existingData && existingData.phone ? escapeHTML(existingData.phone) : '';
+      phoneBox.innerHTML = `
+        <div style="margin-top: 14px; padding: 12px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); background: #fafafa;">
+          <label class="form-label" for="sheetPhoneInput" style="font-size: 0.85rem; margin-bottom: 4px;">${phoneLabel} <span style="color:#dc2626;">*</span></label>
+          <input type="tel" inputmode="numeric" maxlength="20" autocomplete="off" id="sheetPhoneInput" class="form-control p-phone" placeholder="10-digit mobile number" value="${existingPhone}">
+          <div class="form-error-msg p-card-error"></div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">${phoneHint}</div>
+        </div>
+      `;
+      const phoneInputEl = phoneBox.querySelector('.p-phone');
+      const phoneErrEl = phoneBox.querySelector('.p-card-error');
+      phoneInputEl.addEventListener('input', () => {
+        phoneInputEl.classList.remove('has-error');
+        if (phoneErrEl) { phoneErrEl.classList.remove('visible'); phoneErrEl.textContent = ''; }
+      });
+      phoneInputEl.addEventListener('blur', () => {
+        const cleaned = normalizePhoneDigits(phoneInputEl.value);
+        if (phoneInputEl.value !== cleaned) phoneInputEl.value = cleaned;
+      });
+    }
+
     // Rule 7: Substitutes Section (Group items with substitutes: true)
     if (prog.substitutes) {
       subsContainer.style.display = 'block';
@@ -1125,7 +1170,7 @@
   function serializeSheetForm() {
     const sheet = document.getElementById('editEventSheet');
     if (!sheet) return '';
-    const inputs = sheet.querySelectorAll('.p-name, .p-dob');
+    const inputs = sheet.querySelectorAll('.p-name, .p-dob, .p-phone');
     const values = [];
     inputs.forEach(input => {
       values.push(input.value.trim());
@@ -1198,6 +1243,21 @@
       errors.push(`${prog.name} requires exactly ${prog.max} participants. (Currently has ${regCards.length}).`);
     } else if (!prog.fixed && (regCards.length < prog.min || regCards.length > prog.max)) {
       errors.push(`${prog.name} requires between ${prog.min} and ${prog.max} participants.`);
+    }
+
+    // Contact number for this entry (required): 10 digits starting with 6, 7, 8 or 9
+    const entryPhoneInput = sheet.querySelector('#sheetPhoneContainer .p-phone');
+    const entryPhoneErr = sheet.querySelector('#sheetPhoneContainer .p-card-error');
+    const entryPhone = entryPhoneInput ? normalizePhoneDigits(entryPhoneInput.value) : '';
+    if (!/^[6-9][0-9]{9}$/.test(entryPhone)) {
+      const phoneMsg = entryPhone
+        ? 'Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.'
+        : 'Contact number is required.';
+      if (entryPhoneInput) entryPhoneInput.classList.add('has-error');
+      if (entryPhoneErr) { entryPhoneErr.textContent = phoneMsg; entryPhoneErr.classList.add('visible'); }
+      errors.push(`${isIndiv ? 'Participant' : 'Team'} contact number: ${phoneMsg}`);
+    } else if (entryPhoneInput && entryPhoneInput.value !== entryPhone) {
+      entryPhoneInput.value = entryPhone;
     }
 
     const participantsDetail = [];
@@ -1437,7 +1497,8 @@
       program: prog.name,
       type: prog.type,
       participantsDetail,
-      substitutes: substitutesDetail
+      substitutes: substitutesDetail,
+      phone: entryPhone
     });
 
     // Close sheet, hide unsaved dialog, update UI
@@ -1751,6 +1812,7 @@
           </div>
           <div class="preview-participants-list">
             ${participantChips}
+            <span class="preview-participant-chip">📞 ${escapeHTML(item.phone || '')}</span>
           </div>
           ${subHtml}
         </div>
@@ -2094,7 +2156,8 @@
       program: ev.program,
       participants: (ev.participantsDetail || []).map(p => p.name).join(" | "),
       participantsDetail: ev.participantsDetail || [],
-      substitutes: ev.substitutes || []
+      substitutes: ev.substitutes || [],
+      phone: ev.phone || ''
     }));
 
     const submissionId = (window.crypto && crypto.randomUUID)
