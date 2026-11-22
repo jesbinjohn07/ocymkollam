@@ -5164,3 +5164,23 @@ select.form-control option[value=""] {
 @media (prefers-reduced-motion: reduce) { .sakshya-bar span { animation: none; width: 100%; } }
 .sakshya-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; }
 .sakshya-msg { font-size: 0.85rem; color: #b91c1c; font-weight: 500; margin-top: 6px; }
+
+/* ==========================================================================
+   Parish Sheet Mobile Fix (Prevent Sticky Summary Bar Overlap)
+   ========================================================================== */
+body.parish-sheet-open .sticky-summary-bar {
+  transform: translateY(110%) !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body.parish-sheet-open .registration-form-card {
+  z-index: 10001 !important;
+}
+
+@media (max-width: 640px) {
+  .parish-options-list {
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+}
