@@ -2400,9 +2400,14 @@
       renderList('');
       activeIndex = -1;
 
-      setTimeout(() => {
-        searchInput.focus();
-      }, 100);
+      // Only auto-focus on desktop; on mobile/touch, auto-focusing forces the software keyboard
+      // to open immediately and covers half the parish list.
+      const isMobile = window.innerWidth <= 640 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+      if (!isMobile) {
+        setTimeout(() => {
+          searchInput.focus();
+        }, 100);
+      }
     }
 
     function closePicker() {
