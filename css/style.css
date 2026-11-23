@@ -5184,3 +5184,58 @@ body.parish-sheet-open .registration-form-card {
     padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+
+/* ==========================================================================
+   STICKY BAR v2: [category toggle] [0 Individual • 0 Group Selected] [Review]
+   Always one row, never scrolls sideways
+   ========================================================================== */
+.sticky-summary-bar { padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)); overflow: hidden; }
+.sticky-summary-bar .sticky-summary-inner {
+  display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-start;
+  gap: 8px; width: 100%; max-width: 900px; min-width: 0; box-sizing: border-box;
+}
+.sticky-toggle {
+  flex: 0 0 auto; display: inline-flex; gap: 2px; padding: 3px;
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+}
+.sticky-toggle-btn {
+  width: 34px; height: 34px; padding: 0; border: none; border-radius: 50%;
+  background: transparent; font-size: 1rem; line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  opacity: 0.65; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.sticky-toggle-btn.active { background: #d4a017; opacity: 1; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
+.sticky-summary-bar .sticky-summary-info {
+  flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; align-items: flex-start;
+}
+.sticky-summary-bar .summary-count-badge {
+  font-size: 0.8rem; line-height: 1.2; white-space: nowrap; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.summary-sub { display: inline-flex; align-items: center; gap: 6px; color: rgba(255, 255, 255, 0.75); font-size: 0.7rem; line-height: 1.2; white-space: nowrap; }
+.sticky-summary-bar .summary-clear-btn { font-size: 0.68rem; padding: 1px 7px; }
+.sticky-summary-bar .summary-review-btn {
+  flex: 0 0 auto; padding: 8px 14px !important; font-size: 0.85rem !important;
+  min-height: 40px !important; margin-left: auto;
+}
+.review-extra { display: inline; }
+@media (min-width: 560px) {
+  .sticky-summary-bar .sticky-summary-info { flex-direction: row; align-items: center; gap: 8px; }
+  .sticky-summary-bar .summary-count-badge { font-size: 0.95rem; }
+  .sticky-summary-bar .summary-review-btn { padding: 10px 20px !important; font-size: 0.94rem !important; }
+}
+@media (max-width: 420px) {
+  .review-extra, .review-icon { display: none; }
+  .sticky-summary-bar .summary-review-btn { padding: 8px 14px !important; }
+  .sticky-toggle-btn { width: 32px; height: 32px; }
+}
+@media (max-width: 340px) {
+  .sticky-summary-bar { padding-left: 8px; padding-right: 8px; }
+  .sticky-summary-bar .sticky-summary-inner { gap: 6px; }
+  .sticky-summary-bar .summary-count-badge { font-size: 0.72rem; }
+}
+
+.event-toggle-nav { scroll-margin-top: 100px; }

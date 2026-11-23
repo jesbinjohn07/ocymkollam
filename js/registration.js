@@ -637,6 +637,8 @@
   function initCategoryToggle() {
     const btnIndiv = document.getElementById('btnToggleIndiv');
     const btnGroup = document.getElementById('btnToggleGroup');
+    const stickyIndiv = document.getElementById('stickyToggleIndiv');
+    const stickyGroup = document.getElementById('stickyToggleGroup');
     const sectionIndiv = document.getElementById('sectionIndivEvents');
     const sectionGroup = document.getElementById('sectionGroupEvents');
 
@@ -649,6 +651,13 @@
         btnGroup.classList.remove('active');
         btnGroup.setAttribute('aria-selected', 'false');
 
+        if (stickyIndiv && stickyGroup) {
+          stickyIndiv.classList.add('active');
+          stickyIndiv.setAttribute('aria-pressed', 'true');
+          stickyGroup.classList.remove('active');
+          stickyGroup.setAttribute('aria-pressed', 'false');
+        }
+
         sectionIndiv.style.display = 'block';
         sectionGroup.style.display = 'none';
       } else {
@@ -657,6 +666,13 @@
         btnIndiv.classList.remove('active');
         btnIndiv.setAttribute('aria-selected', 'false');
 
+        if (stickyIndiv && stickyGroup) {
+          stickyGroup.classList.add('active');
+          stickyGroup.setAttribute('aria-pressed', 'true');
+          stickyIndiv.classList.remove('active');
+          stickyIndiv.setAttribute('aria-pressed', 'false');
+        }
+
         sectionGroup.style.display = 'block';
         sectionIndiv.style.display = 'none';
       }
@@ -664,6 +680,24 @@
 
     btnIndiv.addEventListener('click', () => switchCategory('individual'));
     btnGroup.addEventListener('click', () => switchCategory('group'));
+
+    function onStickyToggle(type) {
+      switchCategory(type);
+      const mainToggle = document.querySelector('.event-toggle-nav');
+      if (mainToggle) {
+        const rect = mainToggle.getBoundingClientRect();
+        if (rect.bottom < 60 || rect.top > window.innerHeight - 80) {
+          mainToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+
+    if (stickyIndiv) {
+      stickyIndiv.addEventListener('click', () => onStickyToggle('individual'));
+    }
+    if (stickyGroup) {
+      stickyGroup.addEventListener('click', () => onStickyToggle('group'));
+    }
   }
 
   function updateSummaryBar() {
@@ -716,7 +750,7 @@
 
     const summaryBadge = document.getElementById('summaryCountBadge');
     if (summaryBadge) {
-      summaryBadge.textContent = `🎯 ${count} Program${count === 1 ? '' : 's'} Selected`;
+      summaryBadge.textContent = `${indivSelected} Individual • ${groupSelected} Group`;
     }
 
     const reviewBtn = document.getElementById('summaryReviewBtn');

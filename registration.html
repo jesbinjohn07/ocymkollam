@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&family=Gayathri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css?v=20261122_01">
+  <link rel="stylesheet" href="css/style.css?v=20261123_01">
   <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
@@ -783,12 +783,16 @@
   <!-- English-Only Sticky Floating Program Summary Bar -->
     <aside class="sticky-summary-bar" id="stickySummaryBar" aria-label="Selected programs summary">
       <div class="sticky-summary-inner">
+        <div class="sticky-toggle" role="group" aria-label="Switch program category">
+          <button type="button" class="sticky-toggle-btn active" id="stickyToggleIndiv" aria-pressed="true" aria-label="Show individual programs" title="Individual">👤</button>
+          <button type="button" class="sticky-toggle-btn" id="stickyToggleGroup" aria-pressed="false" aria-label="Show group programs" title="Group">👥</button>
+        </div>
         <div class="sticky-summary-info">
-          <span class="summary-count-badge" id="summaryCountBadge">🎯 0 Programs Selected</span>
-          <button type="button" class="summary-clear-btn" id="summaryClearBtn" style="display: none;">Clear All</button>
+          <span class="summary-count-badge" id="summaryCountBadge">0 Individual • 0 Group</span>
+          <span class="summary-sub"><span class="summary-sub-label">Selected</span><button type="button" class="summary-clear-btn" id="summaryClearBtn" style="display: none;">Clear All</button></span>
         </div>
         <button type="button" class="btn btn-gold summary-review-btn" id="summaryReviewBtn" disabled>
-          <span>📋</span> Review &amp; Submit
+          <span class="review-icon">📋</span><span class="review-text">Review<span class="review-extra"> &amp; Submit</span></span>
         </button>
       </div>
     </aside>
@@ -800,6 +804,6 @@
   <script src="js/kalamela-data.js?v=20261113_24"></script>
   <script src="js/main.js"></script>
   <script src="js/sakshyapatram.js?v=20261121_02"></script>
-  <script src="js/registration.js?v=20261122_01"></script>
+  <script src="js/registration.js?v=20261123_01"></script>
 </body>
 </html>
