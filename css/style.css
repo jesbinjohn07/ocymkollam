@@ -5239,3 +5239,8 @@ body.parish-sheet-open .registration-form-card {
 }
 
 .event-toggle-nav { scroll-margin-top: 100px; }
+
+/* Fee card lives after rule 19: hidden until "Show all 19 rules" is opened */
+.kalamela-rules-list + .kalamela-fee-card { display: none; margin: 14px 0 6px; }
+.kalamela-rules-list.expanded + .kalamela-fee-card { display: block; animation: fadeInRule 0.22s ease-out; }
+
